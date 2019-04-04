@@ -83,7 +83,7 @@ until finished
 End with an example of getting some data out of the system or using it for a little demo -->
 
 
-## Procedures -> GitFlow
+## Procedures (GitFlow)
 
 1. Create a branch from master
 
