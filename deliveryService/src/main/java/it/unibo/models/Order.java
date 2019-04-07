@@ -1,4 +1,4 @@
-package it.unibo;
+package it.unibo.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

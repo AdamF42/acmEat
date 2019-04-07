@@ -1,4 +1,8 @@
-package it.unibo;
+package it.unibo.controllers;
+
+import it.unibo.models.Status;
+import it.unibo.models.Order;
+import it.unibo.models.PlaceOrderResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -71,8 +75,6 @@ public class DeliveryService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response updateOrder( @PathParam("id") int id, Order order){
-
-        Order dbOrder = orders.get(id);
 
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

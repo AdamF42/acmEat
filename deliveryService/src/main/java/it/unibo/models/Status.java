@@ -1,4 +1,4 @@
-package it.unibo;
+package it.unibo.models;
 
 public enum Status {
     accepted,

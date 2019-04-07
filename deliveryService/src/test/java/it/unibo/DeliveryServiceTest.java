@@ -7,6 +7,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
+import it.unibo.models.Order;
+import it.unibo.models.PlaceOrderResponse;
+import it.unibo.models.Status;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;

@@ -16,3 +16,9 @@ simple-service/target/surefire-reports/TEST-com\.example\.MyResourceTest\.xml
 deliveryService/\.idea/
 
 deliveryService/target/surefire-reports/it\.unibo\.DeliveryServiceTest\.txt
+
+deliveryService/target/maven-archiver/
+
+deliveryService/target/surefire-reports/
+
+*.kotlin_module
