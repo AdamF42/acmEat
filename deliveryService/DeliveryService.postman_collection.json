@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "fdc87fc6-3bf7-4668-b3fc-b79ae060ab28",
+		"name": "DeliveryService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PlaceOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"srcAddress\": \"A\",\n\t\"destAddress\": \"B\",\n\t\"deliveryTime\": \"11\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:18080/delivery/order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"delivery",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOrder",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:18080/delivery/order/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"delivery",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateOrder",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"deliveryTime\": \"11\",\n    \"destAddress\": \"B\",\n    \"id\": 1,\n    \"price\": 5,\n    \"srcAddress\": \"A\",\n    \"status\": \"available\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:18080/delivery/order/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"delivery",
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConfirmOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:18080/delivery/order/1/status/confirmed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"delivery",
+						"order",
+						"1",
+						"status",
+						"confirmed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AbortOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:18080/delivery/order/1/status/aborted",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "18080",
+					"path": [
+						"delivery",
+						"order",
+						"1",
+						"status",
+						"aborted"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
