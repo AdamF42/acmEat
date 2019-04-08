@@ -6,11 +6,11 @@ Simple restaurant service implementation.
 
 | HTTP Method           | Action              | Description                              |
 | --------------------- | ------------------- | ---------------------------------------- |
-| POST                  | [PlaceOrder](#place) |  |
-| GET                  | [GetOrder](#get) |  |
-| PUT                  | [UpdateOrder](#update) |  |
-| PUT                  | [ConfirmOrder](#confirm) |  |
-| PUT                  | [AbortOrder](#abort) |  |
+| POST                  | [PlaceOrder](#place) | Post a new order resource. |
+| GET                  | [GetOrder](#get) | Retrieve a specific order. |
+| PUT                  | [UpdateOrder](#update) | Update a specific order |
+| PUT                  | [ConfirmOrder](#confirm) | Confirm a specific order |
+| PUT                  | [AbortOrder](#abort) | Abort a apecific order |
 
 
 ## Place
