@@ -22,3 +22,13 @@ deliveryService/target/maven-archiver/
 deliveryService/target/surefire-reports/
 
 *.kotlin_module
+
+restaurantService/\.idea/
+
+restaurantService/models/__pycache__/
+
+restaurantService/repo/__pycache__/
+
+restaurantService/utils/__pycache__/
+
+restaurantService/__pycache__/
