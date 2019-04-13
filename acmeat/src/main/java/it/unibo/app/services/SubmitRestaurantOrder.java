@@ -9,8 +9,11 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.app.models.RestaurantOrder;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.json.simple.JSONObject;
 
-public class RestaurantDelegate implements JavaDelegate {
+import static it.unibo.app.fakes.fakeRestaurantOrder.orderOne;
+
+public class SubmitRestaurantOrder implements JavaDelegate {
 
   private final static String BASE_URL = "http://localhost:5000/restaurant/order";
 
@@ -26,7 +29,9 @@ public class RestaurantDelegate implements JavaDelegate {
 
       WebResource webResource = client.resource(BASE_URL);
 
-      String input = "{\"content\": [ \"pizza\", \"carbonara\" ],\"delivery_time\": \"13\"}";
+//      String input = "{\"content\": [ \"pizza\", \"carbonara\" ],\"delivery_time\": \"13\"}";
+
+      JSONObject input = orderOne();
 
       ClientResponse response = webResource.type("application/json")
               .post(ClientResponse.class, input);
