@@ -10,7 +10,12 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}\\distance.js",
-            "args": ["-a","arg","AIzaSyC_3e_pkA5GjNh6B1A3Rk1Kd2DcoObJMPY"]
+            
+            "args": ["-a","arg","AIzaSyCwAjyf215t4VuzlZLImmt8FtFIwNG18CM"]
+
+            //"args": ["-a","arg","AIzaSyDKXeP1lgeG17J925r20ehgpbIWS4QW4AY"]
+            //"args": ["-a","arg","AIzaSyDWPXlrmM_fkqGpHVtD72RIvhOPl_HGO5A"]
+            //"args": ["-a","arg","AIzaSyC_3e_pkA5GjNh6B1A3Rk1Kd2DcoObJMPY"]
         }
     ]
 }
