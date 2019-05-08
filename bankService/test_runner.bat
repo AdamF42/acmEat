@@ -1,0 +1,1 @@
+-sBankServiceTest -cgetTokenTest -fC:\Projects\ACMEat\bankService C:\Projects\ACMEat\bankService\BankService-soapui-project.xml
