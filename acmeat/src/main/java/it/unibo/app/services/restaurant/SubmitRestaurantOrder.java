@@ -1,4 +1,4 @@
-package it.unibo.app.services;
+package it.unibo.app.services.restaurant;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -15,7 +15,7 @@ import static it.unibo.app.fakes.fakeRestaurantOrder.orderOne;
 
 public class SubmitRestaurantOrder implements JavaDelegate {
 
-  private final static String BASE_URL = "http://localhost:5000/restaurant/order";
+  private final static String BASE_URL = "http://localhost:8003/restaurant/order";
 
   public void execute(DelegateExecution execution) throws Exception {
 

@@ -1,4 +1,4 @@
-package it.unibo.app;
+package it.unibo.app.services.restaurant;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -13,7 +13,7 @@ import static it.unibo.app.fakes.fakeRestaurantOrder.orderOne;
 
 
 public class restTest {
-    private final static String BASE_URL = "http://localhost:5000/restaurant/order";
+    private final static String BASE_URL = "http://localhost:8003/restaurant/order";
 
     public static void main( String[] args) {
 
