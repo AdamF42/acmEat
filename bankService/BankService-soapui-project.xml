@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="e39a56c5-70ed-4d05-a68e-95bb4f57700a" activeEnvironment="Default" name="BankService" resourceRoot="" soapui-version="5.4.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.actions.iface.tools.soapui.TestRunnerAction@values-local"><![CDATA[<xml-fragment xmlns:con="http://eviware.com/soapui/config">
+  <con:entry key="Report Format(s)" value=""/>
+  <con:entry key="Host:Port" value=""/>
+  <con:entry key="Export JUnit Results" value="false"/>
+  <con:entry key="Export All" value="false"/>
+  <con:entry key="Save After" value="false"/>
+  <con:entry key="Add Settings" value="false"/>
+  <con:entry key="WSS Password Type" value=""/>
+  <con:entry key="TestSuite" value="BankServiceTest"/>
+  <con:entry key="Endpoint" value=""/>
+  <con:entry key="Select Report Type" value=""/>
+  <con:entry key="System Properties" value=""/>
+  <con:entry key="Password" value=""/>
+  <con:entry key="Print Report" value="false"/>
+  <con:entry key="Open Report" value="false"/>
+  <con:entry key="Export JUnit Results with test properties" value="false"/>
+  <con:entry key="Global Properties" value=""/>
+  <con:entry key="Project Properties" value=""/>
+  <con:entry key="Project Password" value=""/>
+  <con:entry key="TestCase" value="getTokenTest"/>
+  <con:entry key="Username" value=""/>
+  <con:entry key="user-settings.xml Password" value=""/>
+  <con:entry key="TestRunner Path" value=""/>
+  <con:entry key="Environment" value="Default"/>
+  <con:entry key="Coverage Report" value="false"/>
+  <con:entry key="Enable UI" value="false"/>
+  <con:entry key="Root Folder" value="C:\Projects\ACMEat\bankService"/>
+  <con:entry key="Ignore Errors" value="false"/>
+  <con:entry key="Domain" value=""/>
+  <con:entry key="Tool Args" value=""/>
+  <con:entry key="Save Project" value="false"/>
+</xml-fragment>]]></con:setting></con:settings><con:interface xsi:type="con:WsdlInterface" id="b834ffb1-f946-48cf-bfb6-403e086eb8d8" wsaVersion="NONE" name="BankSOAPBinding" type="wsdl" bindingName="{soseng.wsdl}BankSOAPBinding" soapVersion="1_1" anonymous="optional" definition="file:/C:/Projects/ACMEat/bankService/bankService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="file:/C:/Projects/ACMEat/bankService/bankService.wsdl"><con:part><con:url>file:/C:/Projects/ACMEat/bankService/bankService.wsdl</con:url><con:content><![CDATA[<wsdl:definitions targetNamespace="soseng.wsdl" xmlns:xsd1="soseng.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="soseng.wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+    <xs:schema targetNamespace="soseng.xsd" xmlns:sch="soseng.xsd">
+      <xs:element name="verifyToken">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="name" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="verifyTokenResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getToken">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="0" name="amount" type="xs:double"/>
+            <xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getTokenResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="refound">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="message" type="xs:string"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="status" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="refoundResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="SuccessResponse">
+    <wsdl:part name="body" element="xsd1:refoundResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RefoundRequest">
+    <wsdl:part name="body" element="xsd1:refound"/>
+  </wsdl:message>
+  <wsdl:message name="ClientTokenRequest">
+    <wsdl:part name="body" element="xsd1:getToken"/>
+  </wsdl:message>
+  <wsdl:message name="TokenResponse">
+    <wsdl:part name="body" element="xsd1:getTokenResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ClientToken">
+    <wsdl:part name="body" element="xsd1:verifyToken"/>
+  </wsdl:message>
+  <wsdl:portType name="Bank">
+    <wsdl:operation name="verifyToken">
+      <wsdl:input message="tns:ClientToken"/>
+      <wsdl:output message="tns:SuccessResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="getToken">
+      <wsdl:input message="tns:ClientTokenRequest"/>
+      <wsdl:output message="tns:TokenResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="refound">
+      <wsdl:input message="tns:RefoundRequest"/>
+      <wsdl:output message="tns:SuccessResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BankSOAPBinding" type="tns:Bank">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="verifyToken">
+      <soap:operation soapAction="verifyToken" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getToken">
+      <soap:operation soapAction="getToken" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="refound">
+      <soap:operation soapAction="refound" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BankService">
+    <wsdl:port name="BankServicePort" binding="tns:BankSOAPBinding">
+      <soap:address location="http://localhost:8000"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8000</con:endpoint></con:endpoints><con:operation id="99480516-20e5-4b68-8fbd-72196490df25" isOneWay="false" action="getToken" name="getToken" bindingOperationName="getToken" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="0f81d329-d97d-439d-bdfe-29a756b43d11" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:getToken>\r
+         <!--Optional:-->\r
+         <amount>3</amount>\r
+         <name>a</name>\r
+      </sos:getToken>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="getToken"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="08efa86a-b00e-4306-841a-1bda2b7d745b" isOneWay="false" action="refound" name="refound" bindingOperationName="refound" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="cd6c68ba-73e1-4623-99dc-be53113ffc54" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:refound>\r
+         <name>gino</name>\r
+         <!--Optional:-->\r
+         <message>?</message>\r
+         <!--Optional:-->\r
+         <status>?</status>\r
+      </sos:refound>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="refound"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="c96828ff-6d35-4e49-8097-e852b07381c9" isOneWay="false" action="verifyToken" name="verifyToken" bindingOperationName="verifyToken" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="91ce7599-3d9f-4201-b140-7f1377b60fd2" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:verifyToken>\r
+         <!--Optional:-->\r
+         <name>?</name>\r
+         <sid>?</sid>\r
+      </sos:verifyToken>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="verifyToken"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="c29342e6-6284-42d4-a47a-127dc798d0ef" name="BankServiceTest"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="7734252f-9229-4adc-80ee-bc444b064d3d" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="getTokenTest" searchProperties="true"><con:settings/><con:testStep type="request" id="2dcd298a-c1d6-4e2a-ad61-91ed85542d5c" name="getToken - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BankSOAPBinding</con:interface><con:operation>getToken</con:operation><con:request name="getToken - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="2fe1bea8-d7a7-4215-96f7-9c7596400283"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:getToken>\r
+         <!--Optional:-->\r
+         <amount>3</amount>\r
+         <name>a</name>\r
+      </sos:getToken>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="afe22ccb-cba2-46b6-b2d3-60e2e42dc96b" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="getToken"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="eebb020e-972b-4c51-830f-49ce9ee7b2ae" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="refoundTest" searchProperties="true"><con:settings/><con:testStep type="request" id="9a2f92d6-dacf-4618-b2f2-401d5cf269ee" name="refound - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BankSOAPBinding</con:interface><con:operation>refound</con:operation><con:request name="refound - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="dcabbe51-241e-403d-8698-de2ff20c11f6"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:refound>\r
+         <name>gino</name>\r
+         <!--Optional:-->\r
+         <message>?</message>\r
+         <!--Optional:-->\r
+         <status>?</status>\r
+      </sos:refound>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="88913c9a-fe9e-4e92-9424-b8edbb6b020f" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="refound"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="6ccf6413-66a2-4198-ab4e-b4168155c52e" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="verifyTokenTest" searchProperties="true"><con:settings/><con:testStep type="request" id="6ccedde0-97de-4ec9-97dd-2df1fc28cd6b" name="verifyToken - Request 1"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>BankSOAPBinding</con:interface><con:operation>verifyToken</con:operation><con:request name="verifyToken - Request 1" outgoingWss="" incomingWss="" timeout="" sslKeystore="" useWsAddressing="false" useWsReliableMessaging="false" wssPasswordType="" id="01a56b1e-7c13-4026-a5af-a2f05ea90f17"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8000</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sos="soseng.xsd">\r
+   <soapenv:Header/>\r
+   <soapenv:Body>\r
+      <sos:verifyToken>\r
+         <!--Optional:-->\r
+         <name>?</name>\r
+         <sid>66</sid>\r
+      </sos:verifyToken>\r
+   </soapenv:Body>\r
+</soapenv:Envelope>]]></con:request><con:assertion type="SOAP Response" id="5f76a3c7-8478-4228-8d2c-42ec99d93213" name="SOAP Response"/><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="verifyToken"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

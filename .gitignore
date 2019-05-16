@@ -32,3 +32,11 @@ restaurantService/repo/__pycache__/
 restaurantService/utils/__pycache__/
 
 restaurantService/__pycache__/
+
+acmeWebService/\.idea/
+
+acmeWebService/target/
+
+acmeat/\.idea/
+
+acmeat/target/
