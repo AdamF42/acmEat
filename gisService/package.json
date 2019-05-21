@@ -4,14 +4,14 @@
   "description": "",
   "main": "distance.js",
   "scripts": {
-    "start": "node distance.js",
+    "start": "node distance.js -a arg [API_KEY]",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
     "express": "^4.16.4",
-    "google-distance-matrix": "^1.1.1",
     "time-stamp": "^2.2.0",
     "yargs": "^8.0.2"
   }
