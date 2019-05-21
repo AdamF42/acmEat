@@ -15,23 +15,23 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:7778/?from=Bologna&to=Milano",
+					"raw": "http://localhost:9000/getDistance?from=Milano&to=Bologna",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "7778",
+					"port": "9000",
 					"path": [
-						""
+						"getDistance"
 					],
 					"query": [
 						{
 							"key": "from",
-							"value": "Bologna"
+							"value": "Milano"
 						},
 						{
 							"key": "to",
-							"value": "Milano"
+							"value": "Bologna"
 						}
 					]
 				}
