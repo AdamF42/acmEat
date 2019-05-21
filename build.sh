@@ -37,7 +37,7 @@ docker build --tag=restaurant .
 # Start all services containers
 [ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 8000:8000 --name bank --hostname bank bank
 [ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 8001:8080 --name delivery delivery
-# [ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 8002:8080 --name gis gis
+[ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 8002:7778 --name gis gis
 [ ! "$(docker ps -a | grep restaurant)" ] && docker run -d -p 8003:5000 --name restaurant restaurant
 
 #  update_container(){
@@ -52,4 +52,4 @@ docker build --tag=restaurant .
 #  }
 
 # Start camunda container
-[ ! "$(docker ps -a | grep camunda)" ] && docker run -d -p 8090:8090 --name camunda --hostname camunda --link restaurant --link delivery --link bank camunda/camunda-bpm-platform:latest
+[ ! "$(docker ps -a | grep camunda)" ] && docker run -d -p 8090:8090 --name camunda --hostname camunda --link restaurant --link delivery --link bank --link gis camunda/camunda-bpm-platform:latest
