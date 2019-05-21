@@ -40,3 +40,14 @@ acmeWebService/target/
 acmeat/\.idea/
 
 acmeat/target/
+
+gisService/node_modules/
+
+gisService/\.vscode/
+
+gisService/graphhopper_directions_api\.postman_collection\.json
+
+gisService/graphhopper_directions_api\.postman_environment\.json
+
+
+restaurantService/update\.py
