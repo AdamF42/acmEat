@@ -30,19 +30,51 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TwiceResponse }
+     * Create an instance of {@link VerifyToken }
      * 
      */
-    public TwiceResponse createTwiceResponse() {
-        return new TwiceResponse();
+    public VerifyToken createVerifyToken() {
+        return new VerifyToken();
     }
 
     /**
-     * Create an instance of {@link Twice }
+     * Create an instance of {@link RefoundResponse }
      * 
      */
-    public Twice createTwice() {
-        return new Twice();
+    public RefoundResponse createRefoundResponse() {
+        return new RefoundResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetToken }
+     * 
+     */
+    public GetToken createGetToken() {
+        return new GetToken();
+    }
+
+    /**
+     * Create an instance of {@link GetTokenResponse }
+     * 
+     */
+    public GetTokenResponse createGetTokenResponse() {
+        return new GetTokenResponse();
+    }
+
+    /**
+     * Create an instance of {@link VerifyTokenResponse }
+     * 
+     */
+    public VerifyTokenResponse createVerifyTokenResponse() {
+        return new VerifyTokenResponse();
+    }
+
+    /**
+     * Create an instance of {@link Refound }
+     * 
+     */
+    public Refound createRefound() {
+        return new Refound();
     }
 
 }

@@ -3,6 +3,7 @@ package it.unibo.bpmn2jolie.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -17,8 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="c" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="d" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="sid" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,45 +29,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "c",
-    "d"
+    "sid"
 })
-@XmlRootElement(name = "twiceResponse")
-public class TwiceResponse {
+@XmlRootElement(name = "getTokenResponse")
+public class GetTokenResponse {
 
-    protected int c;
-    protected int d;
+    @XmlElement(required = true)
+    protected String sid;
 
     /**
-     * Gets the value of the c property.
+     * Gets the value of the sid property.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public int getC() {
-        return c;
+    public String getSid() {
+        return sid;
     }
 
     /**
-     * Sets the value of the c property.
+     * Sets the value of the sid property.
      * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
      */
-    public void setC(int value) {
-        this.c = value;
-    }
-
-    /**
-     * Gets the value of the d property.
-     * 
-     */
-    public int getD() {
-        return d;
-    }
-
-    /**
-     * Sets the value of the d property.
-     * 
-     */
-    public void setD(int value) {
-        this.d = value;
+    public void setSid(String value) {
+        this.sid = value;
     }
 
 }

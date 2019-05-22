@@ -17,8 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="a" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="b" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,45 +28,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "a",
-    "b"
+    "success"
 })
-@XmlRootElement(name = "twice")
-public class Twice {
+@XmlRootElement(name = "verifyTokenResponse")
+public class VerifyTokenResponse {
 
-    protected int a;
-    protected int b;
+    protected boolean success;
 
     /**
-     * Gets the value of the a property.
+     * Gets the value of the success property.
      * 
      */
-    public int getA() {
-        return a;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the a property.
+     * Sets the value of the success property.
      * 
      */
-    public void setA(int value) {
-        this.a = value;
-    }
-
-    /**
-     * Gets the value of the b property.
-     * 
-     */
-    public int getB() {
-        return b;
-    }
-
-    /**
-     * Sets the value of the b property.
-     * 
-     */
-    public void setB(int value) {
-        this.b = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }
