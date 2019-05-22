@@ -1,22 +1,15 @@
-package it.unibo.soseng;
+package it.unibo.soseng.delivery;
 
-
-import it.unibo.bpmn2jolie.generated.Twice;
-import it.unibo.bpmn2jolie.generated.TwiceResponse;
-import it.unibo.bpmn2jolie.generated.TwiceService;
-import it.unibo.bpmn2jolie.generated.TwiceServiceService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import java.util.Random;
-
-public class CheckWeatherDelegate implements JavaDelegate {
-
-    @Override
+public class GetOrderDelegate implements JavaDelegate{
+	
+	@Override
     public void execute(DelegateExecution execution) throws Exception {
+		System.out.println("Get Order Delegate");
 
-
-        int userInput = 2;
+        /*int userInput = 2;
         TwiceService twiceService = new TwiceServiceService().getTwiceServiceServicePort();
         Twice twice = new Twice();
         twice.setA(userInput);
@@ -33,6 +26,7 @@ public class CheckWeatherDelegate implements JavaDelegate {
 
         execution.setVariable("d", response.getD());
         execution.setVariable("weatherOk", response.getD());
-
+*/
     }
+
 }
