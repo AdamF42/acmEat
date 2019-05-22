@@ -51,3 +51,7 @@ gisService/graphhopper_directions_api\.postman_environment\.json
 
 
 restaurantService/update\.py
+
+officialDemo/\.idea/
+
+officialDemo/target/
