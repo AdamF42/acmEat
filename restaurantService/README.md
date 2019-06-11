@@ -8,6 +8,8 @@ Simple restaurant service implementation.
 | POST                  | [PlaceOrder](#place)  | `` |
 | GET                   | [GetOrder](#get)      | `` |
 | PUT                   | [AbortOrder](#abort)  | `` |
+| PUT                   | [GetAvailability](#availability)  | `` |
+
 
 
 ## Place
@@ -86,6 +88,32 @@ Simple restaurant service implementation.
              ],
   "delivery_time": "13",
   "status": "aborted"
+}
+```
+
+### Request
+
+`http://<host>:<port>/restaurant/availability`
+
+
+```JSON
+{
+  "content": [
+                "pizza",
+                "carbonara"
+             ]
+}
+```
+### Response
+```JSON
+{
+    "content": [
+        "pizza",
+        "carbonara"
+    ],
+    "delivery_time": null,
+    "id": null,
+    "status": "AVAILABLE" // NOT_AVAILABLE
 }
 ```
 
