@@ -14,7 +14,6 @@ my_menu = Menu(menu)
 
 # ======== Routing =========================================================== #
 # -------- PlaceOrder _------------------------------------------------------- #
-
 @app.route('/restaurant/order', methods=['POST'])
 def place_order():
     if 'content' not in request.json or 'delivery_time' not in request.json:
@@ -27,6 +26,19 @@ def place_order():
         return jsonify(order)
     else:
         order.status = Status.NOT_ACCEPTED.name
+        return jsonify(Order.save(order))
+
+
+# -------- GetAvailability --------------------------------------------------- #
+@app.route('/restaurant/availability', methods=['PUT'])
+def get_availability():
+    order = json.dumps(request.json)
+    order = json.loads(order, object_hook=Order.dict_to_obj)
+    if my_menu.is_available(order.content):
+        order.status = Status.AVAILABLE.name
+        return jsonify(order)
+    else:
+        order.status = Status.NOT_AVAILABLE.name
         return jsonify(Order.save(order))
 
 
