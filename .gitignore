@@ -51,3 +51,8 @@ gisService/graphhopper_directions_api\.postman_environment\.json
 
 
 restaurantService/update\.py
+
+acmeat-ws/\.idea/
+
+acmeat-ws/target
+

@@ -1,0 +1,359 @@
+•Proiezione ACME
+
+(
+	(
+		(
+			availabilityRestaurant#restaurant 		//r comunica cambiamenti disponibilità
+		)
+
+		+
+
+		(	
+			changedMenu#restaurant 		//variazioni nel menu
+		)
+	)
+
+	+
+
+	(
+
+		receiveComune#user; 
+
+		(
+			noTime@user
+
+			+
+
+			(	
+				replyRestaurant@user;								//u manda indirizzo, acme restituisce liste ristoranti
+
+				1
+
+				+
+
+				(
+					receiveOrder#user;	
+
+					(
+						(
+								
+							askOrderConfirm@restaurant;
+							replyAvailabiliy#restaurant;
+							
+						)
+
+						|
+
+						(	
+							
+							(
+								askDist@GIS; 
+								replyDist#GIS
+							)*;
+
+							(askDelivery@deliveryA)*;		//lo manda a tutte le deliveryA
+
+							(replyAvailability#deliveryA)*;
+						)
+					);
+
+					failureOrder@user 			//nel caso ci sia una o due failure
+
+					+
+
+					(
+
+						bankLink@user;			
+						receiveToken#user;
+						verifyToken@bank;
+						receiveVerifyResponse#bank;
+					
+						tokenFail@user		//verifica token fallita
+
+						+
+
+						(	
+							(
+							sendOrderConfirm@user
+							|
+							sendOrderConfirm@restaurant
+							|
+							sendOrderConfirm@deliveryA
+							);
+
+							1		//utente non cancella ordine/scade tempo cancellazione
+
+							+
+
+							(
+								deleteReq#user;
+
+								(
+									deletePayment@bank
+									|
+									deleteDelivery@delivery
+									|
+									deleteOrder@restaurant
+								)
+							)
+						)									
+					)
+				)
+			)
+		)
+	)
+)
+
+
+
+
+•Coreografia GIS
+
+(
+	askDist#acme;
+	replyDist@acme;
+)*
+
+
+•Coreografia BANCA 			
+
+(
+
+	payReq#user;		//richiesta pagamento
+	sendToken@user;			//rilascio token pagamento
+	receiveToken#acme;	//controllo pagamento acme
+	sendResponse@acme;
+
+	1
+
+	+
+
+	deletePayment#acme			
+)
+
+
+•Coregrafia DELIVERY AGENCY
+
+(
+	askAvailability#acme;
+	replyAvailability@acme;
+
+	1		//proposta di prezzo non è andata a buon fine
+
+	+
+	
+	(
+		orderConfirm#acme;
+
+		1
+
+		+
+			
+		deleteDelivery#acme
+
+	)
+)					
+
+
+
+
+•Coreografia RESTAURANT
+
+(
+	serviceNotAvailable@acme 		//locale non disponibile
+
+	+	
+	
+	changedMenu@acme 		//variazioni nel menu
+		
+)
+
++
+
+(
+	(			
+		(
+			askAvailability#acme;		//verifica effettiva disponibilità
+			replyAvailability@acme
+		);
+
+		(
+			1		//acme non ordina
+
+			+
+
+			(
+				orderConfirm#acme;
+
+				1		//cliente non ha cancellato ordine
+
+				+
+
+				deleteOrder#acme
+			)
+		)	
+	)
+	
+)
+
+•Coreografia USER
+
+(
+	(
+		sendComune@acme; 
+
+		(
+			noTime#acme
+
+			+
+
+			(	
+				replyRestaurant#acme;							//u manda indirizzo, acme restituisce liste ristoranti
+
+				1
+
+				+
+
+				(
+					order@acme;	
+
+					failureOrder#acme 			//nel caso ci sia una o due failure
+
+					+
+
+					(
+
+						bankLink#acme;			
+						payment@bank;
+						receiveToken#bank;
+						sendToken@acme;
+
+						tokenFail#acme		//verifica token fallita
+
+						+
+
+						(	
+							receiveOrderConfirm#acme;
+
+							(
+								1
+
+								+
+
+								deleteReq@acme
+							)
+						)									
+					)
+				)
+			)
+		)
+	)
+
+
+
+•Coreografia generica
+
+(
+	(
+		(
+			availabilityRestaurant: restaurant → acme 		//r comunica cambiamenti disponibilità
+		)
+
+		+
+
+		(	
+			changedMenu: restaurant → acme 		//variazioni nel menu
+		)
+	)
+
+	+
+
+	(
+
+		sendComune: user → acme; 
+
+		(
+			noTime: acme → user
+
+			+
+
+			(	
+				replyRestaurant: acme → user;								//u manda indirizzo, acme restituisce liste ristoranti
+
+				1
+
+				+
+
+				(
+					order: user → acme;	
+
+					(
+						(
+							askOrderConfirm: acme → restaurant;
+							replyAvailabiliy: restaurant → acme
+						)
+
+						|
+
+						(			
+							(
+								askDist: acme → GIS; 
+								replyDist: GIS → acme
+							)*;
+
+							(askDelivery: acme → deliveryA)*;		//lo manda a tutte le deliveryA
+
+							(replyAvailability: deliveryA → acme)*;
+						)
+					);
+
+					failureOrder: acme → user;		//nel caso ci sia una o due failure
+
+					+
+
+					(
+
+						bankLink: acme → user;			
+						payment: user → bank;
+						sendToken: bank → user;
+						sendToken: user → acme;
+						verifyToken: acme → bank;
+						receiveVerifyResponse: bank → acme;
+					
+						tokenFail:acme → user		//verifica token fallita
+
+						+
+
+						(	
+							(
+							sendOrderConfirm: acme → user
+							|
+							sendOrderConfirm: acme → restaurant
+							|
+							sendOrderConfirm: acme → deliveryA
+							);
+
+							1		//utente non cancella ordine/scade tempo cancellazione
+
+							+
+
+							(
+								deleteReq: user → acme;
+
+								(
+									deletePayment: acme → bank
+									|
+									deleteDelivery: acme → deliveryA
+									|
+									deleteOrder: acme → restaurant
+								)
+							)
+						)									
+					)
+				)
+			)
+		)
+	)
+)
+
+
