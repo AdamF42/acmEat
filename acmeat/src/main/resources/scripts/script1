@@ -1,0 +1,3 @@
+execution.setVariable('restaurants', "{\\\"meal\\\": " +
+        "{\\\"dish\\\":{\\\"value\\\" : \\\"Lasagne\\\", \\\"type\\\": \\\"String\\\"}," +
+        "\\\"quantity\\\":{\\\"value\\\" : 2, \\\"type\\\": \\\"Integer\\\"}}}")
