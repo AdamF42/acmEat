@@ -1,17 +1,9 @@
 
-deliveryAgency1/\.idea/
-
 *.iml
-
-simple-service/\.idea/
 
 *.class
 
 *.jar
-
-simple-service/target/surefire-reports/com\.example\.MyResourceTest\.txt
-
-simple-service/target/surefire-reports/TEST-com\.example\.MyResourceTest\.xml
 
 deliveryService/\.idea/
 
@@ -33,14 +25,6 @@ restaurantService/utils/__pycache__/
 
 restaurantService/__pycache__/
 
-acmeWebService/\.idea/
-
-acmeWebService/target/
-
-acmeat/\.idea/
-
-acmeat/target/
-
 gisService/node_modules/
 
 gisService/\.vscode/
@@ -49,10 +33,14 @@ gisService/graphhopper_directions_api\.postman_collection\.json
 
 gisService/graphhopper_directions_api\.postman_environment\.json
 
-
 restaurantService/update\.py
 
-acmeat-ws/\.idea/
+acme-agency/\.idea/
 
-acmeat-ws/target
+acme-agency/acmeat/\.idea/
 
+acme-agency/acmeat/target/
+
+acme-agency/acmeat-ws/\.idea/
+
+acme-agency/acmeat-ws/target/
