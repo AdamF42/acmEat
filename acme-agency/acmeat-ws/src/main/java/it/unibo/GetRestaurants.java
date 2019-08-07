@@ -1,7 +1,8 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.QueryRestaurantResponse;
+import camundajar.com.google.gson.JsonElement;
+import it.unibo.models.ResponseGetRestaurant;
 import it.unibo.models.Restaurant;
 import it.unibo.models.Result;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -15,16 +16,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static it.unibo.utils.AcmeVariables.PROCESS_ID;
+import static it.unibo.utils.AcmeVariables.START_MESSAGE_ID;
 
-@WebServlet("/client-get-restaurant")
-public class ClientGetRestaurant extends HttpServlet {
+
+@WebServlet("/get-restaurant")
+public class GetRestaurants extends HttpServlet {
 
     @Resource(mappedName = "java:global/camunda-bpm-platform/process-engine/default")
     ProcessEngine processEngine;
@@ -35,33 +41,32 @@ public class ClientGetRestaurant extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         RuntimeService service = processEngine.getRuntimeService();
+        HttpSession session = req.getSession(true);
 
         Map<String, Object> cityVariable = new HashMap<>();
         String cityParam = "city";
         cityVariable.put(cityParam,req.getParameter(cityParam));
 
-        String startMessageId = "Message_0l6ef0l";
-
-        String processInstanceId = service
-                .startProcessInstanceByMessage(startMessageId, cityVariable)
-                .getProcessInstanceId();
-
-        LOGGER.debug("Started Process Instance with processInstanceId: "+ processInstanceId);
-
-        String restaurants = (String) service.getVariables(processInstanceId).get("restaurants");
-
-        LOGGER.debug("Restaurants service response: "+ restaurants);
-
+        // Associate session with Camunda processId
+        String processInstanceId = (String) session.getAttribute(PROCESS_ID);
+        if (processInstanceId == null) {
+            processInstanceId = service
+                    .startProcessInstanceByMessage(START_MESSAGE_ID, cityVariable)
+                    .getProcessInstanceId();
+            session.setAttribute(PROCESS_ID, processInstanceId);
+            LOGGER.info("Started process instance with id: {}",processInstanceId);
+        } else {
+            // TODO: decide what to do
+            LOGGER.warn("Client with active session requested new process");
+        }
 
         Gson g = new Gson();
-        QueryRestaurantResponse response = g.fromJson(restaurants, QueryRestaurantResponse.class);
-
+        ResponseGetRestaurant response = new ResponseGetRestaurant();
+        response.setRestaurants(
+                g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"),
+                        ArrayList.class));
         boolean areRestaurantsAvailable = restaurantsAvailable(response.getRestaurants());
-
-        response.setSessionId(fillSessionId(areRestaurantsAvailable, processInstanceId, service));
-
         response.setResult(fillResult(areRestaurantsAvailable));
-
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -79,17 +84,6 @@ public class ClientGetRestaurant extends HttpServlet {
         result.setStatus("failure");
         result.setMessage("No restaurants available in selected city");
         return result;
-    }
-
-    private String fillSessionId(boolean areFound, String processInstanceId, RuntimeService service) {
-
-        if (areFound) {
-            return processInstanceId;
-        }
-
-        service.deleteProcessInstance(processInstanceId,"");
-        LOGGER.debug("Deleted Process Instance with processInstanceId: "+ processInstanceId);
-        return "";
     }
 
     private boolean restaurantsAvailable(List<Restaurant> restaurants){

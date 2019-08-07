@@ -20,25 +20,25 @@ public class GetDistance implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
         try{
-            ClientConfig clientConfig = new DefaultClientConfig();
-            clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-            com.sun.jersey.api.client.Client client = Client.create(clientConfig);
-
             String fromDistance = delegateExecution.getVariable(FROM).toString();
             String toDistance = delegateExecution.getVariable(TO).toString();
 
-            String getListURL = Services.GIS_SERVICE_URL + Services.getURLforGis(fromDistance,toDistance);
-
+            //TODO unmock
+//            ClientConfig clientConfig = new DefaultClientConfig();
+//            clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+//            com.sun.jersey.api.client.Client client = Client.create(clientConfig);
+//            String getListURL = Services.GIS_SERVICE_URL + Services.getURLforGis(fromDistance,toDistance);
 //            WebResource webResourceGet = client.resource(getListURL);
 //            ClientResponse response =  webResourceGet.accept("application/json")
 //                    .type("application/json").get(ClientResponse.class);
 //
 //            double distance = response.getEntity(Integer.class);
+
             double distance = 12345;
 
             delegateExecution.setVariable(DISTANCE, distance);
 
-            LOGGER.info("DISTANCE: " + distance + "\nfrom: " + fromDistance + "\nto: " + toDistance);
+            LOGGER.info("GetDistance: " + distance + "\nfrom: " + fromDistance + "\nto: " + toDistance);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,18 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>acme-agency</artifactId>
+        <groupId>it.unibo</groupId>
+        <version>1.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>it.unibo</groupId>
-    <artifactId>acme-agency</artifactId>
-    <version>1.0</version>
-    <packaging>pom</packaging>
-
-    <!-- sub modules -->
-    <modules>
-        <module>common</module>
-        <module>acmeat</module>
-        <module>acmeat-ws</module>
-    </modules>
+    <artifactId>common</artifactId>
+    <packaging>jar</packaging>
 
 </project>
