@@ -1,16 +1,17 @@
 package it.unibo.acme;
 
 import it.unibo.LoggerDelegate;
+import it.unibo.models.DeliveryCompany;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import static it.unibo.utils.AcmeVariables.DELIVERY_COMPANIES_PROPOSAL;
+import static it.unibo.utils.AcmeVariables.SELECTED_COMPANY;
 
 public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
@@ -23,6 +24,12 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
         Map.Entry<String, Double> min = Collections.min(deliveryCompanies.entrySet(), Comparator.comparing(Map.Entry::getValue));
 
-        LOGGER.info("MinPrice: "+ min.getKey()+" : "+min.getValue());
+        DeliveryCompany selctedCompany = new DeliveryCompany();
+        selctedCompany.name=min.getKey();
+        selctedCompany.price=Double.toString(min.getValue());
+
+        delegateExecution.setVariable(SELECTED_COMPANY, selctedCompany);
+
+        LOGGER.info("MinPrice: <"+ min.getKey()+", "+min.getValue()+">");
     }
 }

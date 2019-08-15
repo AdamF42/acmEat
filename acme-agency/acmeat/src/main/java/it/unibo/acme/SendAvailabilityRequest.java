@@ -9,6 +9,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.LoggerDelegate;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.utils.Services;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
@@ -60,5 +61,6 @@ public class SendAvailabilityRequest implements JavaDelegate {
                 "\nCompany2: " + deliveryCompanies.get(DELIVERY_COMPANY_TWO));
 
         delegateExecution.setVariable(DELIVERY_COMPANIES_PROPOSAL, deliveryCompanies);
+
     }
 }

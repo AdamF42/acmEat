@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "70911391-b658-466d-b07d-431c958495f2",
+		"name": "AcmeAt",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. GetRestaurant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd7d94d4-5b59-4017-80aa-8dcb25894722",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"session_id\", jsonData.session_id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/acmeat-ws/get-restaurant?city=Bologna",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"acmeat-ws",
+						"get-restaurant"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Bologna"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "1. GetRestaurant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/get-restaurant?city=Bologna",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"get-restaurant"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Bologna"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=RDgoVIuyJcOXVrBHl16FBU17fXp5Bvz7O2wC7XEs.adamf42-pc; path=/acmeat-ws"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=ISO-8859-1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 15 Aug 2019 20:29:32 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"restaurants\": [\n        {\n            \"name\": \"Ciccio\",\n            \"menu\": [\n                {\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                },\n                {\n                    \"name\": \"Pizza\",\n                    \"price\": \"3\"\n                }\n            ],\n            \"city\": \"Bologna\"\n        },\n        {\n            \"name\": \"Yoma\",\n            \"menu\": [\n                {\n                    \"name\": \"Ravioli\",\n                    \"price\": \"5\"\n                },\n                {\n                    \"name\": \"Sushi\",\n                    \"price\": \"3\"\n                }\n            ],\n            \"city\": \"Bologna\"\n        }\n    ],\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "2. SendOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/acmeat-ws/send-order",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"acmeat-ws",
+						"send-order"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "2. SendOrder",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/send-order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"send-order"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=ISO-8859-1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 15 Aug 2019 20:30:41 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"bank_url\": \"\",\n    \"total_price\": \"17.0\",\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"\"\n    }\n}"
+				}
+			]
+		}
+	]
+}

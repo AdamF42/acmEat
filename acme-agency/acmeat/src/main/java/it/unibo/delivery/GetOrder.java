@@ -1,4 +1,4 @@
-package it.unibo.restaurant;
+package it.unibo.delivery;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -10,20 +10,18 @@ import it.unibo.utils.Services;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-public class GetOrderDelegate implements JavaDelegate {
-
-    @Override
+public class GetOrder implements JavaDelegate {
+	
+	@Override
     public void execute(DelegateExecution execution) throws Exception {
-
-        System.out.println("Get order delegate");
-
+		System.out.println("Get Order Delegate");
 
         try{
             ClientConfig clientConfig = new DefaultClientConfig();
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             com.sun.jersey.api.client.Client client = Client.create(clientConfig);
             String id="1";
-            String getListURL = Services.restaurantServiceUrl +"order"+"/"+id;
+            String getListURL = Services.DELIVERY_SERVICE_URL +"order"+"/"+id;
 
             WebResource webResourceGet = client.resource(getListURL);
             ClientResponse response =  webResourceGet.accept("application/json")
@@ -34,6 +32,6 @@ public class GetOrderDelegate implements JavaDelegate {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
 }

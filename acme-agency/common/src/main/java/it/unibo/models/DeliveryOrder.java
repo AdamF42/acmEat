@@ -5,10 +5,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class DeliveryOrder {
-
-    public String srcAddress;
-    public String destAddress;
-    public String deliveryTime;
+    public String src_address;
+    public String dest_address;
+    public String delivery_time;
     public Integer id;
     public Status status;
     public Double price;
