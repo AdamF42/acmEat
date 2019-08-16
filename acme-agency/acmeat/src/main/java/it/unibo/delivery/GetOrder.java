@@ -16,22 +16,22 @@ public class GetOrder implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
 		System.out.println("Get Order Delegate");
 
-        try{
-            ClientConfig clientConfig = new DefaultClientConfig();
-            clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-            com.sun.jersey.api.client.Client client = Client.create(clientConfig);
-            String id="1";
-            String getListURL = Services.DELIVERY_SERVICE_URL +"order"+"/"+id;
-
-            WebResource webResourceGet = client.resource(getListURL);
-            ClientResponse response =  webResourceGet.accept("application/json")
-                    .type("application/json").get(ClientResponse.class);
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try{
+//            ClientConfig clientConfig = new DefaultClientConfig();
+//            clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+//            com.sun.jersey.api.client.Client client = Client.create(clientConfig);
+//            String id="1";
+//            String getListURL = Services.DELIVERY_SERVICE_URL +"order"+"/"+id;
+//
+//            WebResource webResourceGet = client.resource(getListURL);
+//            ClientResponse response =  webResourceGet.accept("application/json")
+//                    .type("application/json").get(ClientResponse.class);
+//
+//
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 }

@@ -1,9 +1,10 @@
 package it.unibo.models;
 
 public enum Status {
-    accepted,
-    pending,
-    confirmed,
-    aborted,
-    available
+    ACCEPTED,
+    NOT_ACCEPTED,
+    ABORTED,
+    AVAILABLE,
+    NOT_AVAILABLE,
+    PENDING
 }

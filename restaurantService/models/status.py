@@ -7,3 +7,4 @@ class Status(Enum):
     ABORTED = 3
     AVAILABLE = 4
     NOT_AVAILABLE = 5
+    PENDING = 6

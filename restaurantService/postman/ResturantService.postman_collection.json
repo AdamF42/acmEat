@@ -1,0 +1,320 @@
+{
+	"info": {
+		"_postman_id": "db844a26-7324-4be1-a51c-f8265742324f",
+		"name": "ResturantService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. GetAvailability",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "dd6dc3fd-1507-40be-8cf0-be2a2af1c982",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"id\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/availability",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"availability"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "1. GetAvailability",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/availability",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"availability"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "238"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/0.15.5 Python/3.7.3"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 16 Aug 2019 18:20:56 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"delivery_time\": \"11\",\n    \"dishes\": [\n        {\n            \"name\": \"Lasagne\",\n            \"price\": \"5\"\n        }\n    ],\n    \"from\": \"Via delle tovaglie 11\",\n    \"id\": 1,\n    \"restaurant\": \"Ciccio\",\n    \"status\": \"AVAILABLE\",\n    \"to\": \"Via della salute 54\"\n}"
+				}
+			]
+		},
+		{
+			"name": "2. SendOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"{{id}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/order",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "2. SendOrder",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"{{id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/order",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "237"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/0.15.5 Python/3.7.3"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 16 Aug 2019 18:21:05 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"delivery_time\": \"11\",\n    \"dishes\": [\n        {\n            \"name\": \"Lasagne\",\n            \"price\": \"5\"\n        }\n    ],\n    \"from\": \"Via delle tovaglie 11\",\n    \"id\": 1,\n    \"restaurant\": \"Ciccio\",\n    \"status\": \"ACCEPTED\",\n    \"to\": \"Via della salute 54\"\n}"
+				}
+			]
+		},
+		{
+			"name": "3. GetOrder",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/order/{{id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"{{id}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "3. GetOrder",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/order/{{id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"{{id}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "236"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/0.15.5 Python/3.7.3"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 16 Aug 2019 18:21:14 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"delivery_time\": \"11\",\n    \"dishes\": [\n        {\n            \"name\": \"Lasagne\",\n            \"price\": \"5\"\n        }\n    ],\n    \"from\": \"Via delle tovaglie 11\",\n    \"id\": 1,\n    \"restaurant\": \"Ciccio\",\n    \"status\": \"ABORTED\",\n    \"to\": \"Via della salute 54\"\n}"
+				}
+			]
+		},
+		{
+			"name": "4. AbortOrder",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"{{id}}\"\n}"
+				},
+				"url": {
+					"raw": "{{base_url}}/order/abort",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"order",
+						"abort"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "4. AbortOrder",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"{{id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/order/abort",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"abort"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "236"
+						},
+						{
+							"key": "Server",
+							"value": "Werkzeug/0.15.5 Python/3.7.3"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 16 Aug 2019 18:21:08 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"delivery_time\": \"11\",\n    \"dishes\": [\n        {\n            \"name\": \"Lasagne\",\n            \"price\": \"5\"\n        }\n    ],\n    \"from\": \"Via delle tovaglie 11\",\n    \"id\": 1,\n    \"restaurant\": \"Ciccio\",\n    \"status\": \"ABORTED\",\n    \"to\": \"Via della salute 54\"\n}"
+				}
+			]
+		}
+	]
+}
