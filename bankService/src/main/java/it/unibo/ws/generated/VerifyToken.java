@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Classe Java per anonymous complex type.
+ * <p>Java class for anonymous complex type.
  * 
- * <p>Il seguente frammento di schema specifica il contenuto previsto contenuto in questa classe.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -41,7 +41,7 @@ public class VerifyToken {
     protected String sid;
 
     /**
-     * Recupera il valore della propriet name.
+     * Gets the value of the name property.
      * 
      * @return
      *     possible object is
@@ -53,7 +53,7 @@ public class VerifyToken {
     }
 
     /**
-     * Imposta il valore della propriet name.
+     * Sets the value of the name property.
      * 
      * @param value
      *     allowed object is
@@ -65,7 +65,7 @@ public class VerifyToken {
     }
 
     /**
-     * Recupera il valore della propriet sid.
+     * Gets the value of the sid property.
      * 
      * @return
      *     possible object is
@@ -77,7 +77,7 @@ public class VerifyToken {
     }
 
     /**
-     * Imposta il valore della propriet sid.
+     * Sets the value of the sid property.
      * 
      * @param value
      *     allowed object is

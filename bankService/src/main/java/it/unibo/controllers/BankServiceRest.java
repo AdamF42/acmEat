@@ -1,10 +1,10 @@
 package it.unibo.controllers;
 
-import it.unibo.models.TokenResponse;
 import it.unibo.ws.generated.Bank;
 import it.unibo.ws.generated.BankService;
 import it.unibo.ws.generated.GetToken;
 import it.unibo.ws.generated.GetTokenResponse;
+import it.unibo.models.TokenResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -23,13 +23,13 @@ public class BankServiceRest {
     public Response getToken( @PathParam("name") String name,@PathParam("price") double price){
 
         //Call jolie service
-        Bank bankService= new BankService().getBankServicePort();
+        Bank bankService = new BankService().getBankServicePort();
         GetToken getToken = new GetToken();
         getToken.setName(name);
         getToken.setAmount((double) price);
-        GetTokenResponse resp= bankService.getToken(getToken);
+        GetTokenResponse resp = bankService.getToken(getToken);
         System.out.println(resp.getSid());
-        //Sernd rest response
+        //Send rest response
         TokenResponse json = new TokenResponse();
         json.token = resp.getSid();
         json.user = name;

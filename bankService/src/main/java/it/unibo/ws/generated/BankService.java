@@ -1,7 +1,6 @@
 
 package it.unibo.ws.generated;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -17,7 +16,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "BankService", targetNamespace = "soseng.wsdl", wsdlLocation = "file:/C:/Projects/ACMEat/bankService/src/bankService.wsdl")
+@WebServiceClient(name = "BankService", targetNamespace = "soseng.wsdl", wsdlLocation = "/bankService.wsdl")
 public class BankService
     extends Service
 {
@@ -27,14 +26,11 @@ public class BankService
     private final static QName BANKSERVICE_QNAME = new QName("soseng.wsdl", "BankService");
 
     static {
-        URL url = null;
+        BANKSERVICE_WSDL_LOCATION = it.unibo.ws.generated.BankService.class.getResource("/bankService.wsdl");
         WebServiceException e = null;
-        try {
-            url = new URL("file:/C:/Projects/ACMEat/bankService/src/bankService.wsdl");
-        } catch (MalformedURLException ex) {
-            e = new WebServiceException(ex);
+        if (BANKSERVICE_WSDL_LOCATION == null) {
+            e = new WebServiceException("Cannot find '/bankService.wsdl' wsdl. Place the resource correctly in the classpath.");
         }
-        BANKSERVICE_WSDL_LOCATION = url;
         BANKSERVICE_EXCEPTION = e;
     }
 

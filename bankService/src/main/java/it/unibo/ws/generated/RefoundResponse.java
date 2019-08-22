@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Classe Java per anonymous complex type.
+ * <p>Java class for anonymous complex type.
  * 
- * <p>Il seguente frammento di schema specifica il contenuto previsto contenuto in questa classe.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -36,7 +36,7 @@ public class RefoundResponse {
     protected boolean success;
 
     /**
-     * Recupera il valore della propriet success.
+     * Gets the value of the success property.
      * 
      */
     public boolean isSuccess() {
@@ -44,7 +44,7 @@ public class RefoundResponse {
     }
 
     /**
-     * Imposta il valore della propriet success.
+     * Sets the value of the success property.
      * 
      */
     public void setSuccess(boolean value) {

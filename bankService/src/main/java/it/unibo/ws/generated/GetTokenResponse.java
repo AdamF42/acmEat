@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Classe Java per anonymous complex type.
+ * <p>Java class for anonymous complex type.
  * 
- * <p>Il seguente frammento di schema specifica il contenuto previsto contenuto in questa classe.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType>
@@ -38,7 +38,7 @@ public class GetTokenResponse {
     protected String sid;
 
     /**
-     * Recupera il valore della propriet sid.
+     * Gets the value of the sid property.
      * 
      * @return
      *     possible object is
@@ -50,7 +50,7 @@ public class GetTokenResponse {
     }
 
     /**
-     * Imposta il valore della propriet sid.
+     * Sets the value of the sid property.
      * 
      * @param value
      *     allowed object is
