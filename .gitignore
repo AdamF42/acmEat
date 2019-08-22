@@ -46,3 +46,9 @@ acme-agency/acmeat-ws/\.idea/
 acme-agency/acmeat-ws/target/
 
 acme-agency/common/target/
+
+bankService/.idea/
+
+acmeat/.idea/
+
+bankService/target/

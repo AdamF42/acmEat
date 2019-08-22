@@ -6,7 +6,7 @@ include "math.iol"
 inputPort Bank {
   Location: "socket://localhost:8000"
   Protocol: soap {
-    .wsdl = "../bankService.wsdl";
+    .wsdl = "bankService.wsdl";
     .wsdl.port = "BankPort"
   }
   Interfaces: BankInterface
