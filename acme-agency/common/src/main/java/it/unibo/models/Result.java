@@ -11,6 +11,14 @@ public class Result {
     @Expose
     private String message;
 
+    public Result(String status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    public Result() {
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }

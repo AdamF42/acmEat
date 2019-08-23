@@ -11,7 +11,7 @@ import it.unibo.models.entities.DeliveryCompany;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.Status;
-import it.unibo.models.entities.DeliveryOrders;
+import it.unibo.models.DeliveryOrderList;
 import it.unibo.utils.repo.DeliveryCompaniesRepository;
 import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -64,7 +64,7 @@ public class SendAvailabilityRequest implements JavaDelegate {
             }
         }
 
-        DeliveryOrders deliveryCompanies = new DeliveryOrders();
+        DeliveryOrderList deliveryCompanies = new DeliveryOrderList();
         for (CompletableFuture<ClientResponse> futureResponse : webResources) {
             try{
                 ClientResponse response = futureResponse.get();
