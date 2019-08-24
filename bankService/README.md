@@ -55,12 +55,13 @@
  }
  ```
 
+## Rest interface
 
 ## How to create the WSDL:
 
 Launch:
 
-wsdl_creator.bat
+jolie2wsdl  --namespace soseng --portAddr http://localhost:8000  --portName Bank --o bankService.wsdl ./src/server.ol
 
 ## How to setup:
 
@@ -70,8 +71,9 @@ docker build --tag=bank .
 
 Run the container:
 
-docker run -itd -p 8000:8000 --name bank --hostname bank bank
+docker run -itd -p 8000:8000 -p 8001:8070 --name bank --hostname bank bank
 
 ## How to test:
 
 Import BankService-soapui-project.xml in SoapUI
+

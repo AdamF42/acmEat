@@ -1,0 +1,7 @@
+#!/usr/bin/expect
+spawn java -jar jolie-1.8.2.jar
+expect "JOLIE_HOME indicates the directory in which the Jolie libraries will be installed."
+send "\r"
+expect "Insert the installation path for the Jolie launcher executables"
+send "\r"
+expect eof
