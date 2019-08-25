@@ -1,30 +1,39 @@
 package it.unibo.acme;
 
+import com.google.gson.Gson;
+import it.unibo.models.DeliveryOrder;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static it.unibo.utils.AcmeVariables.DELIVERY_COMPANIES_PROPOSAL;
-import static it.unibo.utils.AcmeVariables.SELECTED_COMPANY;
+import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
     private final Logger LOGGER = Logger.getLogger(CalculateCheaperDeliveryCompany.class.getName());
+    private Gson g = new Gson();
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        HashMap<String, Double> deliveryCompanies = (HashMap<String, Double>) delegateExecution.getVariable(DELIVERY_COMPANIES_PROPOSAL);
-
+        HashMap<String, String> deliveryCompanies =
+                (HashMap<String, String>) delegateExecution
+                        .getVariable(DELIVERY_COMPANIES_PROPOSAL);
         if(deliveryCompanies!=null && deliveryCompanies.size()!=0) {
-            Map.Entry<String, Double> min = Collections.min(deliveryCompanies.entrySet(), Comparator.comparing(Map.Entry::getValue));
-            delegateExecution.setVariable(SELECTED_COMPANY, min.getValue());
-            LOGGER.info("MinPrice: <" + min.getKey() + ", " + min.getValue() + ">");
+
+            String order = deliveryCompanies
+                    .entrySet()
+                    .stream()
+                    .min(Comparator.comparing(t -> g.fromJson(t.getValue(), DeliveryOrder.class).getPrice()))
+                    .orElseThrow(NoSuchElementException::new)
+                    .getValue();
+
+            delegateExecution.setVariable(DELIVERY_ORDER, order);
+            LOGGER.info("Selected delivery company: "+order);
+
         } else{
             LOGGER.warning("No delivery companies found");
         }

@@ -1,6 +1,6 @@
 package it.unibo.utils.repo;
 
-import it.unibo.models.Restaurant;
+import it.unibo.models.entities.Restaurant;
 
 import java.util.List;
 

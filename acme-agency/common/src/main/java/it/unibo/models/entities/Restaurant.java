@@ -1,4 +1,6 @@
-package it.unibo.models;
+package it.unibo.models.entities;
+
+import it.unibo.models.DeliveryOrder;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -7,13 +9,13 @@ import java.util.List;
 public class Restaurant {
 
     public String name;
-    public List<Dish> menu;
+    public List<DeliveryOrder.Dish> menu;
     public String city;
     public String url;
 
     public Restaurant(){}
 
-    public Restaurant(String name, List<Dish> menu, String city, String url) {
+    public Restaurant(String name, List<DeliveryOrder.Dish> menu, String city, String url) {
         this.name = name;
         this.menu = menu;
         this.city = city;

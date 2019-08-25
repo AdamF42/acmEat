@@ -8,7 +8,7 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.LoggerDelegate;
-import it.unibo.models.DeliveryCompany;
+import it.unibo.models.entities.DeliveryCompany;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.Status;
@@ -16,10 +16,8 @@ import it.unibo.utils.repo.DeliveryCompaniesRepository;
 import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
@@ -63,16 +61,15 @@ public class SendAvailabilityRequest implements JavaDelegate {
             LOGGER.info("Delivery order request: "+g.toJson(order) +" uri: "+resource.getURI());
         }
 
-        Map<String, Double> deliveryCompanies = new HashMap<>();
+        HashMap<String, String> deliveryCompanies = new HashMap<>();
         for (CompletableFuture<ClientResponse> futureResponse: webResources) {
             ClientResponse response = futureResponse.get();
 
             if (response.getStatus() == OK.getStatusCode()){
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
-                LOGGER.info("Delivery order response: "+g.toJson(responseOrder));
                 if(responseOrder.status == Status.AVAILABLE){
-                    deliveryCompanies.put(responseOrder.company, responseOrder.price);
-                    LOGGER.info("Company "+ responseOrder.company +" price: " + deliveryCompanies.get(responseOrder.company));
+                    deliveryCompanies.put(responseOrder.company,g.toJson(responseOrder));
+                    LOGGER.info("Company "+ g.toJson(responseOrder));
                 }
             }
         }

@@ -1,5 +1,5 @@
 
-package it.unibo.ws.generated;
+package it.unibo.bank.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "sid"
 })
-@XmlRootElement(name = "verifyToken")
-public class VerifyToken {
+@XmlRootElement(name = "getTokenResponse")
+public class GetTokenResponse {
 
     @XmlElement(required = true)
     protected String sid;

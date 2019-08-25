@@ -16,8 +16,8 @@ execution{ concurrent }
 
 cset {
  sid:
-  TokenResponse.sid
-  ClientToken.sid
+  GetTokenResponse.sid
+  VerifyTokenRequest.sid
 }
 
 init

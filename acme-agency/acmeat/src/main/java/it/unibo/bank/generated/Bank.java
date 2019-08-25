@@ -1,5 +1,5 @@
 
-package it.unibo.ws.generated;
+package it.unibo.bank.generated;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -27,7 +27,7 @@ public interface Bank {
      * 
      * @param body
      * @return
-     *     returns it.unibo.ws.generated.VerifyTokenResponse
+     *     returns it.unibo.bank.generated.VerifyTokenResponse
      */
     @WebMethod(action = "verifyToken")
     @WebResult(name = "verifyTokenResponse", targetNamespace = "soseng.xsd", partName = "body")
@@ -39,7 +39,7 @@ public interface Bank {
      * 
      * @param body
      * @return
-     *     returns it.unibo.ws.generated.GetTokenResponse
+     *     returns it.unibo.bank.generated.GetTokenResponse
      */
     @WebMethod(action = "getToken")
     @WebResult(name = "getTokenResponse", targetNamespace = "soseng.xsd", partName = "body")
@@ -51,7 +51,7 @@ public interface Bank {
      * 
      * @param body
      * @return
-     *     returns it.unibo.ws.generated.RefoundResponse
+     *     returns it.unibo.bank.generated.RefoundResponse
      */
     @WebMethod(action = "refound")
     @WebResult(name = "refoundResponse", targetNamespace = "soseng.xsd", partName = "body")

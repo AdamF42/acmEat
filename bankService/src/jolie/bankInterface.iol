@@ -1,18 +1,17 @@
-type ClientTokenRequest: void {
+type GetTokenRequest: void {
  .name: string
  .amount?: double
 }
 
-type TokenResponse: void {
+type GetTokenResponse: void {
   .sid: string
  }
 
-type ClientToken: void {
+type VerifyTokenRequest: void {
   .sid: string
-  .name?: string
 }
 
-type SuccessResponse: void {
+type VerifyTokenResponse: void {
   .success: bool
  }
 
@@ -22,8 +21,12 @@ type SuccessResponse: void {
   .status?: string
  }
 
+ type RefoundResponse: void {
+  .success: bool
+ }
+
 interface BankInterface {
- RequestResponse: getToken(ClientTokenRequest)(TokenResponse),
-                  verifyToken(ClientToken)(SuccessResponse),
-                  refound(RefoundRequest)(SuccessResponse)
+ RequestResponse: getToken(GetTokenRequest)(GetTokenResponse),
+                  verifyToken(VerifyTokenRequest)(VerifyTokenResponse),
+                  refound(RefoundRequest)(RefoundResponse)
 }

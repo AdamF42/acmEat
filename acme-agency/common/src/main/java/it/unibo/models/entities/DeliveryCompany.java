@@ -1,4 +1,4 @@
-package it.unibo.models;
+package it.unibo.models.entities;
 
 public class DeliveryCompany {
     public String name;

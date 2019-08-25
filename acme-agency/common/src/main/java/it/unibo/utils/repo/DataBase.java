@@ -1,9 +1,8 @@
 package it.unibo.utils.repo;
 
-import it.unibo.models.DeliveryCompany;
 import it.unibo.models.DeliveryOrder;
-import it.unibo.models.Dish;
-import it.unibo.models.Restaurant;
+import it.unibo.models.entities.DeliveryCompany;
+import it.unibo.models.entities.Restaurant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,16 +15,16 @@ public class DataBase {
     public static List<Restaurant> restaurants = new ArrayList<Restaurant>(Arrays.asList(
         new Restaurant("Ciccio",
             Arrays.asList(
-                    new Dish("Lasagne","5"),
-                    new Dish("Pizza","3")
+                    new DeliveryOrder.Dish("Lasagne","5"),
+                    new DeliveryOrder.Dish("Pizza","3")
             ),
             "Bologna",
             CICCIO_URL
         ),
         new Restaurant("Yoma",
             Arrays.asList(
-                    new Dish("Ravioli","5"),
-                    new Dish("Sushi","3")
+                    new DeliveryOrder.Dish("Ravioli","5"),
+                    new DeliveryOrder.Dish("Sushi","3")
             ),
             "Bologna",
             YOMA_URL
@@ -33,7 +32,9 @@ public class DataBase {
     ));
 
     public static List<DeliveryCompany> deliveryCompanies = new ArrayList<DeliveryCompany>(Arrays.asList(
-      new DeliveryCompany(DELIVERY_COMPANY_ONE, DELIVERY_COMPANY_ONE_URL),
-      new DeliveryCompany(DELIVERY_COMPANY_TWO, DELIVERY_COMPANY_TWO_URL)
+        new DeliveryCompany(DELIVERY_COMPANY_ONE, DELIVERY_COMPANY_ONE_URL),
+        new DeliveryCompany(DELIVERY_COMPANY_TWO, DELIVERY_COMPANY_TWO_URL),
+        //TODO: to be removed...
+        new DeliveryCompany("debug", DELIVERY_COMPANY_TWO_URL)
     ));
 }

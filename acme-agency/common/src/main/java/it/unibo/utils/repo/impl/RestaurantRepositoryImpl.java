@@ -1,29 +1,30 @@
 package it.unibo.utils.repo.impl;
 
-import it.unibo.models.Restaurant;
+import it.unibo.models.entities.Restaurant;
 import it.unibo.utils.repo.DataBase;
 import it.unibo.utils.repo.RestaurantRepository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
+    @Override
     public List<Restaurant> getRestaurantsByCity(String city) {
-        List<Restaurant> result = new ArrayList<Restaurant>();
-        for (Restaurant restaurant: DataBase.restaurants) {
-            if (restaurant.city.equals(city))
-                result.add(restaurant);
-        }
-        return result;
+
+        return DataBase.restaurants
+                .stream()
+                .filter(company-> city.equals(company.city))
+                .collect(Collectors.toList());
     }
 
+    @Override
     public Restaurant getRestaurantByName(String name) {
 
-        for (Restaurant restaurant: DataBase.restaurants) {
-            if (restaurant.name.equals(name))
-                return restaurant;
-        }
-        return new Restaurant();
+         return  DataBase.restaurants
+                .stream()
+                .filter(company-> name.equals(company.name))
+                .findAny()
+                .orElse(new Restaurant());
     }
 }
