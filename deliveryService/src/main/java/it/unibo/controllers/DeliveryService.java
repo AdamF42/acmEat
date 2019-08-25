@@ -2,14 +2,15 @@ package it.unibo.controllers;
 
 import it.unibo.models.Status;
 import it.unibo.models.Order;
-import it.unibo.models.PlaceOrderResponse;
+import repo.Orders;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
+
+import static it.unibo.models.Order.checkAndSetStatus;
+import static it.unibo.utils.Utils.isAvailable;
 
 /**
  * Root resource (exposed at "delivery" path)
@@ -17,8 +18,26 @@ import java.util.Random;
 @Path("delivery")
 public class DeliveryService {
 
-    Random random = new Random();
-    static Map<Integer, Order> orders = new HashMap<>();
+    private Orders orders = new Orders();
+    private Random rand = new Random();
+
+
+    @PUT
+    @Path("/availability")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response GetAvailability(Order order) {
+
+        if(isAvailable() || (order.company!=null && order.company.equals("debug"))){
+            order.id = orders.getNextId();
+            order.status = Status.AVAILABLE;
+            order.price = rand.nextDouble();
+            orders.addOrder(order);
+        }else{
+            order.status = Status.NOT_AVAILABLE;
+        }
+        return Response.ok(order, MediaType.APPLICATION_JSON).build();
+    }
 
     @POST
     @Path("/order")
@@ -26,15 +45,22 @@ public class DeliveryService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response sendOrder(Order order) {
 
-        int nextId = orders.size() + 1;
+        if (order == null || order.id == null) {
+            //TODO: use specific msg...avoid 404
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
-        order.id = nextId;
-        order.status = Status.pending;
-        orders.put(nextId, order);
-        PlaceOrderResponse json = new PlaceOrderResponse();
-        json.id = order.id;
+        Order dbOrder = orders.getOrderById(order.id);
 
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        if(dbOrder==null){
+            //TODO: use specific msg...avoid 404
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        order.status = checkAndSetStatus(dbOrder.status);
+        orders.addOrder(order);
+
+        return Response.ok(order, MediaType.APPLICATION_JSON).build();
 
     }
 
@@ -44,7 +70,7 @@ public class DeliveryService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getOrder( @PathParam("id") int id){
 
-        Order order = orders.get(id);
+        Order order = orders.getOrderById(id);
 
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -59,28 +85,14 @@ public class DeliveryService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response updateOrderStatus( @PathParam("id") int id, @PathParam("status") Status status){
 
-        Order order = orders.get(id);
+        Order order = orders.getOrderById(id);
 
         if (order == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         order.status = status;
-
-        return Response.ok(order, MediaType.APPLICATION_JSON).build();
-    }
-
-    @PUT
-    @Path("/order/{id}")
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @Produces({ MediaType.APPLICATION_JSON })
-    public Response updateOrder( @PathParam("id") int id, Order order){
-
-        if (order == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        orders.put(id,order);
+        orders.addOrder(order);
 
         return Response.ok(order, MediaType.APPLICATION_JSON).build();
     }

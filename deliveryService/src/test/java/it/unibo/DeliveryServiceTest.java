@@ -8,41 +8,32 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
 import it.unibo.models.Order;
-import it.unibo.models.PlaceOrderResponse;
 import it.unibo.models.Status;
+
+import it.unibo.utils.Utils;
+import mockit.Mock;
+import mockit.MockUp;
 import org.glassfish.grizzly.http.server.HttpServer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import repo.Orders;
+
 
 import static org.junit.Assert.*;
 
 public class DeliveryServiceTest {
 
-    private Order order;
     private HttpServer server;
     private WebTarget target;
 
     @Before
     public void setUp() throws Exception {
-        // start the server
+
         server = Main.startServer();
-        // create the client
         Client c = ClientBuilder.newClient();
-
-        // uncomment the following line if you want to enable
-        // support for JSON in the client (you also have to uncomment
-        // dependency on jersey-media-json module in pom.xml and Main.startServer())
-        // --
-//         c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
-
         target = c.target(Main.BASE_URI);
-
-        order = new Order();
-        order.deliveryTime = "11";
-        order.destAddress = "B";
-        order.srcAddress = "A";
     }
 
     @After
@@ -50,124 +41,167 @@ public class DeliveryServiceTest {
         server.stop();
     }
 
+    @Test
+    public void CallingAvailability_WithCorrectOrder_ShouldReturnIdAndStatusAvailable() {
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.id=0;
+        order.status=Status.AVAILABLE;
+
+        new MockUp<Utils>() {
+            @Mock
+            public boolean isAvailable() {
+                return true;
+            }
+        };
+
+        Response responseMsg = target.path("delivery/availability").request().put(Entity.json(order));
+        assertNotNull(responseMsg);
+        assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
+        assertTrue(responseMsg.hasEntity());
+        Order responseOrder = responseMsg.readEntity(Order.class);
+        assertNotNull(responseOrder);
+        assertNotNull(responseOrder.id);
+        assertNotNull(responseOrder.status);
+        assertEquals(Status.AVAILABLE,responseOrder.status);
+    }
 
     @Test
-    public void testPlaceOrder() {
+    public void CallingAvailability_WithCorrectOrder_ShouldReturnIdAndStatusNotAvailable() {
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.status=Status.AVAILABLE;
+
+        new MockUp<Utils>() {
+            @Mock
+            public boolean isAvailable() {
+                return false;
+            }
+        };
+
+        Response responseMsg = target.path("delivery/availability").request().put(Entity.json(order));
+        assertNotNull(responseMsg);
+        assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
+        assertTrue(responseMsg.hasEntity());
+        Order responseOrder = responseMsg.readEntity(Order.class);
+        assertNotNull(responseOrder);
+        assertNull(responseOrder.id);
+        assertNotNull(responseOrder.status);
+        assertEquals(Status.NOT_AVAILABLE,responseOrder.status);
+    }
+
+    @Test
+    public void CallingPlaceOrder_WithAvailableOrder_ShouldReturnStatusAccepted() {
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.id=0;
+        order.status=Status.AVAILABLE;
+
+        new MockUp<Orders>() {
+            @Mock
+            public Order getOrderById(int id) {
+                return order;
+            }
+        };
+
+        order.id = 0;
+        order.status = Status.AVAILABLE;
         Response responseMsg = target.path("delivery/order").request().post(Entity.json(order));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
-        PlaceOrderResponse responseOrder = responseMsg.readEntity(PlaceOrderResponse.class);
+        Order responseOrder = responseMsg.readEntity(Order.class);
         assertNotNull(responseOrder);
         assertNotNull(responseOrder.id);
 
     }
 
-
     @Test
     public void testGetOrder() {
-        PlaceOrderResponse placeOrderResponse = placeOrder();
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.id=0;
+        order.status=Status.AVAILABLE;
+
+        new MockUp<Orders>() {
+            @Mock
+            public Order getOrderById(int id) {
+                return order;
+            }
+        };
+
         Response responseMsg;
-
-
-        responseMsg = target.path("delivery/order/" + placeOrderResponse.id).request().get();
+        responseMsg = target.path("delivery/order/" + order.id).request().get();
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         Order responseOrder = responseMsg.readEntity(Order.class);
         assertNotNull(responseOrder);
-        assertEquals(placeOrderResponse.id, responseOrder.id);
-        assertEquals(order.deliveryTime, responseOrder.deliveryTime);
-        assertEquals(order.srcAddress, responseOrder.srcAddress);
-        assertEquals(order.destAddress, responseOrder.destAddress);
-        assertEquals(Status.pending, responseOrder.status);
+        assertEquals(order.id, responseOrder.id);
+        assertEquals(order.delivery_time, responseOrder.delivery_time);
+        assertEquals(order.src_address, responseOrder.src_address);
+        assertEquals(order.dest_address, responseOrder.dest_address);
+        assertEquals(Status.AVAILABLE, responseOrder.status);
     }
-
-    @Test
-    public void testGetOrder_NotExisting() {
-        Response responseMsg = target.path("delivery/order/" + 666).request().get();
-        assertNotNull(responseMsg);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), responseMsg.getStatus());
-    }
-
-    @Test
-    public void testUpdateOrder() {
-        PlaceOrderResponse placeOrderResponse = placeOrder();
-        Response responseMsg;
-
-        Order responseOrder = getOrder(placeOrderResponse);
-
-
-        responseOrder.status = Status.available;
-        responseOrder.price = 123.1F;
-
-
-        responseMsg = target.path("delivery/order/" + responseOrder.id).request().put(Entity.json(responseOrder));
-        assertNotNull(responseMsg);
-        assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
-        assertTrue(responseMsg.hasEntity());
-        Order updatedOrderResponse = responseMsg.readEntity(Order.class);
-        assertNotNull(updatedOrderResponse);
-        assertEquals(responseOrder.status, updatedOrderResponse.status);
-        assertEquals(responseOrder.price, updatedOrderResponse.price);
-    }
-
 
     @Test
     public void testConfirmOrder() {
-        PlaceOrderResponse placeOrderResponse = placeOrder();
 
-        Order responseOrder = getOrder(placeOrderResponse);
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.id=0;
+        order.status=Status.AVAILABLE;
 
-        Response responseMsg = target.path("delivery/order/" + responseOrder.id + "/status/" + Status.confirmed).request().put(Entity.json(""));
+        new MockUp<Orders>() {
+            @Mock
+            public Order getOrderById(int id) {
+                return order;
+            }
+        };
+
+        Response responseMsg = target.path("delivery/order/" + 0 + "/status/" + Status.ACCEPTED).request().put(Entity.json(""));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
         Order updatedOrderResponse = responseMsg.readEntity(Order.class);
         assertNotNull(updatedOrderResponse);
-        assertEquals(Status.confirmed, updatedOrderResponse.status);
+        assertEquals(Status.ACCEPTED, updatedOrderResponse.status);
     }
 
 
     @Test
     public void testAbortOrder() {
-        PlaceOrderResponse placeOrderResponse = placeOrder();
 
-        Order responseOrder = getOrder(placeOrderResponse);
+        Order order = new Order();
+        order.delivery_time = "11";
+        order.src_address = "A";
+        order.dest_address = "B";
+        order.id=0;
+        order.status=Status.AVAILABLE;
 
-        Response responseMsg = target.path("delivery/order/" + responseOrder.id + "/status/" + Status.aborted).request().put(Entity.json(""));
+        new MockUp<Orders>() {
+            @Mock
+            public Order getOrderById(int id) {
+                return order;
+            }
+        };
+
+        Response responseMsg = target.path("delivery/order/" + 0 + "/status/" + Status.ABORTED).request().put(Entity.json(""));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
         Order updatedOrderResponse = responseMsg.readEntity(Order.class);
         assertNotNull(updatedOrderResponse);
-        assertEquals(Status.aborted, updatedOrderResponse.status);
-    }
-
-
-    private Order getOrder(PlaceOrderResponse placeOrderResponse) {
-        Response responseMsg;
-        responseMsg = target.path("delivery/order/" + placeOrderResponse.id).request().get();
-        assertNotNull(responseMsg);
-        assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
-        Order responseOrder = responseMsg.readEntity(Order.class);
-        assertNotNull(responseOrder);
-        assertEquals(placeOrderResponse.id, responseOrder.id);
-        assertEquals(order.deliveryTime, responseOrder.deliveryTime);
-        assertEquals(order.srcAddress, responseOrder.srcAddress);
-        assertEquals(order.destAddress, responseOrder.destAddress);
-        assertEquals(Status.pending, responseOrder.status);
-        return responseOrder;
-    }
-
-    private PlaceOrderResponse placeOrder() {
-        Response responseMsg = target.path("delivery/order").request().post(Entity.json(order));
-        assertNotNull(responseMsg);
-        assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
-        assertTrue(responseMsg.hasEntity());
-        PlaceOrderResponse placeOrderResponse = responseMsg.readEntity(PlaceOrderResponse.class);
-        assertNotNull(placeOrderResponse);
-        assertNotNull(placeOrderResponse.id);
-        return placeOrderResponse;
+        assertEquals(Status.ABORTED, updatedOrderResponse.status);
     }
 
 }

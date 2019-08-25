@@ -1,9 +1,13 @@
 package it.unibo.models;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public enum Status {
-    accepted,
-    pending,
-    confirmed,
-    aborted,
-    available
+    ACCEPTED,
+    NOT_ACCEPTED,
+    ABORTED,
+    AVAILABLE,
+    NOT_AVAILABLE,
+    PENDING
 }

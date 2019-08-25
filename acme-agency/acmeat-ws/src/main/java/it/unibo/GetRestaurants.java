@@ -1,7 +1,6 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import camundajar.com.google.gson.JsonElement;
 import it.unibo.models.ResponseGetRestaurant;
 import it.unibo.models.Restaurant;
 import it.unibo.models.Result;
@@ -26,7 +25,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static it.unibo.utils.AcmeVariables.PROCESS_ID;
-import static it.unibo.utils.AcmeVariables.START_MESSAGE_ID;
+import static it.unibo.utils.AcmeMessages.START_MESSAGE;
 
 
 @WebServlet("/get-restaurant")
@@ -51,7 +50,7 @@ public class GetRestaurants extends HttpServlet {
         String processInstanceId = (String) session.getAttribute(PROCESS_ID);
         if (processInstanceId == null) {
             processInstanceId = service
-                    .startProcessInstanceByMessage(START_MESSAGE_ID, cityVariable)
+                    .startProcessInstanceByMessage(START_MESSAGE, cityVariable)
                     .getProcessInstanceId();
             session.setAttribute(PROCESS_ID, processInstanceId);
             LOGGER.info("Started process instance with id: {}",processInstanceId);
@@ -62,8 +61,7 @@ public class GetRestaurants extends HttpServlet {
 
         Gson g = new Gson();
         ResponseGetRestaurant response = new ResponseGetRestaurant();
-        response.setRestaurants(
-                g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"),
+        response.setRestaurants(g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"),
                         ArrayList.class));
         boolean areRestaurantsAvailable = restaurantsAvailable(response.getRestaurants());
         response.setResult(fillResult(areRestaurantsAvailable));

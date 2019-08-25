@@ -16,30 +16,33 @@ my_menu = Menu(menu)
 # -------- PlaceOrder _------------------------------------------------------- #
 @app.route('/restaurant/order', methods=['POST'])
 def place_order():
-    if 'content' not in request.json or 'delivery_time' not in request.json:
+    if 'id' not in request.json:
         abort(400)
     order = json.dumps(request.json)
-    order = json.loads(order, object_hook=Order.dict_to_obj)
-    if my_menu.is_available(order.content):
-        order.status = Status.ACCEPTED.name
-        Order.save(order)
+    order = json.loads(order)
+    order = Order.get_order_by_id(order['id'])
+    if order.get("status", None) is None:
+        order['status'] = Status.NOT_AVAILABLE.name
         return jsonify(order)
-    else:
-        order.status = Status.NOT_ACCEPTED.name
-        return jsonify(Order.save(order))
+
+    if order['status'] == Status.AVAILABLE.name:
+        order['status'] = Status.ACCEPTED.name
+
+    return jsonify(order)
 
 
 # -------- GetAvailability --------------------------------------------------- #
 @app.route('/restaurant/availability', methods=['PUT'])
 def get_availability():
+    if 'dishes' not in request.json or 'delivery_time' not in request.json:
+        abort(400)
     order = json.dumps(request.json)
-    order = json.loads(order, object_hook=Order.dict_to_obj)
-    if my_menu.is_available(order.content):
-        order.status = Status.AVAILABLE.name
-        return jsonify(order)
+    order = json.loads(order)
+    if my_menu.is_available(order['dishes']):
+        order['status'] = Status.AVAILABLE.name
     else:
-        order.status = Status.NOT_AVAILABLE.name
-        return jsonify(Order.save(order))
+        order['status'] = Status.NOT_AVAILABLE.name
+    return jsonify(Order.save(order))
 
 
 # -------- AbortOrder -------------------------------------------------------- #
@@ -48,8 +51,8 @@ def abort_order():
     if 'id' not in request.json:
         abort(400)
     order = json.dumps(request.json)
-    order = json.loads(order, object_hook=Order.dict_to_obj)
-    return jsonify(Order.set_abort_for_order(order.order_id))
+    order = json.loads(order)
+    return jsonify(Order.set_abort_for_order(order['id']))
 
 
 # -------- GetOrder -----------------------------------------------------------#

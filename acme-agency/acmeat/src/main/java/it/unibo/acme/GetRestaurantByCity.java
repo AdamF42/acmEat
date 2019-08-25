@@ -3,7 +3,7 @@ package it.unibo.acme;
 import com.google.gson.Gson;
 import it.unibo.models.Restaurant;
 import it.unibo.utils.repo.RestaurantRepository;
-import it.unibo.utils.repo.RestaurantRepositoryImpl;
+import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
@@ -15,7 +15,7 @@ public class GetRestaurantByCity implements JavaDelegate {
 
         String city = (String) delegateExecution.getVariable("city");
         RestaurantRepository repo = new RestaurantRepositoryImpl();
-        List<Restaurant> restaurants = repo.getRestaurantByCity(city);
+        List<Restaurant> restaurants = repo.getRestaurantsByCity(city);
         Gson g = new Gson();
         delegateExecution.setVariable("restaurants", g.toJson(restaurants));
 

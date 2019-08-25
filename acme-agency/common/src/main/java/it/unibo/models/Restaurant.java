@@ -6,13 +6,17 @@ import java.util.List;
 @XmlRootElement
 public class Restaurant {
 
-    String name;
-    List<Dish> menu;
+    public String name;
+    public List<Dish> menu;
     public String city;
+    public String url;
 
-    public Restaurant(String name, List<Dish> menu, String city) {
+    public Restaurant(){}
+
+    public Restaurant(String name, List<Dish> menu, String city, String url) {
         this.name = name;
         this.menu = menu;
         this.city = city;
+        this.url = url;
     }
 }
