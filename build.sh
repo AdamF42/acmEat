@@ -23,29 +23,29 @@ CAMUNDA=""
 # fi
 
 cd ${BANK}
-docker build --tag=bank:bank .
+docker build --tag=bank .
 
 cd ${DELIVERY}
-docker build --tag=delivery:delivery .
+docker build --tag=delivery .
 
 cd ${GIS}
-docker build --tag=gis:gis .
+docker build --tag=gis .
 
 cd ${RESTAURANT}
-docker build --tag=restaurant:restaurant .
+docker build --tag=restaurant .
 
 # Start all services containers
-[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 8000:8000 -p 8001:8070 --name bank --hostname bank bank:bank
+[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 8000:8000 -p 8001:8070 --name bank --hostname bank bank
 
-[ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 8002:8080 --name delivery delivery:delivery
+[ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 8002:8080 --name delivery delivery
 
-[ ! "$(docker ps -a | grep delivery2)" ] && docker run -td -p 8003:8080 --name delivery2 delivery:delivery
+[ ! "$(docker ps -a | grep delivery2)" ] && docker run -td -p 8003:8080 --name delivery2 delivery
 
-[ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 8004:7778 --name gis gis:gis
+[ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 8004:7778 --name gis gis
 
-[ ! "$(docker ps -a | grep restaurant)" ] && docker run -d -p 8005:5000 --name restaurant restaurant:restaurant
+[ ! "$(docker ps -a | grep restaurant)" ] && docker run -d -p 8005:5000 --name restaurant restaurant
 
-[ ! "$(docker ps -a | grep restaurant2)" ] && docker run -d -p 8006:5000 --name restaurant2 restaurant:restaurant
+[ ! "$(docker ps -a | grep restaurant2)" ] && docker run -d -p 8006:5000 --name restaurant2 restaurant
 
 
 #  update_container(){
