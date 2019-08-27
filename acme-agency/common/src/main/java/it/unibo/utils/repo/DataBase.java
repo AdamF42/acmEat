@@ -12,7 +12,7 @@ import static it.unibo.utils.AcmeVariables.DELIVERY_COMPANY_TWO;
 import static it.unibo.utils.Services.*;
 
 public class DataBase {
-    public static List<Restaurant> restaurants = new ArrayList<Restaurant>(Arrays.asList(
+    public static List<Restaurant> restaurants = new ArrayList<>(Arrays.asList(
         new Restaurant("Ciccio",
             Arrays.asList(
                     new DeliveryOrder.Dish("Lasagne","5"),
@@ -28,6 +28,14 @@ public class DataBase {
             ),
             "Bologna",
             YOMA_URL
+        ),
+        new Restaurant("debug",
+                Arrays.asList(
+                        new DeliveryOrder.Dish("Ravioli","5"),
+                        new DeliveryOrder.Dish("Sushi","3")
+                ),
+                "Bologna",
+                YOMA_URL
         )
     ));
 
