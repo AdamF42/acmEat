@@ -9,6 +9,9 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <!-- sub modules -->
     <modules>
         <module>common</module>

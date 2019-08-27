@@ -1,8 +1,8 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.ResponseGetRestaurant;
-import it.unibo.models.Restaurant;
+import it.unibo.models.responses.GetRestaurantResponse;
+import it.unibo.models.entities.Restaurant;
 import it.unibo.models.Result;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
@@ -40,29 +40,28 @@ public class GetRestaurants extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         RuntimeService service = processEngine.getRuntimeService();
+
         HttpSession session = req.getSession(true);
+
+        if (!session.isNew()) {
+            LOGGER.warn("Client with active session requested new process");
+            session.invalidate();
+            session = req.getSession(true);
+        }
 
         Map<String, Object> cityVariable = new HashMap<>();
         String cityParam = "city";
         cityVariable.put(cityParam,req.getParameter(cityParam));
-
-        // Associate session with Camunda processId
-        String processInstanceId = (String) session.getAttribute(PROCESS_ID);
-        if (processInstanceId == null) {
-            processInstanceId = service
-                    .startProcessInstanceByMessage(START_MESSAGE, cityVariable)
-                    .getProcessInstanceId();
-            session.setAttribute(PROCESS_ID, processInstanceId);
-            LOGGER.info("Started process instance with id: {}",processInstanceId);
-        } else {
-            // TODO: decide what to do
-            LOGGER.warn("Client with active session requested new process");
-        }
+        String processInstanceId = service
+                .startProcessInstanceByMessage(START_MESSAGE, cityVariable)
+                .getProcessInstanceId();
+        session.setAttribute(PROCESS_ID, processInstanceId);
+        LOGGER.info("Started process instance with id: {}",processInstanceId);
 
         Gson g = new Gson();
-        ResponseGetRestaurant response = new ResponseGetRestaurant();
-        response.setRestaurants(g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"),
-                        ArrayList.class));
+        GetRestaurantResponse response = new GetRestaurantResponse();
+        response.setRestaurants(
+                g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"), ArrayList.class));
         boolean areRestaurantsAvailable = restaurantsAvailable(response.getRestaurants());
         response.setResult(fillResult(areRestaurantsAvailable));
         PrintWriter out = resp.getWriter();

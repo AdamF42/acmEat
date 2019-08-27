@@ -1,9 +1,8 @@
 
-package it.unibo.ws.generated;
+package it.unibo.bank.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -18,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="sid" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="success" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -29,36 +28,27 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "sid"
+    "success"
 })
-@XmlRootElement(name = "verifyToken")
-public class VerifyToken {
+@XmlRootElement(name = "refoundResponse")
+public class RefoundResponse {
 
-    @XmlElement(required = true)
-    protected String sid;
+    protected boolean success;
 
     /**
-     * Gets the value of the sid property.
+     * Gets the value of the success property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
      */
-    public String getSid() {
-        return sid;
+    public boolean isSuccess() {
+        return success;
     }
 
     /**
-     * Sets the value of the sid property.
+     * Sets the value of the success property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
      */
-    public void setSid(String value) {
-        this.sid = value;
+    public void setSuccess(boolean value) {
+        this.success = value;
     }
 
 }

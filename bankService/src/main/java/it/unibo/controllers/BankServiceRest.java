@@ -27,16 +27,20 @@ public class BankServiceRest {
         GetToken getToken = new GetToken();
         getToken.setName(name);
         getToken.setAmount((double) price);
-        GetTokenResponse resp = bankService.getToken(getToken);
-        System.out.println(resp.getSid());
-        //Send rest response
-        TokenResponse json = new TokenResponse();
-        json.token = resp.getSid();
-        json.user = name;
-        json.price = price;
+        try {
+            GetTokenResponse resp = bankService.getToken(getToken);
+            System.out.println(resp.getSid());
+            //Send rest response
+            TokenResponse json = new TokenResponse();
+            json.token = resp.getSid();
+            json.user = name;
+            json.price = price;
 
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
-
+            return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return Response.accepted(ex).build();
+        }
 
     }
 

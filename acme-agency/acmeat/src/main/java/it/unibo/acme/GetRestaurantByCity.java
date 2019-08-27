@@ -1,7 +1,7 @@
 package it.unibo.acme;
 
 import com.google.gson.Gson;
-import it.unibo.models.Restaurant;
+import it.unibo.models.entities.Restaurant;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;

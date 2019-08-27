@@ -7,7 +7,7 @@ import java.util.List;
 @XmlRootElement
 public class RestaurantOrder {
     public String restaurant;
-    public List<Dish> dishes;
+    public List<DeliveryOrder.Dish> dishes;
     public String delivery_time;
     public Integer id;
     public Status status;

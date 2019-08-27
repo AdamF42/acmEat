@@ -1,5 +1,5 @@
 
-package it.unibo.ws.generated;
+package it.unibo.bank.generated;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
