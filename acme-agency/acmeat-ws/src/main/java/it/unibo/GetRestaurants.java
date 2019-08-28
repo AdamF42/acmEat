@@ -6,7 +6,7 @@ import it.unibo.models.entities.Restaurant;
 import it.unibo.models.Result;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +31,7 @@ import static it.unibo.utils.AcmeMessages.START_MESSAGE;
 @WebServlet("/get-restaurant")
 public class GetRestaurants extends HttpServlet {
 
-    @Resource(mappedName = "java:global/camunda-bpm-platform/process-engine/default")
+    @Inject
     ProcessEngine processEngine;
     
     private final Logger LOGGER = LogManager.getLogger(this.getClass());

@@ -3,11 +3,12 @@ package it.unibo;
 import camundajar.com.google.gson.Gson;
 import it.unibo.models.Result;
 import it.unibo.utils.AcmeMessages;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
-import javax.annotation.Resource;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,8 @@ import static it.unibo.utils.AcmeVariables.*;
 
 @WebServlet("/confirm")
 public class ConfirmOrder extends HttpServlet {
-    @Resource(mappedName = "java:global/camunda-bpm-platform/process-engine/default")
+
+    @Inject
     ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
