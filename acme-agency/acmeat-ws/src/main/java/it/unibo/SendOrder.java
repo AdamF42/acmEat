@@ -7,8 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
-
-import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,7 +27,7 @@ import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 @WebServlet("/send-order")
 public class SendOrder extends HttpServlet {
 
-    @Resource(mappedName = "java:global/camunda-bpm-platform/process-engine/default")
+    @Inject
     ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());

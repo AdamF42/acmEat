@@ -17,15 +17,12 @@ public class VerifyBankToken implements JavaDelegate {
         Bank bankService = new BankService().getBankServicePort();
         VerifyToken verifyToken = new VerifyToken();
         verifyToken.setSid(token);
-        // TODO: UT005023: Exception handling request to /acmeat-ws/confirm:
-        //  javax.xml.ws.soap.SOAPFaultException: Unexpected element verifyTokenResponse found.
-        //  Expected {soseng.xsd}verifyTokenResponse.
-       // VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
+        VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
 
-//        if(resp.isSuccess()) {
+        if(resp.isSuccess()) {
             delegateExecution.setVariable(IS_VALID_TOKEN, true);
-//        }else{
-//            delegateExecution.setVariable(IS_VALID_TOKEN, false);
-//        }
+        }else{
+            delegateExecution.setVariable(IS_VALID_TOKEN, false);
+        }
     }
 }
