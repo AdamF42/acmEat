@@ -1,6 +1,5 @@
 package it.unibo.delivery;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -19,20 +18,16 @@ import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class PlaceOrder implements JavaDelegate {
 
-    private  Gson g = new Gson();
 	private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
     private ClientConfig clientConfig = new DefaultClientConfig();
     private final Logger LOGGER = Logger.getLogger(PlaceOrder.class.getName());
-
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
         try{
-
             // retrieve delivery order
-            DeliveryOrder deliveryOrder = g
-                    .fromJson ((String) execution.getVariable(DELIVERY_ORDER),DeliveryOrder.class);
+            DeliveryOrder deliveryOrder = (DeliveryOrder) execution.getVariable(DELIVERY_ORDER);
 
             // TODO: not handled possible null reference exception???
             String queryURL = repo.getCompanyByName(deliveryOrder.company).url +"order";

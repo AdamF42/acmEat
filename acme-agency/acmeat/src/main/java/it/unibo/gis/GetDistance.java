@@ -1,14 +1,11 @@
 package it.unibo.gis;
 
-import com.google.gson.Gson;
 import com.sun.istack.NotNull;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
-import it.unibo.LoggerDelegate;
 import it.unibo.models.Distance;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.utils.Services;
@@ -29,11 +26,7 @@ public class GetDistance implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        Gson g = new Gson();
-        // TODO: find out why you can't deserialize the object...
-        String serializedOrder = (String) delegateExecution.getVariable(RESTAURANT_ORDER);
-
-        RestaurantOrder order = g.fromJson(serializedOrder,RestaurantOrder.class);
+        RestaurantOrder order = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
         String fromDistance = order.from;
         String toDistance = order.to;
         try {

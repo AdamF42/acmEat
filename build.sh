@@ -35,17 +35,17 @@ cd ${RESTAURANT}
 docker build --tag=restaurant .
 
 # Start all services containers
-[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 8000:8000 -p 8001:8070 --name bank --hostname bank bank
+[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 10000:8000 -p 10001:8070 --name bank --hostname bank bank
 
-[ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 8002:8080 --name delivery delivery
+[ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 10002:8080 --name delivery delivery
 
-[ ! "$(docker ps -a | grep delivery2)" ] && docker run -td -p 8003:8080 --name delivery2 delivery
+[ ! "$(docker ps -a | grep delivery2)" ] && docker run -td -p 10003:8080 --name delivery2 delivery
 
-[ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 8004:7778 --name gis gis
+[ ! "$(docker ps -a | grep gis)" ] && docker run -td -p 10004:7778 --name gis gis
 
-[ ! "$(docker ps -a | grep restaurant)" ] && docker run -d -p 8005:5000 --name restaurant restaurant
+[ ! "$(docker ps -a | grep restaurant)" ] && docker run -d -p 10005:5000 --name restaurant restaurant
 
-[ ! "$(docker ps -a | grep restaurant2)" ] && docker run -d -p 8006:5000 --name restaurant2 restaurant
+[ ! "$(docker ps -a | grep restaurant2)" ] && docker run -d -p 10006:5000 --name restaurant2 restaurant
 
 
 #  update_container(){

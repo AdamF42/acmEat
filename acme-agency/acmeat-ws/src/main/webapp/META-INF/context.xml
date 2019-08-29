@@ -1,9 +1,15 @@
 <Context>
+  <Resource
+          name="BeanManager"
+          auth="Container"
+          type="javax.enterprise.inject.spi.BeanManager"
+          factory="org.jboss.weld.resources.ManagerObjectFactory"
+  />
   <ResourceLink name="ProcessEngineService"
-    global="global/camunda-bpm-platform/process-engine/ProcessEngineService!org.camunda.bpm.ProcessEngineService"
-    type="org.camunda.bpm.ProcessEngineService" />
+                global="global/camunda-bpm-platform/process-engine/ProcessEngineService!org.camunda.bpm.ProcessEngineService"
+                type="org.camunda.bpm.ProcessEngineService" />
 
   <ResourceLink name="ProcessApplicationService"
-    global="global/camunda-bpm-platform/process-engine/ProcessApplicationService!org.camunda.bpm.ProcessApplicationService"
-    type="org.camunda.bpm.ProcessApplicationService" />
+                global="global/camunda-bpm-platform/process-engine/ProcessApplicationService!org.camunda.bpm.ProcessApplicationService"
+                type="org.camunda.bpm.ProcessApplicationService" />
 </Context>

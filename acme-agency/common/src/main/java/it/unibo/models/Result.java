@@ -1,6 +1,5 @@
 package it.unibo.models;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
 public class Result {
     //TODO: write an enum for status

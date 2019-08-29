@@ -1,9 +1,12 @@
 package it.unibo.models;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.google.gson.annotations.Expose;
 
-@XmlRootElement
 public class Distance {
+
+    @Expose
     public String message;
+
+    @Expose
     public Integer distance;
 }
