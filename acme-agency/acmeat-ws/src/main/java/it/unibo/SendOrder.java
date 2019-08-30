@@ -28,15 +28,15 @@ import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 public class SendOrder extends HttpServlet {
 
     @Inject
-    ProcessEngine processEngine;
+    private ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
+    private Gson g = new Gson();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Gson g = new Gson();
         HttpSession session = req.getSession(false);
         if (session == null ) {
             sendFailureResponse(resp, "No active session found");
@@ -52,11 +52,11 @@ public class SendOrder extends HttpServlet {
 
         RuntimeService service = processEngine.getRuntimeService();
         RestaurantOrder order = g.fromJson(req.getReader(), RestaurantOrder.class);
-        String serializedOrder = g.toJson(order);
+
         service.setVariable(
                 camundaProcessId,
                 RESTAURANT_ORDER,
-                serializedOrder);
+                order);
 
         service.createMessageCorrelation(GET_ORDER)
                 .processInstanceId(camundaProcessId)
@@ -68,7 +68,7 @@ public class SendOrder extends HttpServlet {
 
         try{
             DeliveryOrder deliveryOrder =
-                    g.fromJson((String) service.getVariable(camundaProcessId, DELIVERY_ORDER), DeliveryOrder.class);
+                    (DeliveryOrder) service.getVariable(camundaProcessId, DELIVERY_ORDER);
 
             if (deliveryOrder==null || deliveryOrder.getPrice()==null){
                 sendFailureResponse(resp, "No delivery companies available");

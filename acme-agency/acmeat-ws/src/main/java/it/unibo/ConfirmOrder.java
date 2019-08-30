@@ -7,7 +7,6 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,7 +27,7 @@ import static it.unibo.utils.AcmeVariables.*;
 public class ConfirmOrder extends HttpServlet {
 
     @Inject
-    ProcessEngine processEngine;
+    private ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
     private Gson g = new Gson();

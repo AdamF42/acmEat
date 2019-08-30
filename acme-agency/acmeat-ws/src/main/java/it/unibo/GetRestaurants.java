@@ -32,7 +32,7 @@ import static it.unibo.utils.AcmeMessages.START_MESSAGE;
 public class GetRestaurants extends HttpServlet {
 
     @Inject
-    ProcessEngine processEngine;
+    private ProcessEngine processEngine;
     
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
@@ -52,6 +52,7 @@ public class GetRestaurants extends HttpServlet {
         Map<String, Object> cityVariable = new HashMap<>();
         String cityParam = "city";
         cityVariable.put(cityParam,req.getParameter(cityParam));
+
         String processInstanceId = service
                 .startProcessInstanceByMessage(START_MESSAGE, cityVariable)
                 .getProcessInstanceId();

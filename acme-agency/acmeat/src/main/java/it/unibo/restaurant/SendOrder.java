@@ -1,6 +1,5 @@
 package it.unibo.restaurant;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -19,7 +18,6 @@ import static it.unibo.utils.AcmeVariables.RESTAURANT_ORDER;
 public class SendOrder implements JavaDelegate {
 
     private final Logger LOGGER = Logger.getLogger(SendOrder.class.getName());
-    private Gson g = new Gson();
     private RestaurantRepositoryImpl repo = new RestaurantRepositoryImpl();
     private ClientConfig clientConfig = new DefaultClientConfig();
 
@@ -29,8 +27,7 @@ public class SendOrder implements JavaDelegate {
         try{
 
             // retrieve restaurant order
-            RestaurantOrder order = g
-                    .fromJson((String) execution.getVariable(RESTAURANT_ORDER),RestaurantOrder.class);
+            RestaurantOrder order = (RestaurantOrder) execution.getVariable(RESTAURANT_ORDER);
 
             // TODO: not handled possible null reference exception???
             String queryURL = repo.getRestaurantByName(order.restaurant).url +"order";

@@ -1,21 +1,27 @@
 package it.unibo.models.entities;
 
-import it.unibo.models.DeliveryOrder;
+import com.google.gson.annotations.Expose;
+import it.unibo.models.Dish;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
 public class Restaurant {
 
+    @Expose
     public String name;
-    public List<DeliveryOrder.Dish> menu;
+
+    @Expose
+    public List<Dish> menu;
+
+    @Expose
     public String city;
+
+    @Expose
     public String url;
 
     public Restaurant(){}
 
-    public Restaurant(String name, List<DeliveryOrder.Dish> menu, String city, String url) {
+    public Restaurant(String name, List<Dish> menu, String city, String url) {
         this.name = name;
         this.menu = menu;
         this.city = city;

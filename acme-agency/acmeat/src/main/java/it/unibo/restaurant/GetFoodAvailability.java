@@ -1,6 +1,5 @@
 package it.unibo.restaurant;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
@@ -23,11 +22,7 @@ public class GetFoodAvailability implements JavaDelegate {
 
 			try{
 
-				Gson g = new Gson();
-				// TODO: find out why you can't deserialize the object...
-				String serializedOrder = (String) execution.getVariable(RESTAURANT_ORDER);
-
-				RestaurantOrder order = g.fromJson(serializedOrder,RestaurantOrder.class);
+				RestaurantOrder order = (RestaurantOrder) execution.getVariable(RESTAURANT_ORDER);
 
 				ClientConfig clientConfig = new DefaultClientConfig();
 				clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -42,12 +37,9 @@ public class GetFoodAvailability implements JavaDelegate {
 				RestaurantOrder responseOrder =  webResourcePut.accept("application/json")
 						.type("application/json").put(RestaurantOrder.class, order);
 
-				serializedOrder = g.toJson(responseOrder);
+				execution.setVariable(RESTAURANT_ORDER,  responseOrder);
 
-				execution.setVariable(RESTAURANT_ORDER,  serializedOrder);
-
-				//TODO: it is better to use userOrder only...
-				if(responseOrder.status== Status.AVAILABLE)
+				if(responseOrder.status == Status.AVAILABLE)
 					execution.setVariable(RESTAURANT_AVAILABLE,  "");
 
 			} catch (Exception e) {

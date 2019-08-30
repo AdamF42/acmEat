@@ -1,17 +1,30 @@
 package it.unibo.models;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.google.gson.annotations.Expose;
+
 import java.util.List;
 
-//TODO: use 3 different model for client, restaurant and delivery
-@XmlRootElement
 public class RestaurantOrder {
+
+    @Expose
     public String restaurant;
-    public List<DeliveryOrder.Dish> dishes;
+
+    @Expose
+    public List<Dish> dishes;
+
+    @Expose
     public String delivery_time;
+
+    @Expose
     public Integer id;
+
+    @Expose
     public Status status;
+
+    @Expose
     public String from;
+
+    @Expose
     public String to;
 }
 

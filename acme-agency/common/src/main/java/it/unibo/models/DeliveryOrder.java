@@ -1,35 +1,37 @@
 package it.unibo.models;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.google.gson.annotations.Expose;
 
 
-@XmlRootElement
 public class DeliveryOrder {
+
+    @Expose
     public String company;
+
+    @Expose
     public String src_address;
+
+    @Expose
     public String dest_address;
+
+    @Expose
     public String delivery_time;
+
+    @Expose
     public Integer id;
+
+    @Expose
     public Status status;
+
+    @Expose
+    public Double price;
 
     public Double getPrice() {
         return price;
     }
 
-    public Double price;
 
-    @XmlRootElement
-    public static class Dish {
 
-        public String name;
-        public String price;
 
-        public Dish() { }
-
-        public Dish(String name, String price) {
-            this.name = name;
-            this.price = price;
-        }
-    }
 }
 

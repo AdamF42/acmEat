@@ -12,6 +12,7 @@ import it.unibo.models.entities.DeliveryCompany;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.Status;
+import it.unibo.models.entities.DeliveryOrders;
 import it.unibo.utils.repo.DeliveryCompaniesRepository;
 import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -28,14 +29,12 @@ import static it.unibo.utils.AcmeVariables.*;
 public class SendAvailabilityRequest implements JavaDelegate {
 
     private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
+    private Gson g = new Gson();
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        Gson g = new Gson();
-        // TODO: find out why you can't deserialize the object...
-        String serializedOrder = (String) delegateExecution.getVariable(RESTAURANT_ORDER);
-        RestaurantOrder userOrder = g.fromJson(serializedOrder,RestaurantOrder.class);
+        RestaurantOrder userOrder = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
 
         DeliveryOrder order = new DeliveryOrder();
         order.delivery_time = userOrder.delivery_time;
@@ -61,14 +60,13 @@ public class SendAvailabilityRequest implements JavaDelegate {
             LOGGER.info("Delivery order request: "+g.toJson(order) +" uri: "+resource.getURI());
         }
 
-        HashMap<String, String> deliveryCompanies = new HashMap<>();
+        DeliveryOrders deliveryCompanies = new DeliveryOrders();
         for (CompletableFuture<ClientResponse> futureResponse: webResources) {
             ClientResponse response = futureResponse.get();
-
             if (response.getStatus() == OK.getStatusCode()){
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
                 if(responseOrder.status == Status.AVAILABLE){
-                    deliveryCompanies.put(responseOrder.company,g.toJson(responseOrder));
+                    deliveryCompanies.addOrder(responseOrder);
                     LOGGER.info("Company "+ g.toJson(responseOrder));
                 }
             }
