@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="soseng.wsdl" xmlns:xsd1="soseng.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="soseng.wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions targetNamespace="it.unibo.wsdl" xmlns:xsd1="it.unibo.xsd" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="it.unibo.wsdl" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-    <xs:schema targetNamespace="soseng.xsd" xmlns:sch="soseng.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:element name="verifyToken"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="verifyTokenResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/></xs:sequence></xs:complexType></xs:element><xs:element name="getToken"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="0" name="amount" type="xs:double"/><xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="getTokenResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="refound"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/><xs:element maxOccurs="1" minOccurs="0" name="message" type="xs:string"/><xs:element maxOccurs="1" minOccurs="0" name="status" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="refoundResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/></xs:sequence></xs:complexType></xs:element></xs:schema>
+    <xs:schema targetNamespace="it.unibo.xsd" xmlns:sch="it.unibo.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:element name="verifyToken"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="verifyTokenResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/></xs:sequence></xs:complexType></xs:element><xs:element name="getToken"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="0" name="amount" type="xs:double"/><xs:element maxOccurs="1" minOccurs="1" name="name" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="getTokenResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="status" type="xs:string"/><xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="refound"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="sid" type="xs:string"/></xs:sequence></xs:complexType></xs:element><xs:element name="refoundResponse"><xs:complexType><xs:sequence><xs:element maxOccurs="1" minOccurs="1" name="success" type="xs:boolean"/></xs:sequence></xs:complexType></xs:element></xs:schema>
   </wsdl:types>
+  <wsdl:message name="VerifyTokenRequest">
+    <wsdl:part name="body" element="xsd1:verifyToken"/>
+  </wsdl:message>
+  <wsdl:message name="RefoundResponse">
+    <wsdl:part name="body" element="xsd1:refoundResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetTokenRequest">
+    <wsdl:part name="body" element="xsd1:getToken"/>
+  </wsdl:message>
+  <wsdl:message name="GetTokenResponse">
+    <wsdl:part name="body" element="xsd1:getTokenResponse"/>
+  </wsdl:message>
   <wsdl:message name="VerifyTokenResponse">
     <wsdl:part name="body" element="xsd1:verifyTokenResponse"/>
   </wsdl:message>
   <wsdl:message name="RefoundRequest">
     <wsdl:part name="body" element="xsd1:refound"/>
-  </wsdl:message>
-  <wsdl:message name="GetTokenResponse">
-    <wsdl:part name="body" element="xsd1:getTokenResponse"/>
-  </wsdl:message>
-  <wsdl:message name="GetTokenRequest">
-    <wsdl:part name="body" element="xsd1:getToken"/>
-  </wsdl:message>
-  <wsdl:message name="RefoundResponse">
-    <wsdl:part name="body" element="xsd1:refoundResponse"/>
-  </wsdl:message>
-  <wsdl:message name="VerifyTokenRequest">
-    <wsdl:part name="body" element="xsd1:verifyToken"/>
   </wsdl:message>
   <wsdl:portType name="Bank">
     <wsdl:operation name="verifyToken">

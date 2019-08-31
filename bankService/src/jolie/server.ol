@@ -18,127 +18,42 @@ cset {
  sid:
   GetTokenResponse.sid
   VerifyTokenRequest.sid
+  RefoundRequest.sid
 }
 
 init
 {
-  keepRunning = true;
   println@Console("Server ON")()
 }
 
 main {
   [ getToken( request )( response ) {
-    println@Console("User: "+request.name)();
+    // check that the payment is possible, money
     response.sid = csets.sid = new;
-    println@Console("Token: "+response.sid)()
+    random@Math( )( res );
+    if (res<0.5 ||  request.name=="debug"){
+          response.status="success"
+          global.users.( response.sid ).result = true
+          global.users.(request.sid).isRefounded = false
+    }else{
+          response.status="failure"
+          global.users.( response.sid ).result = false
+          global.users.(request.sid).isRefounded = true
+    } 
+    println@Console("GetToken processed")()   
   }]
 
-[ verifyToken( request )( response ) {
-    // check that the payment is possible, money
-    random@Math( )( res );
-    if (res<0.5){
-        response.success=true
-    }else{
-        response.success=false
-    };
-    println@Console("Token verified")()
-}]
+  [ verifyToken( request )( response ) {
+      response.success=global.users.(request.sid).result
+      println@Console("VerifyToken processed")()
+  }]
 
-[ refound( request )( response ) {
-  // check that the refound is possible
-  random@Math( )( res );
-  if (res<0.5){
-      response.success=true
-  }else{
-      response.success=false
-  };
-  println@Console("Refound processed")()
-}]
-
-
-  /* {
-    while( keepRunning ){
-      [ whithdraw( request )( result ) {
-        if (global.users.(username).balance >= request.message) {
-          result.value=global.users.(username).balance=global.users.(username).balance-request.message;
-          result.status="SUCCESS"
-        }
-        else {
-          result.value=global.users.(username).balance;
-          result.status="FAILURE"
-        };
-        println@Console("USER: "+username+" Request: Whithdraw "+request.message )()
-      }]
-
-      [ deposit( request )( result ){
-        result.value=global.users.(username).balance=global.users.(username).balance+request.message;
-        result.status="SUCCESS";
-        println@Console("USER: "+username+" Request: Deposit "+request.message )()
-      }]
-
-      [ report( request )( result ){
-        println@Console( "USER: "+username+" Request: Report")();
-        result.value=global.users.(username).balance;
-        result.status="SUCCESS"
-      }]
-
-      [ logout( request ) ] {
-        println@Console("Sid: "+username+" Request: Logout")();
-        keepRunning = false
-      }
+  [ refound( request )( response ) {
+    if (!global.users.(request.sid).isRefounded){
+      global.users.(request.sid).isRefounded = true
+      global.users.(request.sid).result = false
     }
-  }*/
-  /////////////////// REGISTRATION ///////////////////
-  /*[ register( request )( response ) {
-    username = request.username;
-    password = request.password;
-    println@Console("user: " + username + " registration")();
-
-    if ( !is_defined( global.users.( username ) ) ) {
-      println@Console("user: " + username + " not found")();
-      global.users.( username ).balance = 0;
-      global.users.( username ).password = password;
-      response.sid = csets.sid = new;
-      response.status = "SUCCESS"
-    }else{
-      println@Console("user: " + username + " found")();
-      response.sid = " ";
-      response.status = "FAILURE";
-      keepRunning=false
-    };
-    println@Console("USER "+username+" Request: Registration")()
-  }] {
-
-    while( keepRunning ){
-
-      [ whithdraw( request )( result ) {
-        if (global.users.(username).balance >= request.message) {
-          result.value=global.users.(username).balance=global.users.(username).balance-request.message;
-          result.status="SUCCESS"
-        }
-        else {
-          result.value=global.users.(username).balance;
-          result.status="FAILURE"
-        };
-        println@Console("USER: "+username+" Request: Whithdraw "+request.message )()
-      }]
-
-      [ deposit( request )( result ){
-        result.value=global.users.(username).balance=global.users.(username).balance+request.message;
-        result.status="SUCCESS";
-        println@Console("USER: "+username+" Request: Deposit "+request.message )()
-      }]
-
-      /*[ report( request )( result ){
-        println@Console( "USER: "+username+" Request: Report")();
-        result.value=global.users.(username).balance;
-        result.status="SUCCESS"
-      }]*/
-
-      /*[ logout( request ) ] {
-        println@Console("Sid: "+username+" Request: Logout")();
-        keepRunning = false
-      }
-    }
-  }*/
+    response.success=global.users.(request.sid).result
+    println@Console("Refound processed")()
+  }]
 }
