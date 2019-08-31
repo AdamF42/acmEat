@@ -31,7 +31,17 @@ public class DeliveryOrder {
     }
 
 
-
-
+    @Override
+    public String toString() {
+        return "DeliveryOrder{" +
+                "company='" + company + '\'' +
+                ", src_address='" + src_address + '\'' +
+                ", dest_address='" + dest_address + '\'' +
+                ", delivery_time='" + delivery_time + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", price=" + price +
+                '}';
+    }
 }
 

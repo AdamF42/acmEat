@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
 public class DeliveryOrders {
 
     @Expose
-    public List<DeliveryOrder> orders;
+    private List<DeliveryOrder> orders;
 
     public DeliveryOrders() {
         orders = new LinkedList<>();
@@ -21,13 +21,13 @@ public class DeliveryOrders {
         orders.add(order);
     }
 
-    public int size(){
-        return orders.size();
+    public boolean isEmpty(){
+        return orders.size()==0;
     }
 
     public DeliveryOrder getMinPriceOrder(){
         return orders.stream()
-                .min(Comparator.comparing(t -> t.getPrice()))
+                .min(Comparator.comparing(DeliveryOrder::getPrice))
                 .orElseThrow(NoSuchElementException::new);
     }
 }

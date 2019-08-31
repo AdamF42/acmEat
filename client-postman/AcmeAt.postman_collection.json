@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "70911391-b658-466d-b07d-431c958495f2",
+		"_postman_id": "45ae5a0a-3cee-4f06-bfbb-28f3a894ea34",
 		"name": "AcmeAt",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -181,6 +181,32 @@
 					"body": "{\n    \"bank_url\": \"\",\n    \"total_price\": \"17.0\",\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"\"\n    }\n}"
 				}
 			]
+		},
+		{
+			"name": "3. ConfirmOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/acmeat-ws/confirm?token=a5948156-9900-4808-83f5-6778002c3c15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"acmeat-ws",
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "a5948156-9900-4808-83f5-6778002c3c15"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -1,6 +1,5 @@
 package it.unibo.acme;
 
-import com.google.gson.Gson;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -29,7 +28,6 @@ import static it.unibo.utils.AcmeVariables.*;
 public class SendAvailabilityRequest implements JavaDelegate {
 
     private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
-    private Gson g = new Gson();
 
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
@@ -48,30 +46,41 @@ public class SendAvailabilityRequest implements JavaDelegate {
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
+        //TODO: improve try catch
         List<CompletableFuture<ClientResponse>> webResources = new ArrayList<>();
         for (DeliveryCompany company :companies) {
 
             com.sun.jersey.api.client.Client client = Client.create(clientConfig);
             WebResource resource = client.resource(company.url +"availability");
             order.company = company.name;
-            Supplier<ClientResponse> clientResponseSupplier = () -> resource.accept( "application/json")
-                    .type("application/json").put(ClientResponse.class, order);
-            webResources.add(CompletableFuture.supplyAsync(clientResponseSupplier));
-            LOGGER.info("Delivery order request: "+g.toJson(order) +" uri: "+resource.getURI());
-        }
-
-        DeliveryOrders deliveryCompanies = new DeliveryOrders();
-        for (CompletableFuture<ClientResponse> futureResponse: webResources) {
-            ClientResponse response = futureResponse.get();
-            if (response.getStatus() == OK.getStatusCode()){
-                DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
-                if(responseOrder.status == Status.AVAILABLE){
-                    deliveryCompanies.addOrder(responseOrder);
-                    LOGGER.info("Company "+ g.toJson(responseOrder));
-                }
+            try{
+                Supplier<ClientResponse> clientResponseSupplier = () -> resource.accept( "application/json")
+                        .type("application/json").put(ClientResponse.class, order);
+                webResources.add(CompletableFuture.supplyAsync(clientResponseSupplier));
+                LOGGER.info("Delivery order request: "+order.toString() +" uri: "+resource.getURI());
+            } catch (Exception e){
+                LOGGER.warning(e.getMessage());
+                e.printStackTrace();
             }
         }
 
-        delegateExecution.setVariable(DELIVERY_COMPANIES_PROPOSAL, deliveryCompanies);
+        DeliveryOrders deliveryCompanies = new DeliveryOrders();
+        for (CompletableFuture<ClientResponse> futureResponse : webResources) {
+            try{
+                ClientResponse response = futureResponse.get();
+                if (response.getStatus() == OK.getStatusCode()) {
+                    DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
+                    if (responseOrder.status == Status.AVAILABLE) {
+                        deliveryCompanies.addOrder(responseOrder);
+                        LOGGER.info("Company " + responseOrder.toString());
+                    }
+                }
+            } catch (Exception e){
+                LOGGER.warning(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        if(!deliveryCompanies.isEmpty())
+            delegateExecution.setVariable(DELIVERY_COMPANIES_PROPOSAL, deliveryCompanies);
     }
 }

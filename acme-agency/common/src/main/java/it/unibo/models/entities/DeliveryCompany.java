@@ -1,5 +1,6 @@
 package it.unibo.models.entities;
 
+
 import com.google.gson.annotations.Expose;
 
 public class DeliveryCompany {

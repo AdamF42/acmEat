@@ -14,15 +14,17 @@ public class VerifyBankToken implements JavaDelegate {
 
         String token = (String) delegateExecution.getVariable(USER_TOKEN);
 
-        Bank bankService = new BankService().getBankServicePort();
-        VerifyToken verifyToken = new VerifyToken();
-        verifyToken.setSid(token);
-        VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
-
-        if(resp.isSuccess()) {
-            delegateExecution.setVariable(IS_VALID_TOKEN, true);
-        }else{
+        try {
+            Bank bankService = new BankService().getBankServicePort();
+            VerifyToken verifyToken = new VerifyToken();
+            verifyToken.setSid(token);
+            VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
+            if(resp.isSuccess())
+                delegateExecution.setVariable(IS_VALID_TOKEN, true);
+        } catch (Exception e){
+            e.printStackTrace();
             delegateExecution.setVariable(IS_VALID_TOKEN, false);
         }
+
     }
 }
