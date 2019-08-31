@@ -1,12 +1,29 @@
 package it.unibo.models.responses;
 
+import com.google.gson.annotations.Expose;
 import it.unibo.models.Result;
 
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class SendOrderResponse {
-    public String bank_url;
-    public String total_price;
-    public Result result;
+
+    @Expose
+    private String bank_url;
+
+    @Expose
+    private String total_price;
+
+    @Expose
+    private Result result;
+
+    public void setBank_url(String bank_url) {
+        this.bank_url = bank_url;
+    }
+
+    public void setTotal_price(String total_price) {
+        this.total_price = total_price;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
+    }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1oc5gj8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.2.3">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1oc5gj8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.3.1">
   <bpmn:collaboration id="Collaboration_0dvevmx">
     <bpmn:participant id="Participant_029ukuc" name="ACME" processRef="Process_1" />
     <bpmn:participant id="Participant_0lxljpp" name="GIS" processRef="Process_1s5c0in" />
@@ -187,10 +187,6 @@
         <bpmn:outgoing>SequenceFlow_1fmfd83</bpmn:outgoing>
         <bpmn:messageEventDefinition id="MessageEventDefinition_0sw06jk" />
       </bpmn:intermediateThrowEvent>
-      <bpmn:endEvent id="EndEvent_1ctmymq">
-        <bpmn:incoming>SequenceFlow_06p2g8j</bpmn:incoming>
-        <bpmn:terminateEventDefinition id="TerminateEventDefinition_0590w32" />
-      </bpmn:endEvent>
       <bpmn:sequenceFlow id="SequenceFlow_15cwhdq" sourceRef="StartEvent_172d4tq" targetRef="IntermediateThrowEvent_1exg0hg" />
       <bpmn:sequenceFlow id="SequenceFlow_0gkymzz" sourceRef="ExclusiveGateway_1udce62" targetRef="EndEvent_1u70hc4">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
@@ -204,6 +200,9 @@
         <bpmn:incoming>SequenceFlow_0zrpomm</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_1r0adb0</bpmn:outgoing>
       </bpmn:serviceTask>
+      <bpmn:endEvent id="EndEvent_1ctmymq">
+        <bpmn:incoming>SequenceFlow_06p2g8j</bpmn:incoming>
+      </bpmn:endEvent>
     </bpmn:subProcess>
     <bpmn:subProcess id="SubProcess_0ch3ywl">
       <bpmn:incoming>SequenceFlow_0wwwrul</bpmn:incoming>
@@ -306,7 +305,7 @@
       <bpmn:outgoing>SequenceFlow_1cxnnj6</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1lhs3p2</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sendTask id="SendTask_0xn31pz" name="Rimborso banca" camunda:class="it.unibo.acme.GetNearRestaurants">
+    <bpmn:sendTask id="SendTask_0xn31pz" name="Rimborso banca" camunda:class="it.unibo.bank.AbortPayment">
       <bpmn:incoming>SequenceFlow_1lhs3p2</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0ulfdsi</bpmn:outgoing>
     </bpmn:sendTask>
@@ -321,11 +320,11 @@
       <bpmn:incoming>SequenceFlow_1rkxftm</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_05n08fu</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sendTask id="SendTask_08pbfvq" name="Annullamento ristorante" camunda:class="it.unibo.acme.GetNearRestaurants">
+    <bpmn:sendTask id="SendTask_08pbfvq" name="Annullamento ristorante" camunda:class="it.unibo.restaurant.AbortOrder">
       <bpmn:incoming>SequenceFlow_1cxnnj6</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_08lgzbq</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sendTask id="SendTask_09346dz" name="Annullamento società di consegna" camunda:class="it.unibo.acme.GetNearRestaurants">
+    <bpmn:sendTask id="SendTask_09346dz" name="Annullamento società di consegna" camunda:class="it.unibo.delivery.AbortOrder">
       <bpmn:incoming>SequenceFlow_1ykcffb</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1f4ig0s</bpmn:outgoing>
     </bpmn:sendTask>
@@ -1274,9 +1273,6 @@
           <dc:Bounds x="2702" y="1459" width="88" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_1ctmymq_di" bpmnElement="EndEvent_1ctmymq">
-        <dc:Bounds x="3529" y="1510" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_1a50wsq_di" bpmnElement="EndEvent_1a50wsq">
         <dc:Bounds x="1738" y="1688" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -2009,6 +2005,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="IntermediateThrowEvent_10fdfav_di" bpmnElement="IntermediateThrowEvent_0uwi1jg">
         <dc:Bounds x="1582" y="1372" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0t1uify_di" bpmnElement="EndEvent_1ctmymq">
+        <dc:Bounds x="3529" y="1510" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

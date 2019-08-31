@@ -1,15 +1,16 @@
 package it.unibo.models.responses;
 
+import com.google.gson.annotations.Expose;
 import it.unibo.models.Result;
 import it.unibo.models.entities.Restaurant;
-
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
 public class GetRestaurantResponse {
 
+    @Expose
     private List<Restaurant> restaurants;
+
+    @Expose
     private Result result;
 
     public List<Restaurant> getRestaurants() {

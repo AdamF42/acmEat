@@ -1,13 +1,14 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
+import com.google.gson.Gson;
 import it.unibo.models.Result;
 import it.unibo.models.responses.ConfirmOrderResponse;
 import it.unibo.utils.AcmeMessages;
-import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.RuntimeService;
+
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,61 +21,51 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-
 import static it.unibo.SendOrder.sendFailureResponse;
 import static it.unibo.utils.AcmeVariables.*;
 
-@WebServlet("/confirm")
-public class ConfirmOrder extends HttpServlet {
+
+@WebServlet("/abort")
+public class AbortOrder extends HttpServlet {
 
     @Inject
     private ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
+
     private Gson g = new Gson();
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         RuntimeService service = processEngine.getRuntimeService();
         HttpSession session = req.getSession(false);
 
-        if (session == null || session.getAttribute(AcmeMessages.GET_ORDER) == null){
+        if (session == null || session.getAttribute(AcmeMessages.GET_ORDER) == null) {
             LOGGER.warn("No active session found");
-            sendFailureResponse(resp,"No active session found");
+            sendFailureResponse(resp, "No active session found");
             return;
         }
 
         String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
 
-        if (camundaProcessId == null ) {
+        if (camundaProcessId == null) {
             LOGGER.warn("No process id found");
             sendFailureResponse(resp, "No process id found");
             return;
         }
 
         try{
-            session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
+            //session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
 
             // TODO: check processId status in DB...
-            //  Need to modify BPMN since it do not check order confirmation status for delivery
-            //  and restaurant service
 
-            service.setVariable(
-                    camundaProcessId,
-                    USER_TOKEN,
-                    req.getParameter("token"));
-            service.createMessageCorrelation(AcmeMessages.CONFIRM_ORDER)
+
+            service.createMessageCorrelation(AcmeMessages.ABORT_ORDER)
                     .processInstanceId(camundaProcessId)
                     .correlate();
 
 
-            boolean isValidToken = (boolean) service.getVariable(camundaProcessId, IS_VALID_TOKEN);
-
-            if(!isValidToken){
-                sendFailureResponse(resp, "Invalid bank token");
-                return;
-            }
             // return to user confirmation
             ConfirmOrderResponse response = new ConfirmOrderResponse();
             Result result = new Result();
@@ -91,7 +82,6 @@ public class ConfirmOrder extends HttpServlet {
             LOGGER.error(e);
             sendFailureResponse(resp, e.getMessage());
         }
+
     }
-
-
 }

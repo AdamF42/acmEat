@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "Bank", targetNamespace = "soseng.wsdl")
+@WebService(name = "Bank", targetNamespace = "it.unibo.wsdl")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @XmlSeeAlso({
     ObjectFactory.class
@@ -30,9 +30,9 @@ public interface Bank {
      *     returns it.unibo.bank.generated.VerifyTokenResponse
      */
     @WebMethod(action = "verifyToken")
-    @WebResult(name = "verifyTokenResponse", targetNamespace = "soseng.xsd", partName = "body")
+    @WebResult(name = "verifyTokenResponse", targetNamespace = "it.unibo.xsd", partName = "body")
     public VerifyTokenResponse verifyToken(
-        @WebParam(name = "verifyToken", targetNamespace = "soseng.xsd", partName = "body")
+        @WebParam(name = "verifyToken", targetNamespace = "it.unibo.xsd", partName = "body")
         VerifyToken body);
 
     /**
@@ -42,9 +42,9 @@ public interface Bank {
      *     returns it.unibo.bank.generated.GetTokenResponse
      */
     @WebMethod(action = "getToken")
-    @WebResult(name = "getTokenResponse", targetNamespace = "soseng.xsd", partName = "body")
+    @WebResult(name = "getTokenResponse", targetNamespace = "it.unibo.xsd", partName = "body")
     public GetTokenResponse getToken(
-        @WebParam(name = "getToken", targetNamespace = "soseng.xsd", partName = "body")
+        @WebParam(name = "getToken", targetNamespace = "it.unibo.xsd", partName = "body")
         GetToken body);
 
     /**
@@ -54,9 +54,9 @@ public interface Bank {
      *     returns it.unibo.bank.generated.RefoundResponse
      */
     @WebMethod(action = "refound")
-    @WebResult(name = "refoundResponse", targetNamespace = "soseng.xsd", partName = "body")
+    @WebResult(name = "refoundResponse", targetNamespace = "it.unibo.xsd", partName = "body")
     public RefoundResponse refound(
-        @WebParam(name = "refound", targetNamespace = "soseng.xsd", partName = "body")
+        @WebParam(name = "refound", targetNamespace = "it.unibo.xsd", partName = "body")
         Refound body);
 
 }

@@ -35,7 +35,7 @@ cd ${RESTAURANT}
 docker build --tag=restaurant .
 
 # Start all services containers
-[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 10000:8000 -p 10001:8070 --name bank --hostname bank bank
+[ ! "$(docker ps -a | grep bank)" ] && docker run -td -p 8000:8000 -p 10001:8070 --name bank --hostname bank bank
 
 [ ! "$(docker ps -a | grep delivery)" ] && docker run -td -p 10002:8080 --name delivery delivery
 
