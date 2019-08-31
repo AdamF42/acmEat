@@ -32,7 +32,6 @@ public class PlaceOrder implements JavaDelegate {
             // TODO: not handled possible null reference exception???
             String queryURL = repo.getCompanyByName(deliveryOrder.company).url +"order";
 
-            //TODO: add logs
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             com.sun.jersey.api.client.Client client = Client.create(clientConfig);
             WebResource webResourcePost = client.resource(queryURL);
@@ -48,7 +47,8 @@ public class PlaceOrder implements JavaDelegate {
         } catch (Exception e) {
             //TODO: log properly
             e.printStackTrace();
-            LOGGER.severe(e.getMessage());        }
+            LOGGER.severe(e.getMessage());
+        }
     }
 
 

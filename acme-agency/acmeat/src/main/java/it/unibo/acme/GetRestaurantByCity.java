@@ -1,6 +1,6 @@
 package it.unibo.acme;
 
-import com.google.gson.Gson;
+import camundajar.com.google.gson.Gson;
 import it.unibo.models.entities.Restaurant;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;

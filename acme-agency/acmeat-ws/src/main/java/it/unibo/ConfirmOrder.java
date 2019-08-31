@@ -52,28 +52,42 @@ public class ConfirmOrder extends HttpServlet {
             return;
         }
 
-        session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
-        service.setVariable(
-                camundaProcessId,
-                USER_TOKEN,
-                req.getParameter("token"));
-        service.createMessageCorrelation(AcmeMessages.CONFIRM_ORDER)
-                .processInstanceId(camundaProcessId)
-                .correlate();
+        try{
+            session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
 
-        // TODO: check processId status in DB...
-        //  Need to modify BPMN since it do not check order confirmation status for delivery
-        //  and restaurant service
+            // TODO: check processId status in DB...
+            //  Need to modify BPMN since it do not check order confirmation status for delivery
+            //  and restaurant service
 
-        // return to user confirmation
-        Result result = new Result();
-        result.setMessage("Confirmed");
-        result.setStatus("success");
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(result));
-        out.flush();
+            service.setVariable(
+                    camundaProcessId,
+                    USER_TOKEN,
+                    req.getParameter("token"));
+            service.createMessageCorrelation(AcmeMessages.CONFIRM_ORDER)
+                    .processInstanceId(camundaProcessId)
+                    .correlate();
+
+
+            boolean isValidToken = (boolean) service.getVariable(camundaProcessId, IS_VALID_TOKEN);
+
+            if(!isValidToken){
+                sendFailureResponse(resp, "Invalid bank token");
+                return;
+            }
+            // return to user confirmation
+            Result result = new Result();
+            result.setMessage("Confirmed");
+            result.setStatus("success");
+            PrintWriter out = resp.getWriter();
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            out.print(g.toJson(result));
+            out.flush();
+
+        }catch (Exception e){
+            LOGGER.error(e);
+            sendFailureResponse(resp, e.getMessage());
+        }
     }
 
 

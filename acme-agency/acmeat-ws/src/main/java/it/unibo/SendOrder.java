@@ -53,20 +53,20 @@ public class SendOrder extends HttpServlet {
         RuntimeService service = processEngine.getRuntimeService();
         RestaurantOrder order = g.fromJson(req.getReader(), RestaurantOrder.class);
 
-        service.setVariable(
-                camundaProcessId,
-                RESTAURANT_ORDER,
-                order);
-
-        service.createMessageCorrelation(GET_ORDER)
-                .processInstanceId(camundaProcessId)
-                .correlate();
-
-        session.setAttribute(GET_ORDER,GET_ORDER);
-
         //TODO: check the process status in db
 
         try{
+            service.setVariable(
+                    camundaProcessId,
+                    RESTAURANT_ORDER,
+                    order);
+
+            service.createMessageCorrelation(GET_ORDER)
+                    .processInstanceId(camundaProcessId)
+                    .correlate();
+
+            session.setAttribute(GET_ORDER,GET_ORDER);
+
             DeliveryOrder deliveryOrder =
                     (DeliveryOrder) service.getVariable(camundaProcessId, DELIVERY_ORDER);
 
