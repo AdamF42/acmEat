@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface RestaurantRepository {
-    List<Restaurant> getRestaurantsByCity(String city) throws FileNotFoundException;
+    List<Restaurant> getAvailableRestaurantsByCity(String city) throws FileNotFoundException;
     Restaurant getRestaurantByName(String name) throws FileNotFoundException;
     void setOpening(RestaurantAvailability availability) throws IOException;
     void setMenu(RestaurantMenu restaurantMenuChange ) throws IOException;

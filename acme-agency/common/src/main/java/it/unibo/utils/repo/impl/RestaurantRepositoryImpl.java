@@ -25,11 +25,11 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     private Gson g = new Gson();
 
     @Override
-    public List<Restaurant> getRestaurantsByCity(String city) throws FileNotFoundException {
+    public List<Restaurant> getAvailableRestaurantsByCity(String city) throws FileNotFoundException {
 
         return this.restaurants
                 .stream()
-                .filter(company-> city.equals(company.city))
+                .filter(company-> city.equals(company.city) && company.is_open)
                 .collect(Collectors.toList());
     }
 

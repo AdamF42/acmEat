@@ -22,7 +22,7 @@ public class GetRestaurantByCity implements JavaDelegate {
         String city = (String) delegateExecution.getVariable("city");
         RestaurantRepository repo = new RestaurantRepositoryImpl();
         RestaurantList restaurants = new RestaurantList();
-        restaurants.setRestaurants(repo.getRestaurantsByCity(city));
+        restaurants.setRestaurants(repo.getAvailableRestaurantsByCity(city));
 
         delegateExecution.setVariable("restaurants", g.toJson(restaurants));
 
