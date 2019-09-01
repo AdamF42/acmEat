@@ -5,6 +5,7 @@ import it.unibo.models.RestaurantList;
 import it.unibo.models.Result;
 import it.unibo.models.entities.Restaurant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,6 +22,6 @@ public class GetRestaurantResponse {
     }
     public void setResult(Result result){this.result=result;}
     public void setRestaurants(RestaurantList restaurants) {
-        this.restaurants = restaurants.getRestaurants();
+        this.restaurants = restaurants !=null ? restaurants.getRestaurants(): new ArrayList<>();
     }
 }

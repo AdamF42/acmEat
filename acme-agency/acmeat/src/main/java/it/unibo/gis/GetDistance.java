@@ -26,10 +26,11 @@ public class GetDistance implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        RestaurantOrder order = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
-        String fromDistance = order.from;
-        String toDistance = order.to;
         try {
+            RestaurantOrder order = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
+            String fromDistance = order.from;
+            String toDistance = order.to;
+
             ClientConfig clientConfig = new DefaultClientConfig();
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             com.sun.jersey.api.client.Client client = Client.create(clientConfig);
@@ -42,7 +43,8 @@ public class GetDistance implements JavaDelegate {
             LOGGER.info("GetDistance: " + distance.distance + "\nfrom: " + fromDistance + "\nto: " + toDistance);
 
         } catch (Exception ex){
-            LOGGER.warning(ex.getMessage());
+            delegateExecution.setVariable(DISTANCE, Double.MAX_VALUE);
+            LOGGER.severe(ex.getMessage());
         }
     }
 

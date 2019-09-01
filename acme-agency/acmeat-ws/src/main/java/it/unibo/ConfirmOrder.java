@@ -3,6 +3,7 @@ package it.unibo;
 import camundajar.com.google.gson.Gson;
 import it.unibo.models.Result;
 import it.unibo.models.responses.ConfirmOrderResponse;
+import it.unibo.models.responses.SendOrderResponse;
 import it.unibo.utils.AcmeMessages;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
@@ -20,8 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-
-import static it.unibo.SendOrder.sendFailureResponse;
+import static it.unibo.utils.AcmeMessages.CONFIRM_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
 @WebServlet("/confirm")
@@ -36,62 +36,60 @@ public class ConfirmOrder extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
-        RuntimeService service = processEngine.getRuntimeService();
         HttpSession session = req.getSession(false);
-
-        if (session == null || session.getAttribute(AcmeMessages.GET_ORDER) == null){
+        if (session == null || session.getAttribute(PROCESS_ID) == null){
             LOGGER.warn("No active session found");
             sendFailureResponse(resp,"No active session found");
             return;
         }
 
         String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
+        MyProcessInstance process = new MyProcessInstance(processEngine);
 
-        if (camundaProcessId == null ) {
-            LOGGER.warn("No process id found");
-            sendFailureResponse(resp, "No process id found");
+        if(process.isActive(camundaProcessId)){
+            process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
+        }
+
+        if(!process.correlate(camundaProcessId, CONFIRM_ORDER).isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null){
+            sendFailureResponse(resp, "No active session found");
             return;
         }
 
-        try{
-            session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
+        session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
 
-            // TODO: check processId status in DB...
-            //  Need to modify BPMN since it do not check order confirmation status for delivery
-            //  and restaurant service
+        Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
 
-            service.setVariable(
-                    camundaProcessId,
-                    USER_TOKEN,
-                    req.getParameter("token"));
-            service.createMessageCorrelation(AcmeMessages.CONFIRM_ORDER)
-                    .processInstanceId(camundaProcessId)
-                    .correlate();
-
-
-            boolean isValidToken = (boolean) service.getVariable(camundaProcessId, IS_VALID_TOKEN);
-
-            if(!isValidToken){
-                sendFailureResponse(resp, "Invalid bank token");
-                return;
-            }
-            // return to user confirmation
-            ConfirmOrderResponse response = new ConfirmOrderResponse();
-            Result result = new Result();
-            result.setMessage("Confirmed");
-            result.setStatus("success");
-            response.setResult(result);
-            PrintWriter out = resp.getWriter();
-            resp.setContentType(MediaType.APPLICATION_JSON);
-            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            out.print(g.toJson(response));
-            out.flush();
-
-        }catch (Exception e){
-            LOGGER.error(e);
-            sendFailureResponse(resp, e.getMessage());
+        if(!isValidToken){
+            sendFailureResponse(resp, "Invalid bank token");
+            return;
         }
+        // return to user confirmation
+        ConfirmOrderResponse response = new ConfirmOrderResponse();
+        Result result = new Result();
+        result.setMessage("Confirmed");
+        result.setStatus("success");
+        response.setResult(result);
+        PrintWriter out = resp.getWriter();
+        resp.setContentType(MediaType.APPLICATION_JSON);
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        out.print(g.toJson(response));
+        out.flush();
+
+
     }
 
+    private static void sendFailureResponse(HttpServletResponse resp, String message) throws IOException {
+        Gson g = new Gson();
+        ConfirmOrderResponse orderResponse = new ConfirmOrderResponse();
+        Result result = new Result();
+        result.setStatus("failure");
+        result.setMessage(message);
+        orderResponse.setResult(result);
+        PrintWriter out = resp.getWriter();
+        resp.setContentType(MediaType.APPLICATION_JSON);
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        out.print(g.toJson(orderResponse));
+        out.flush();
+    }
 
 }

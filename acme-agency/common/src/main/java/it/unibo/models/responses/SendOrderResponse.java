@@ -15,11 +15,11 @@ public class SendOrderResponse {
     @Expose
     private Result result;
 
-    public void setBank_url(String bank_url) {
+    public void setBankUrl(String bank_url) {
         this.bank_url = bank_url;
     }
 
-    public void setTotal_price(String total_price) {
+    public void setTotalPrice(String total_price) {
         this.total_price = total_price;
     }
 

@@ -3,6 +3,7 @@ package it.unibo.models;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RestaurantOrder {
 
@@ -38,6 +39,14 @@ public class RestaurantOrder {
                 ", from='" + from + '\'' +
                 ", to='" + to + '\'' +
                 '}';
+    }
+
+    public Double getTotalPrice(){
+
+        return dishes
+                .stream()
+                .mapToDouble(f -> Double.parseDouble(f.getPrice()))
+                .sum();
     }
 }
 
