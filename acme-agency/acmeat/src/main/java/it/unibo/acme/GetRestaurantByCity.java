@@ -1,22 +1,29 @@
 package it.unibo.acme;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.entities.Restaurant;
+import camundajar.com.google.gson.GsonBuilder;
+import it.unibo.models.RestaurantList;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import java.util.List;
 
 public class GetRestaurantByCity implements JavaDelegate {
+
+
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        Gson g = builder.create();
+
         String city = (String) delegateExecution.getVariable("city");
         RestaurantRepository repo = new RestaurantRepositoryImpl();
-        List<Restaurant> restaurants = repo.getRestaurantsByCity(city);
-        Gson g = new Gson();
+        RestaurantList restaurants = new RestaurantList();
+        restaurants.setRestaurants(repo.getAvailableRestaurantsByCity(city));
+
         delegateExecution.setVariable("restaurants", g.toJson(restaurants));
 
     }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "distance.js",
   "scripts": {
-    "start": "node distance.js -a arg [API_KEY]",
+    "start": "node distance.js -a arg dc98ed00-98b8-4104-9fc9-3ee4398b8350",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -1,4 +1,4 @@
-package it.unibo.models.entities;
+package it.unibo.models;
 
 import com.google.gson.annotations.Expose;
 import it.unibo.models.DeliveryOrder;
@@ -8,12 +8,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class DeliveryOrders {
+public class DeliveryOrderList {
 
     @Expose
     private List<DeliveryOrder> orders;
 
-    public DeliveryOrders() {
+    public DeliveryOrderList() {
         orders = new LinkedList<>();
     }
 

@@ -1,9 +1,12 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
+import camundajar.com.google.gson.GsonBuilder;
+import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.GetRestaurantResponse;
 import it.unibo.models.entities.Restaurant;
 import it.unibo.models.Result;
+import it.unibo.models.responses.GetRestaurantResponseOutOfTime;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import javax.inject.Inject;
@@ -23,6 +26,8 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.MediaType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jboss.weld.event.Status;
+import org.joda.time.DateTime;
 
 import static it.unibo.utils.AcmeVariables.PROCESS_ID;
 import static it.unibo.utils.AcmeMessages.START_MESSAGE;
@@ -40,36 +45,55 @@ public class GetRestaurants extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         RuntimeService service = processEngine.getRuntimeService();
-
-        HttpSession session = req.getSession(true);
-
-        if (!session.isNew()) {
-            LOGGER.warn("Client with active session requested new process");
-            session.invalidate();
-            session = req.getSession(true);
-        }
-
         Map<String, Object> cityVariable = new HashMap<>();
         String cityParam = "city";
         cityVariable.put(cityParam,req.getParameter(cityParam));
-
         String processInstanceId = service
                 .startProcessInstanceByMessage(START_MESSAGE, cityVariable)
                 .getProcessInstanceId();
-        session.setAttribute(PROCESS_ID, processInstanceId);
-        LOGGER.info("Started process instance with id: {}",processInstanceId);
 
-        Gson g = new Gson();
-        GetRestaurantResponse response = new GetRestaurantResponse();
-        response.setRestaurants(
-                g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"), ArrayList.class));
-        boolean areRestaurantsAvailable = restaurantsAvailable(response.getRestaurants());
-        response.setResult(fillResult(areRestaurantsAvailable));
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(response));
-        out.flush();
+        GsonBuilder builder = new GsonBuilder();
+        builder.serializeNulls();
+        Gson g = builder.create();
+
+        DateTime dt = new DateTime();  // current time
+        int hours = dt.getHourOfDay(); // gets hour of day
+
+        // TODO: to be removed
+        if((hours>=10) && (hours <=23)){ // access in time
+            HttpSession session = req.getSession(true);
+
+            if (!session.isNew()) {
+                LOGGER.warn("Client with active session requested new process");
+                session.invalidate();
+                session = req.getSession(true);
+            }
+
+            session.setAttribute(PROCESS_ID, processInstanceId);
+            LOGGER.info("Started process instance with id: {}",processInstanceId);
+
+
+            GetRestaurantResponse response = new GetRestaurantResponse();
+            RestaurantList restaurants = g.fromJson((String) service.getVariables(processInstanceId).get("restaurants"),RestaurantList.class);
+            response.setRestaurants(restaurants);
+            response.setResult(fillResult(!restaurants.isEmpty()));
+            PrintWriter out = resp.getWriter();
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            out.print(g.toJson(response));
+            out.flush();
+        }else{// access out of time
+
+            GetRestaurantResponseOutOfTime  response = new GetRestaurantResponseOutOfTime();
+            response.setResult(new Result("success","You have requested the restaurants out of opening time, retry between 10 a.m. and 23.59 p.m."));
+
+            PrintWriter out = resp.getWriter();
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            out.print(g.toJson(response));
+            out.flush();
+        }
+
     }
 
     private Result fillResult(boolean areFound){
@@ -84,8 +108,4 @@ public class GetRestaurants extends HttpServlet {
         return result;
     }
 
-    private boolean restaurantsAvailable(List<Restaurant> restaurants){
-        LOGGER.debug("Found "+restaurants.size()+" restaurants");
-        return restaurants.size()>0;
-    }
 }

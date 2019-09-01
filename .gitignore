@@ -52,3 +52,5 @@ bankService/.idea/
 acmeat/.idea/
 
 bankService/target/
+
+gisService/package.json
