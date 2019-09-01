@@ -11,10 +11,10 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "bd7d94d4-5b59-4017-80aa-8dcb25894722",
+						"id": "8c9722ce-3f76-45d7-9883-cdaeb3a5899b",
 						"exec": [
-							"var jsonData = JSON.parse(responseBody);",
-							"postman.setEnvironmentVariable(\"session_id\", jsonData.session_id);"
+							"pm.environment.set('cookie', pm.cookies.get('JSESSIONID'))",
+							"console.log(pm.environment.get('cookie'))"
 						],
 						"type": "text/javascript"
 					}
@@ -22,7 +22,13 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "http://localhost:8080/acmeat-ws/get-restaurant?city=Bologna",
 					"protocol": "http",
@@ -111,7 +117,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+					"raw": "{\n\t\"restaurant\": \"debug\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/acmeat-ws/send-order",
@@ -188,7 +194,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/acmeat-ws/confirm?token=a5948156-9900-4808-83f5-6778002c3c15",
+					"raw": "http://localhost:8080/acmeat-ws/confirm?token=4247a6e3-5abc-415b-9a1b-d8912d2eff94",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -201,12 +207,71 @@
 					"query": [
 						{
 							"key": "token",
-							"value": "a5948156-9900-4808-83f5-6778002c3c15"
+							"value": "4247a6e3-5abc-415b-9a1b-d8912d2eff94"
 						}
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "4. AbortOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/acmeat-ws/abort",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"acmeat-ws",
+						"abort"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "4. AbortOrder",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/abort",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"abort"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=ISO-8859-1"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 31 Aug 2019 19:55:39 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"Confirmed\"\n    }\n}"
+				}
+			]
 		}
 	]
 }

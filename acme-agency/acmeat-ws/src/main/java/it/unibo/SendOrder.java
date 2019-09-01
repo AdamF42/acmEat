@@ -76,14 +76,17 @@ public class SendOrder extends HttpServlet {
             }
 
             SendOrderResponse orderResponse = new SendOrderResponse();
-            orderResponse.bank_url=BANK_REST_SERVICE_URL;
+            orderResponse.setBank_url(BANK_REST_SERVICE_URL);
             // TODO: calculate total . . .
-            orderResponse.total_price= Double.toString(
+            orderResponse.setTotal_price(Double.toString(
                     deliveryOrder.getPrice() +
-                            Double.parseDouble(order.dishes.get(0).price));
-            orderResponse.result=new Result();
-            orderResponse.result.setStatus("success");
-            orderResponse.result.setMessage("");
+                            Double.parseDouble(order.dishes.get(0).price)));
+
+            Result result = new Result();
+            result.setStatus("success");
+            result.setMessage("");
+            orderResponse.setResult(result);
+
             PrintWriter out = resp.getWriter();
             resp.setContentType(MediaType.APPLICATION_JSON);
             resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -99,11 +102,12 @@ public class SendOrder extends HttpServlet {
     // TODO: move in other place
     public static void sendFailureResponse(HttpServletResponse resp, String message) throws IOException {
         Gson g = new Gson();
-//        LOGGER.warn(message);
         SendOrderResponse orderResponse = new SendOrderResponse();
-        orderResponse.result=new Result();
-        orderResponse.result.setStatus("failure");
-        orderResponse.result.setMessage(message);
+        Result result = new Result();
+        result.setStatus("failure");
+        result.setMessage(message);
+        orderResponse.setResult(result);
+
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());

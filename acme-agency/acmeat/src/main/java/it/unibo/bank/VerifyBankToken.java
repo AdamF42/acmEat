@@ -19,8 +19,7 @@ public class VerifyBankToken implements JavaDelegate {
             VerifyToken verifyToken = new VerifyToken();
             verifyToken.setSid(token);
             VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
-            if(resp.isSuccess())
-                delegateExecution.setVariable(IS_VALID_TOKEN, true);
+            delegateExecution.setVariable(IS_VALID_TOKEN, resp.isSuccess());
         } catch (Exception e){
             e.printStackTrace();
             delegateExecution.setVariable(IS_VALID_TOKEN, false);

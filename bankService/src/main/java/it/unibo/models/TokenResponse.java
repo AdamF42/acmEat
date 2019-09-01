@@ -6,5 +6,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TokenResponse {
     public String token;
     public String user;
-    public double price;
+    public String status;
 }

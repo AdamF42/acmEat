@@ -16,14 +16,14 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "BankService", targetNamespace = "soseng.wsdl", wsdlLocation = "/bankService.wsdl")
+@WebServiceClient(name = "BankService", targetNamespace = "it.unibo.wsdl", wsdlLocation = "/bankService.wsdl")
 public class BankService
     extends Service
 {
 
     private final static URL BANKSERVICE_WSDL_LOCATION;
     private final static WebServiceException BANKSERVICE_EXCEPTION;
-    private final static QName BANKSERVICE_QNAME = new QName("soseng.wsdl", "BankService");
+    private final static QName BANKSERVICE_QNAME = new QName("it.unibo.wsdl", "BankService");
 
     static {
         BANKSERVICE_WSDL_LOCATION = it.unibo.bank.generated.BankService.class.getResource("/bankService.wsdl");
@@ -65,7 +65,7 @@ public class BankService
      */
     @WebEndpoint(name = "BankServicePort")
     public Bank getBankServicePort() {
-        return super.getPort(new QName("soseng.wsdl", "BankServicePort"), Bank.class);
+        return super.getPort(new QName("it.unibo.wsdl", "BankServicePort"), Bank.class);
     }
 
     /**
@@ -77,7 +77,7 @@ public class BankService
      */
     @WebEndpoint(name = "BankServicePort")
     public Bank getBankServicePort(WebServiceFeature... features) {
-        return super.getPort(new QName("soseng.wsdl", "BankServicePort"), Bank.class, features);
+        return super.getPort(new QName("it.unibo.wsdl", "BankServicePort"), Bank.class, features);
     }
 
     private static URL __getWsdlLocation() {

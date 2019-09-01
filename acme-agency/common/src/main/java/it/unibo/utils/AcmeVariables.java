@@ -14,4 +14,5 @@ public class AcmeVariables {
     public static final String RESTAURANT_AVAILABLE = "RestaurantAvailable";
     public static final String USER_TOKEN = "UserBankToken";
     public static final String IS_VALID_TOKEN = "IsValidToken";
+    public static final String IS_USER_REFOUNDED = "IsValidToken";
 }
