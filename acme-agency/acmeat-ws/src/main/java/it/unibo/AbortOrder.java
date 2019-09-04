@@ -1,14 +1,11 @@
 package it.unibo;
 
 import com.google.gson.Gson;
-import it.unibo.models.Result;
-import it.unibo.models.responses.AbortOrderResponse;
-import it.unibo.models.responses.ConfirmOrderResponse;
-import it.unibo.utils.AcmeMessages;
+import it.unibo.models.response.Response;
+import it.unibo.models.response.factory.ResponseFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -38,28 +35,21 @@ public class AbortOrder extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        ResponseFactory responseFactory = new ResponseFactory();
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute(PROCESS_ID) == null) {
-            sendFailureResponse(resp, "No active session found");
-            return;
+        String camundaProcessId = session!=null?(String) session.getAttribute(PROCESS_ID):"";
+
+        Response response;
+        if (session == null || session.getAttribute(PROCESS_ID) == null ||
+                (!process.correlate(camundaProcessId,ABORT_ORDER).isCorrelationSuccessful() && session.getAttribute(ABORT_ORDER)==null)) {
+            response = responseFactory.getFailureResponse("No active session found");
+        } else {
+            session.setAttribute(ABORT_ORDER,ABORT_ORDER);
+            response = responseFactory.getSuccessResponse();
         }
 
-        String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
-        MyProcessInstance process = new MyProcessInstance(processEngine);
-
-        if(!process.correlate(camundaProcessId,ABORT_ORDER).isCorrelationSuccessful() && session.getAttribute(ABORT_ORDER)==null){
-            sendFailureResponse(resp, "No active session found");
-            return;
-        }
-
-        session.setAttribute(ABORT_ORDER,ABORT_ORDER);
-
-        // return to user confirmation
-        AbortOrderResponse response = new AbortOrderResponse();
-        Result result = new Result();
-        result.setMessage("Confirmed");
-        result.setStatus("success");
-        response.setResult(result);
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
@@ -69,18 +59,4 @@ public class AbortOrder extends HttpServlet {
 
     }
 
-    private static void sendFailureResponse(HttpServletResponse resp, String message) throws IOException {
-        Gson g = new Gson();
-        AbortOrderResponse orderResponse = new AbortOrderResponse();
-        Result result = new Result();
-        result.setStatus("failure");
-        result.setMessage(message);
-        orderResponse.setResult(result);
-
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(orderResponse));
-        out.flush();
-    }
 }

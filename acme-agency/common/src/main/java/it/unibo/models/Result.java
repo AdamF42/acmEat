@@ -4,7 +4,10 @@ package it.unibo.models;
 import com.google.gson.annotations.Expose;
 
 public class Result {
-    //TODO: write an enum for status
+
+    public static final String SUCCESS = "success";
+    public static final String FAILURE = "failure";
+
     @Expose
     private String status;
 

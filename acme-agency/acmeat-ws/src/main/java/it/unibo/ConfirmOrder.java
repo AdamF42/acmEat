@@ -1,8 +1,8 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.Result;
-import it.unibo.models.responses.ConfirmOrderResponse;
+import it.unibo.models.response.Response;
+import it.unibo.models.response.factory.ResponseFactory;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,61 +33,36 @@ public class ConfirmOrder extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
+        ResponseFactory responseFactory = new ResponseFactory();
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute(PROCESS_ID) == null){
-            LOGGER.warn("No active session found");
-            sendFailureResponse(resp,"No active session found");
-            return;
-        }
+        String camundaProcessId = session!=null?(String) session.getAttribute(PROCESS_ID):"";
 
-        String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
-        MyProcessInstance process = new MyProcessInstance(processEngine);
-
-        if(process.isActive(camundaProcessId)){
+        if(process.isActive(camundaProcessId))
             process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
-        }
 
         process.correlate(camundaProcessId, CONFIRM_ORDER);
         Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
 
-        if(!process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null){
-                sendFailureResponse(resp, "No active process found");
-                return;
+        Response response;
+        if (session == null || session.getAttribute(PROCESS_ID) == null
+            || (!process.correlate(camundaProcessId,CONFIRM_ORDER).isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null)
+            || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null ){
+            LOGGER.warn("No active session found");
+            response = responseFactory.getFailureResponse("No active session found");
+        } else if (isValidToken!=null && !isValidToken) {
+            response = responseFactory.getFailureResponse("Invalid bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else {
+            response = responseFactory.getSuccessResponse();
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         }
 
-        session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
-
-        if(isValidToken!=null && !isValidToken){
-            sendFailureResponse(resp, "Invalid bank token");
-            return;
-        }
-        // return to user confirmation
-        ConfirmOrderResponse response = new ConfirmOrderResponse();
-        Result result = new Result();
-        result.setMessage("Confirmed");
-        result.setStatus("success");
-        response.setResult(result);
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         out.print(g.toJson(response));
         out.flush();
 
-
     }
-
-    private static void sendFailureResponse(HttpServletResponse resp, String message) throws IOException {
-        Gson g = new Gson();
-        ConfirmOrderResponse orderResponse = new ConfirmOrderResponse();
-        Result result = new Result();
-        result.setStatus("failure");
-        result.setMessage(message);
-        orderResponse.setResult(result);
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(orderResponse));
-        out.flush();
-    }
-
 }

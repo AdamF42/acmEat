@@ -3,8 +3,8 @@ package it.unibo;
 import camundajar.com.google.gson.Gson;
 import camundajar.com.google.gson.GsonBuilder;
 import it.unibo.models.RestaurantList;
-import it.unibo.models.responses.GetRestaurantResponse;
-import it.unibo.models.Result;
+import it.unibo.models.response.Response;
+import it.unibo.models.response.factory.ResponseFactory;
 import org.camunda.bpm.engine.ProcessEngine;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -46,7 +46,7 @@ public class GetRestaurants extends HttpServlet {
             session = req.getSession(true);
         }
 
-        MyProcessInstance process = new MyProcessInstance(processEngine);
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         Map<String, Object> cityVariable = new HashMap<>();
         String cityParam = "city";
         cityVariable.put(cityParam,req.getParameter(cityParam));
@@ -65,36 +65,24 @@ public class GetRestaurants extends HttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}",processInstanceId);
 
-        GetRestaurantResponse response = new GetRestaurantResponse();
+        Response response;
+        ResponseFactory responseFactory = new ResponseFactory();
         RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId,RESTAURANTS),RestaurantList.class);
-        response.setRestaurants(restaurants);
-        response.setResult(fillResult(outOfTimeVar!=null, restaurants!=null && !restaurants.isEmpty(),session));
+
+        if (outOfTimeVar != null){
+            response = responseFactory.getFailureResponse("No restaurant available. Retry between 10 a.m. and 23.59 p.m.");
+        } else if (restaurants == null  || restaurants.isEmpty()){
+            response = responseFactory.getFailureResponse("No restaurants available in selected city");
+        } else {
+            response = responseFactory.getSuccessResponse(restaurants);
+        }
+
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         out.print(g.toJson(response));
         out.flush();
 
-    }
-
-    private Result fillResult(boolean isOutOfTime, boolean areFound, HttpSession session){
-        Result result = new Result();
-        if (isOutOfTime){
-            session.setAttribute("status",ClientStatus.FAILURE);
-            result.setStatus("failure");
-            result.setMessage("No restaurant available. Retry between 10 a.m. and 23.59 p.m.");
-            return result;
-        }
-        if (!areFound){
-            session.setAttribute("status",ClientStatus.FAILURE);
-            result.setStatus("failure");
-            result.setMessage("No restaurants available in selected city");
-            return result;
-        }
-        session.setAttribute("status",ClientStatus.GET_RESTAURANTS);
-        result.setStatus("success");
-        result.setMessage("");
-        return result;
     }
 
 }

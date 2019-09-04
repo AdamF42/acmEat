@@ -6,13 +6,13 @@ import org.camunda.bpm.engine.history.HistoricVariableInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import java.util.Map;
 
-public class MyProcessInstance {
+public class ProcessEngineWrapper {
 
     private ProcessEngine processEngine;
 
     private boolean isCorrelationSuccessful;
 
-    public MyProcessInstance(ProcessEngine processEngine) {
+    public ProcessEngineWrapper(ProcessEngine processEngine) {
         this.processEngine = processEngine;
         this.isCorrelationSuccessful = false;
     }
@@ -41,7 +41,7 @@ public class MyProcessInstance {
                 .startProcessInstanceByMessage(message, variable);
     }
 
-    public MyProcessInstance correlate(String processId, String message){
+    public ProcessEngineWrapper correlate(String processId, String message){
         try{
             this.processEngine
                     .getRuntimeService()
@@ -64,3 +64,4 @@ public class MyProcessInstance {
     }
 
 }
+
