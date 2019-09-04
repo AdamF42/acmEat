@@ -3,10 +3,7 @@ package it.unibo;
 import camundajar.com.google.gson.Gson;
 import it.unibo.models.Result;
 import it.unibo.models.responses.ConfirmOrderResponse;
-import it.unibo.models.responses.SendOrderResponse;
-import it.unibo.utils.AcmeMessages;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
@@ -50,16 +47,17 @@ public class ConfirmOrder extends HttpServlet {
             process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
         }
 
-        if(!process.correlate(camundaProcessId, CONFIRM_ORDER).isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null){
-            sendFailureResponse(resp, "No active session found");
-            return;
+        process.correlate(camundaProcessId, CONFIRM_ORDER);
+        Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
+
+        if(!process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null){
+                sendFailureResponse(resp, "No active process found");
+                return;
         }
 
         session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
 
-        Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
-
-        if(!isValidToken){
+        if(isValidToken!=null && !isValidToken){
             sendFailureResponse(resp, "Invalid bank token");
             return;
         }

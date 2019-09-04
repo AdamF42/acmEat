@@ -21,7 +21,7 @@ public class DeliveryOrderList {
         return this.orders.size()==0;
     }
 
-    public DeliveryOrder getMinPriceOrder(){
+    public DeliveryOrder calculateMinPriceOrder(){
         return this.orders.stream()
                 .min(Comparator.comparing(DeliveryOrder::getPrice))
                 .orElseThrow(NoSuchElementException::new);

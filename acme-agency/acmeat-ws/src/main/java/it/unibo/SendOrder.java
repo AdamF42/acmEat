@@ -7,7 +7,6 @@ import it.unibo.utils.AcmeMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
-
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
-
 import static it.unibo.SessionVariables.STATUS;
 import static it.unibo.models.Status.AVAILABLE;
 import static it.unibo.utils.AcmeMessages.SEND_ORDER;
@@ -82,7 +80,7 @@ public class SendOrder extends HttpServlet {
         SendOrderResponse orderResponse = new SendOrderResponse();
         orderResponse.setBankUrl(BANK_REST_SERVICE_URL);
         orderResponse.setTotalPrice(Double.toString(
-                deliveryOrder.getPrice() + restaurantOrder.getTotalPrice()));
+                deliveryOrder.getPrice() + restaurantOrder.calculateTotalPrice()));
         Result result = new Result();
         result.setStatus("success");
         result.setMessage("");

@@ -7,7 +7,6 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.RestaurantOrder;
-import it.unibo.models.Status;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -44,6 +43,7 @@ public class GetFoodAvailability implements JavaDelegate {
 						execution.setVariable(RESTAURANT_ORDER, responseOrder);
 					return;
 				}
+
 				requestOrder.status=NOT_AVAILABLE;
 				execution.setVariable(RESTAURANT_ORDER, requestOrder);
 

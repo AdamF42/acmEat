@@ -3,7 +3,6 @@ package it.unibo.models;
 import com.google.gson.annotations.Expose;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RestaurantOrder {
 
@@ -28,20 +27,7 @@ public class RestaurantOrder {
     @Expose
     public String to;
 
-    @Override
-    public String toString() {
-        return "RestaurantOrder{" +
-                "restaurant='" + restaurant + '\'' +
-                ", dishes=" + dishes +
-                ", delivery_time='" + delivery_time + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                '}';
-    }
-
-    public Double getTotalPrice(){
+    public Double calculateTotalPrice(){
 
         return dishes
                 .stream()
