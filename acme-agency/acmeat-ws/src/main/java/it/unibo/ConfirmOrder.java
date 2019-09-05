@@ -1,11 +1,10 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.Result;
-import it.unibo.models.responses.ConfirmOrderResponse;
-import it.unibo.utils.AcmeMessages;
+import it.unibo.models.responses.Response;
+import it.unibo.models.factory.ResponseFactory;
+import it.unibo.utils.ProcessEngineWrapper;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javax.inject.Inject;
@@ -20,8 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-
-import static it.unibo.SendOrder.sendFailureResponse;
+import static it.unibo.utils.AcmeMessages.CONFIRM_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
 @WebServlet("/confirm")
@@ -36,62 +34,36 @@ public class ConfirmOrder extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 
-        RuntimeService service = processEngine.getRuntimeService();
+        ResponseFactory responseFactory = new ResponseFactory();
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         HttpSession session = req.getSession(false);
+        String camundaProcessId = session!=null?(String) session.getAttribute(PROCESS_ID):"";
 
-        if (session == null || session.getAttribute(AcmeMessages.GET_ORDER) == null){
+        if(process.isActive(camundaProcessId))
+            process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
+
+        process.correlate(camundaProcessId, CONFIRM_ORDER);
+        Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
+
+        Response response;
+        if (session == null || camundaProcessId == null
+            || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null ){
             LOGGER.warn("No active session found");
-            sendFailureResponse(resp,"No active session found");
-            return;
+            response = responseFactory.getFailureResponse("No active session found");
+        } else if (isValidToken!=null && !isValidToken) {
+            LOGGER.warn("Invalid bank token");
+            response = responseFactory.getFailureResponse("Invalid bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else {
+            response = responseFactory.getSuccessResponse();
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         }
 
-        String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
+        PrintWriter out = resp.getWriter();
+        resp.setContentType(MediaType.APPLICATION_JSON);
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        out.print(g.toJson(response));
+        out.flush();
 
-        if (camundaProcessId == null ) {
-            LOGGER.warn("No process id found");
-            sendFailureResponse(resp, "No process id found");
-            return;
-        }
-
-        try{
-            session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
-
-            // TODO: check processId status in DB...
-            //  Need to modify BPMN since it do not check order confirmation status for delivery
-            //  and restaurant service
-
-            service.setVariable(
-                    camundaProcessId,
-                    USER_TOKEN,
-                    req.getParameter("token"));
-            service.createMessageCorrelation(AcmeMessages.CONFIRM_ORDER)
-                    .processInstanceId(camundaProcessId)
-                    .correlate();
-
-
-            boolean isValidToken = (boolean) service.getVariable(camundaProcessId, IS_VALID_TOKEN);
-
-            if(!isValidToken){
-                sendFailureResponse(resp, "Invalid bank token");
-                return;
-            }
-            // return to user confirmation
-            ConfirmOrderResponse response = new ConfirmOrderResponse();
-            Result result = new Result();
-            result.setMessage("Confirmed");
-            result.setStatus("success");
-            response.setResult(result);
-            PrintWriter out = resp.getWriter();
-            resp.setContentType(MediaType.APPLICATION_JSON);
-            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            out.print(g.toJson(response));
-            out.flush();
-
-        }catch (Exception e){
-            LOGGER.error(e);
-            sendFailureResponse(resp, e.getMessage());
-        }
     }
-
-
 }

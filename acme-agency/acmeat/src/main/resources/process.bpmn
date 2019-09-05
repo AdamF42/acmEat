@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1oc5gj8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1oc5gj8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.3.1">
   <bpmn:collaboration id="Collaboration_0dvevmx">
     <bpmn:participant id="Participant_029ukuc" name="ACME" processRef="Process_1" />
     <bpmn:participant id="Participant_0lxljpp" name="GIS" processRef="Process_1s5c0in" />
@@ -72,7 +72,7 @@
     <bpmn:sequenceFlow id="SequenceFlow_1rkxftm" sourceRef="ParallelGateway_12de2ey" targetRef="ExclusiveGateway_0yb94fa" />
     <bpmn:sequenceFlow id="SequenceFlow_1prym05" sourceRef="SubProcess_1ormmmj" targetRef="ParallelGateway_0jzn098" />
     <bpmn:sequenceFlow id="SequenceFlow_03xf9sq" name="Yes" sourceRef="ExclusiveGateway_0gmgze2" targetRef="SubProcess_1ormmmj">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("DeliveryCompaniesProposal") != null &amp;&amp; execution.getVariable("RestaurantAvailable") != null}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("DeliveryCompaniesProposal") != null &amp;&amp; execution.getVariable("restaurantAvailability") != null }</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_1saptrg" name="No" sourceRef="ExclusiveGateway_0gmgze2" targetRef="IntermediateThrowEvent_0spr3hv" />
     <bpmn:sequenceFlow id="SequenceFlow_1mcv9ee" sourceRef="ParallelGateway_1tnwkgd" targetRef="ExclusiveGateway_0gmgze2" />
@@ -315,7 +315,7 @@
     <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1nkxq78" name="Accesso fuori orario">
       <bpmn:incoming>SequenceFlow_19wk24w</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0zyh601</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_13ibdz2" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_13ibdz2" camunda:class="it.unibo.acme.SetAccessOutOfTime" />
     </bpmn:intermediateThrowEvent>
     <bpmn:parallelGateway id="ParallelGateway_1tnwkgd">
       <bpmn:incoming>SequenceFlow_0tioawq</bpmn:incoming>

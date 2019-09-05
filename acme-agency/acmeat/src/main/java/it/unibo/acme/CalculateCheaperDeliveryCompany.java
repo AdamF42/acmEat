@@ -26,9 +26,9 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
             return;
         }
 
-        DeliveryOrder order = deliveryCompanies.getMinPriceOrder();
+        DeliveryOrder order = deliveryCompanies.calculateMinPriceOrder();
 
-        delegateExecution.setVariable(DELIVERY_ORDER, deliveryCompanies.getMinPriceOrder());
+        delegateExecution.setVariable(DELIVERY_ORDER, deliveryCompanies.calculateMinPriceOrder());
         LOGGER.info("Selected delivery company: "+ order.company);
 
     }

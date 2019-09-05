@@ -1,18 +1,13 @@
 package it.unibo.models;
 
 
-import javax.xml.bind.annotation.XmlRootElement;
+import com.google.gson.annotations.Expose;
 
-@XmlRootElement
 public class RestaurantAvailability {
-    public String restaurant;
-    public Boolean is_available;
 
-    @Override
-    public String toString() {
-        return "RestaurantAvailability{" +
-                "restaurantName='" + restaurant + '\'' +
-                ", open=" + is_available +
-                '}';
-    }
+    @Expose
+    public String name;
+
+    @Expose
+    public Boolean is_available;
 }

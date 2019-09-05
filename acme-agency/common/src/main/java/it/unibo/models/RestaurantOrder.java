@@ -27,17 +27,12 @@ public class RestaurantOrder {
     @Expose
     public String to;
 
-    @Override
-    public String toString() {
-        return "RestaurantOrder{" +
-                "restaurant='" + restaurant + '\'' +
-                ", dishes=" + dishes +
-                ", delivery_time='" + delivery_time + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                ", from='" + from + '\'' +
-                ", to='" + to + '\'' +
-                '}';
+    public Double calculateTotalPrice(){
+
+        return dishes
+                .stream()
+                .mapToDouble(f -> Double.parseDouble(f.getPrice()))
+                .sum();
     }
 }
 

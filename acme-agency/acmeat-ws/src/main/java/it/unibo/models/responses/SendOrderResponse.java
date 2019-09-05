@@ -2,9 +2,10 @@ package it.unibo.models.responses;
 
 import com.google.gson.annotations.Expose;
 import it.unibo.models.Result;
+import it.unibo.models.SendOrderContent;
 
 
-public class SendOrderResponse {
+public class SendOrderResponse  implements Response {
 
     @Expose
     private String bank_url;
@@ -15,15 +16,10 @@ public class SendOrderResponse {
     @Expose
     private Result result;
 
-    public void setBank_url(String bank_url) {
-        this.bank_url = bank_url;
-    }
-
-    public void setTotal_price(String total_price) {
-        this.total_price = total_price;
-    }
-
-    public void setResult(Result result) {
+    public SendOrderResponse(SendOrderContent content, Result result) {
+        this.bank_url = content.bank_url;
+        this.total_price = content.total_price;
         this.result = result;
     }
+
 }

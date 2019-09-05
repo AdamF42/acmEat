@@ -2,11 +2,14 @@ package it.unibo;
 
 import camundajar.com.google.gson.Gson;
 import it.unibo.models.*;
-import it.unibo.models.responses.SendOrderResponse;
+import it.unibo.models.responses.Response;
+import it.unibo.models.SendOrderContent;
+import it.unibo.models.factory.ResponseFactory;
+import it.unibo.utils.AcmeMessages;
+import it.unibo.utils.ProcessEngineWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +22,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static it.unibo.utils.AcmeMessages.GET_ORDER;
+import static it.unibo.models.Status.AVAILABLE;
+import static it.unibo.utils.AcmeMessages.SEND_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 
@@ -37,81 +41,47 @@ public class SendOrder extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        ResponseFactory responseFactory = new ResponseFactory();
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         HttpSession session = req.getSession(false);
-        if (session == null ) {
-            sendFailureResponse(resp, "No active session found");
-            return;
-        }
+        String camundaProcessId = session!=null?(String) session.getAttribute(PROCESS_ID):"";
 
-        String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
-
-        if (camundaProcessId == null ) {
-            sendFailureResponse(resp, "No process associated to http session");
-            return;
-        }
-
-        RuntimeService service = processEngine.getRuntimeService();
-        RestaurantOrder order = g.fromJson(req.getReader(), RestaurantOrder.class);
-
-        //TODO: check the process status in db
-
-        try{
-            service.setVariable(
+        if(process.isActive(camundaProcessId))
+            process.setVariable(
                     camundaProcessId,
                     RESTAURANT_ORDER,
-                    order);
+                    g.fromJson(req.getReader(), RestaurantOrder.class));
 
-            service.createMessageCorrelation(GET_ORDER)
-                    .processInstanceId(camundaProcessId)
-                    .correlate();
+        process.correlate(camundaProcessId, SEND_ORDER);
 
-            session.setAttribute(GET_ORDER,GET_ORDER);
+        DeliveryOrder deliveryOrder =
+                (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
-            DeliveryOrder deliveryOrder =
-                    (DeliveryOrder) service.getVariable(camundaProcessId, DELIVERY_ORDER);
+        RestaurantOrder restaurantOrder =
+                (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
 
-            if (deliveryOrder==null || deliveryOrder.getPrice()==null){
-                sendFailureResponse(resp, "No delivery companies available");
-                return;
-            }
-
-            SendOrderResponse orderResponse = new SendOrderResponse();
-            orderResponse.setBank_url(BANK_REST_SERVICE_URL);
-            // TODO: calculate total . . .
-            orderResponse.setTotal_price(Double.toString(
-                    deliveryOrder.getPrice() +
-                            Double.parseDouble(order.dishes.get(0).price)));
-
-            Result result = new Result();
-            result.setStatus("success");
-            result.setMessage("");
-            orderResponse.setResult(result);
-
-            PrintWriter out = resp.getWriter();
-            resp.setContentType(MediaType.APPLICATION_JSON);
-            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            out.print(g.toJson(orderResponse));
-            out.flush();
-
-        }catch (Exception e){
-            LOGGER.error(e);
-            sendFailureResponse(resp, e.getMessage());
+        Response response;
+        if (session == null || session.getAttribute(PROCESS_ID) == null
+            ||(!process.isCorrelationSuccessful()
+                && session.getAttribute(SEND_ORDER)==null)) {
+            response = responseFactory.getFailureResponse("No active session found");
+        } else if(deliveryOrder==null || deliveryOrder.getPrice()==null) {
+            response = responseFactory.getFailureResponse("No delivery companies available");
+            session.setAttribute(SEND_ORDER, AcmeMessages.SEND_ORDER);
+        } else if(restaurantOrder==null || restaurantOrder.status!=AVAILABLE){
+            response = responseFactory.getFailureResponse("Restaurant temporally unavailable");
+            session.setAttribute(SEND_ORDER, SEND_ORDER);
+        } else {
+            SendOrderContent content = new SendOrderContent(BANK_REST_SERVICE_URL,
+                    Double.toString(deliveryOrder.getPrice() + restaurantOrder.calculateTotalPrice()));
+            session.setAttribute(SEND_ORDER, SEND_ORDER);
+            response = responseFactory.getSuccessResponse(content);
         }
-    }
-
-    // TODO: move in other place
-    public static void sendFailureResponse(HttpServletResponse resp, String message) throws IOException {
-        Gson g = new Gson();
-        SendOrderResponse orderResponse = new SendOrderResponse();
-        Result result = new Result();
-        result.setStatus("failure");
-        result.setMessage(message);
-        orderResponse.setResult(result);
 
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(orderResponse));
+        out.print(g.toJson(response));
         out.flush();
     }
 

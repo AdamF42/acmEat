@@ -10,7 +10,6 @@ import it.unibo.models.RestaurantMenu;
 import it.unibo.models.entities.Restaurant;
 import it.unibo.utils.repo.RestaurantRepository;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,74 +20,68 @@ import java.util.stream.Collectors;
 
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
-    private List<Restaurant> restaurants ;
-    private Gson g = new Gson();
+    private List<Restaurant> restaurants;
+    private static final String DATABASE = "restaurant.json";
 
     @Override
-    public List<Restaurant> getAvailableRestaurantsByCity(String city) throws FileNotFoundException {
+    public List<Restaurant> getAvailableRestaurantsByCity(String city) {
 
         return this.restaurants
                 .stream()
-                .filter(company-> city.equals(company.city) && company.is_open)
+                .filter(company -> city.equals(company.city) && company.is_open)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Restaurant getRestaurantByName(String name) throws FileNotFoundException {
+    public Restaurant getRestaurantByName(String name) {
 
-         return this.restaurants
+        return this.restaurants
                 .stream()
-                .filter(company-> name.equals(company.name))
+                .filter(company -> name.equals(company.name))
                 .findAny()
                 .orElse(new Restaurant());
     }
 
+    @Override
+    public void addOrUpdateOpeningTime(RestaurantAvailability availability) throws IOException {
+
+        this.restaurants
+                .stream()
+                .filter(restaurant -> availability.name.equals(restaurant.name))
+                .forEach(restaurant -> restaurant.is_open = availability.is_available);
+
+        saveChanges();
+    }
 
     @Override
-    public void setOpening(RestaurantAvailability availability) throws IOException {
+    public void addOrUpdateMenu(RestaurantMenu restaurantMenuChange) throws IOException {
 
+        this.restaurants
+                .stream()
+                .filter(restaurant -> restaurantMenuChange.name.equals(restaurant.name))
+                .forEach(restaurant -> restaurant.setMenu(restaurantMenuChange.menu));
 
-        for (Restaurant restaurant : this.restaurants) {
-
-            if (restaurant.name.equals(availability.restaurant)) {
-                System.out.println("cambiando orari di apertura ");
-                restaurant.setIs_open(availability.is_available);
-                saveChanges();
-                return;
-            }
-        }
+        saveChanges();
     }
 
     public RestaurantRepositoryImpl() {
         try {
-            JsonReader reader = new JsonReader(new FileReader("restaurant.json"));
+            JsonReader reader = new JsonReader(new FileReader(DATABASE));
+            Gson g = new Gson();
+            //TODO: use RestaurantList
             Restaurant[] restaurantsFile = g.fromJson(reader, Restaurant[].class);
             this.restaurants = Arrays.asList(restaurantsFile);
-        } catch (Exception e){
-            this.restaurants=new ArrayList<>();
+        } catch (Exception e) {
+            this.restaurants = new ArrayList<>();
         }
     }
 
+    //TODO: move in DataBase
     private void saveChanges() throws IOException {
-        try (JsonWriter writer = new JsonWriter(new FileWriter("restaurant.json"))) {
+        try (JsonWriter writer = new JsonWriter(new FileWriter(DATABASE))) {
             Gson gson = new GsonBuilder().create();
-            JsonElement a=gson.toJsonTree(this.restaurants);
+            JsonElement a = gson.toJsonTree(this.restaurants);
             gson.toJson(a, writer);
         }
-    }
-
-    @Override
-    public void setMenu(RestaurantMenu restaurantMenuChange) throws IOException {
-
-        for(int i =0;i<this.restaurants.size();i++) {
-            if (this.restaurants.get(i).name.equals(restaurantMenuChange.restaurant)) {
-                System.out.println("cambiando menu");
-                this.restaurants.get(i).setMenu(restaurantMenuChange.menu);
-                saveChanges();
-                return;
-            }
-        }
-
-
     }
 }

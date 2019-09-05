@@ -10,11 +10,16 @@ public class Dish {
     @Expose
     public String price;
 
-    public Dish() { }
+    public Dish() {
+    }
 
     public Dish(String name, String price) {
         this.name = name;
         this.price = price;
+    }
+
+    public String getPrice() {
+        return price;
     }
 
     @Override

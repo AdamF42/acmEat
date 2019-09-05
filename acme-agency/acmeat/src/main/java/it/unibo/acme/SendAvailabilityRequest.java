@@ -16,7 +16,6 @@ import it.unibo.utils.repo.DeliveryCompaniesRepository;
 import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -32,7 +31,13 @@ public class SendAvailabilityRequest implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
+        DeliveryOrderList deliveryCompanies = new DeliveryOrderList();
         RestaurantOrder userOrder = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
+
+        if(userOrder==null){
+            delegateExecution.setVariable(DELIVERY_COMPANIES_PROPOSAL, deliveryCompanies);
+            return;
+        }
 
         DeliveryOrder order = new DeliveryOrder();
         order.delivery_time = userOrder.delivery_time;
@@ -64,7 +69,6 @@ public class SendAvailabilityRequest implements JavaDelegate {
             }
         }
 
-        DeliveryOrderList deliveryCompanies = new DeliveryOrderList();
         for (CompletableFuture<ClientResponse> futureResponse : webResources) {
             try{
                 ClientResponse response = futureResponse.get();

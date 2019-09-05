@@ -8,7 +8,7 @@ import it.unibo.models.entities.Restaurant;
 import java.util.List;
 
 
-public class GetRestaurantResponse {
+public class GetRestaurantResponse implements Response {
 
     @Expose
     private List<Restaurant> restaurants;
@@ -16,11 +16,9 @@ public class GetRestaurantResponse {
     @Expose
     private Result result;
 
-    public List<Restaurant> getRestaurants() {
-        return restaurants;
-    }
-    public void setResult(Result result){this.result=result;}
-    public void setRestaurants(RestaurantList restaurants) {
+    public GetRestaurantResponse(RestaurantList restaurants, Result result) {
         this.restaurants = restaurants.getRestaurants();
+        this.result = result;
     }
 }
+

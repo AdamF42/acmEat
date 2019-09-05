@@ -1,13 +1,12 @@
 package it.unibo;
 
 import com.google.gson.Gson;
-import it.unibo.models.Result;
-import it.unibo.models.responses.ConfirmOrderResponse;
-import it.unibo.utils.AcmeMessages;
+import it.unibo.models.responses.Response;
+import it.unibo.models.factory.ResponseFactory;
+import it.unibo.utils.ProcessEngineWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
-import org.camunda.bpm.engine.RuntimeService;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -21,7 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-import static it.unibo.SendOrder.sendFailureResponse;
+import static it.unibo.utils.AcmeMessages.ABORT_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
 
@@ -38,50 +37,27 @@ public class AbortOrder extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        RuntimeService service = processEngine.getRuntimeService();
+        ResponseFactory responseFactory = new ResponseFactory();
+        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
         HttpSession session = req.getSession(false);
+        String camundaProcessId = session!=null?(String) session.getAttribute(PROCESS_ID):"";
 
-        if (session == null || session.getAttribute(AcmeMessages.GET_ORDER) == null) {
-            LOGGER.warn("No active session found");
-            sendFailureResponse(resp, "No active session found");
-            return;
+        Response response;
+        if (session == null || session.getAttribute(PROCESS_ID) == null ||
+                (!process.correlate(camundaProcessId,ABORT_ORDER).isCorrelationSuccessful() && session.getAttribute(ABORT_ORDER)==null)) {
+            response = responseFactory.getFailureResponse("No active session found");
+        } else {
+            session.setAttribute(ABORT_ORDER,ABORT_ORDER);
+            response = responseFactory.getSuccessResponse();
         }
 
-        String camundaProcessId = (String) session.getAttribute(PROCESS_ID);
+        PrintWriter out = resp.getWriter();
+        resp.setContentType(MediaType.APPLICATION_JSON);
+        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        out.print(g.toJson(response));
+        out.flush();
 
-        if (camundaProcessId == null) {
-            LOGGER.warn("No process id found");
-            sendFailureResponse(resp, "No process id found");
-            return;
-        }
-
-        try{
-            //session.setAttribute(AcmeMessages.CONFIRM_ORDER, AcmeMessages.CONFIRM_ORDER);
-
-            // TODO: check processId status in DB...
-
-
-            service.createMessageCorrelation(AcmeMessages.ABORT_ORDER)
-                    .processInstanceId(camundaProcessId)
-                    .correlate();
-
-
-            // return to user confirmation
-            ConfirmOrderResponse response = new ConfirmOrderResponse();
-            Result result = new Result();
-            result.setMessage("Confirmed");
-            result.setStatus("success");
-            response.setResult(result);
-            PrintWriter out = resp.getWriter();
-            resp.setContentType(MediaType.APPLICATION_JSON);
-            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            out.print(g.toJson(response));
-            out.flush();
-
-        }catch (Exception e){
-            LOGGER.error(e);
-            sendFailureResponse(resp, e.getMessage());
-        }
 
     }
+
 }
