@@ -1,4 +1,4 @@
-package it.unibo;
+package it.unibo.utils;
 
 import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;

@@ -1,4 +1,4 @@
-package it.unibo.models.response;
+package it.unibo.models;
 
 public class SendOrderContent {
     public String bank_url;

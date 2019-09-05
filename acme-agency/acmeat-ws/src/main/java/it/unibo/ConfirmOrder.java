@@ -1,8 +1,9 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.models.response.Response;
-import it.unibo.models.response.factory.ResponseFactory;
+import it.unibo.models.responses.Response;
+import it.unibo.models.factory.ResponseFactory;
+import it.unibo.utils.ProcessEngineWrapper;
 import org.camunda.bpm.engine.ProcessEngine;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,12 +46,12 @@ public class ConfirmOrder extends HttpServlet {
         Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
 
         Response response;
-        if (session == null || session.getAttribute(PROCESS_ID) == null
-            || (!process.correlate(camundaProcessId,CONFIRM_ORDER).isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null)
+        if (session == null || camundaProcessId == null
             || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER)==null ){
             LOGGER.warn("No active session found");
             response = responseFactory.getFailureResponse("No active session found");
         } else if (isValidToken!=null && !isValidToken) {
+            LOGGER.warn("Invalid bank token");
             response = responseFactory.getFailureResponse("Invalid bank token");
             session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         } else {

@@ -2,8 +2,8 @@ package it.unibo;
 
 import camundajar.com.google.gson.Gson;
 import it.unibo.models.*;
-import it.unibo.models.response.Response;
-import it.unibo.models.response.factory.ResponseFactory;
+import it.unibo.models.responses.Response;
+import it.unibo.models.factory.ResponseFactory;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -36,7 +36,7 @@ public class ChangeRestaurantMenu extends HttpServlet {
 
         //todo: Check if db insert fail
         RestaurantRepository repo = new RestaurantRepositoryImpl();
-        repo.setMenu(menuChange);
+        repo.addOrUpdateMenu(menuChange);
         processEngine.getRuntimeService()
                 .createMessageCorrelation(CHANGE_RESTAURANT_MENU)
                 .correlate();

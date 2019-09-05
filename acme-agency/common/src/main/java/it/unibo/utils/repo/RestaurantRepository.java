@@ -11,6 +11,6 @@ import java.util.List;
 public interface RestaurantRepository {
     List<Restaurant> getAvailableRestaurantsByCity(String city) throws FileNotFoundException;
     Restaurant getRestaurantByName(String name) throws FileNotFoundException;
-    void setOpening(RestaurantAvailability availability) throws IOException;
-    void setMenu(RestaurantMenu restaurantMenuChange ) throws IOException;
+    void addOrUpdateOpeningTime(RestaurantAvailability availability) throws IOException;
+    void addOrUpdateMenu(RestaurantMenu restaurantMenuChange ) throws IOException;
 }
