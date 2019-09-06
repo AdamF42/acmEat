@@ -7,15 +7,27 @@ import it.unibo.utils.repo.DeliveryCompaniesRepository;
 import java.util.List;
 
 public class DeliveryCompaniesRepositoryImpl implements DeliveryCompaniesRepository {
+
+
+    private DataBase db;
+
+    public DeliveryCompaniesRepositoryImpl(DataBase db) {
+        this.db = db;
+    }
+
+    public DeliveryCompaniesRepositoryImpl() {
+        this.db= new DataBase();
+    }
+
     @Override
     public List<DeliveryCompany> getAllDeliveryCompanies() {
-        return DataBase.deliveryCompanies;
+        return db.deliveryCompanies;
     }
 
     @Override
     public DeliveryCompany getCompanyByName(String name) {
 
-        return  DataBase.deliveryCompanies
+        return  db.deliveryCompanies
                 .stream()
                 .filter(company-> name.equals(company.name))
                 .findAny()
