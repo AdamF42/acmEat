@@ -45,6 +45,10 @@ acme-agency/acmeat-ws/\.idea/
 
 acme-agency/acmeat-ws/target/
 
+acme-agency/acmeat-frontend/\.idea/
+
+acme-agency/acmeat-frontend/target/
+
 acme-agency/common/target/
 
 bankService/.idea/
@@ -53,6 +57,4 @@ acmeat/.idea/
 
 bankService/target/
 
-guiClient/target/
 
-guiClient/.idea/

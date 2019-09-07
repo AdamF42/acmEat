@@ -31,7 +31,7 @@ public class RestaurantOrder {
 
         return dishes
                 .stream()
-                .mapToDouble(f -> Double.parseDouble(f.getPrice()))
+                .mapToDouble(f -> Double.parseDouble(f.price))
                 .sum();
     }
 }

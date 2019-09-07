@@ -43,10 +43,21 @@ public class ProcessEngineAdapter {
 
     public ProcessEngineAdapter correlate(String processId, String message){
         try{
-            this.processEngine
-                    .getRuntimeService()
+            this.processEngine.getRuntimeService()
                     .createMessageCorrelation(message)
                     .processInstanceId(processId)
+                    .correlate();
+            this.isCorrelationSuccessful = true;
+        }catch (Exception e){
+            this.isCorrelationSuccessful = false;
+        }
+        return this;
+    }
+
+    public ProcessEngineAdapter correlate(String message){
+        try{
+            this.processEngine.getRuntimeService()
+                    .createMessageCorrelation(message)
                     .correlate();
             this.isCorrelationSuccessful = true;
         }catch (Exception e){
