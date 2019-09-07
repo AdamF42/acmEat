@@ -1,0 +1,7 @@
+component_depth: 5
+languages:
+- java
+exclude:
+- /acme-agency/acmeat/src/test/*
+- /acme-agency/acmeat/src/main/java/it/unibo/bank/generated/*
+- /acme-agency/acmeat-ws/src/test/*
