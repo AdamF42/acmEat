@@ -6,5 +6,4 @@ public enum Status {
     ABORTED,
     AVAILABLE,
     NOT_AVAILABLE,
-    PENDING
 }

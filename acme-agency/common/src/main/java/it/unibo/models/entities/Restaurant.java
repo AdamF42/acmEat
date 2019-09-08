@@ -22,21 +22,9 @@ public class Restaurant {
     @Expose
     public Boolean is_open;
 
-    public Restaurant(){}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setMenu(List<Dish> menu) {
+    public void updateMenu(List<Dish> menu) {
         this.menu = menu;
     }
 
-    public void setIs_open(Boolean is_open) {
-        this.is_open = is_open;
-    }
 }
