@@ -7,9 +7,12 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.RestaurantOrder;
+import it.unibo.models.entities.Restaurant;
+import it.unibo.utils.UrlHelper;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+
 import java.util.logging.Logger;
 
 import static com.sun.jersey.api.client.ClientResponse.Status.OK;
@@ -24,18 +27,18 @@ public class SendOrder implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-        try{
+        try {
 
             // retrieve restaurant order
             RestaurantOrder order = (RestaurantOrder) execution.getVariable(RESTAURANT_ORDER);
 
-            // TODO: not handled possible null reference exception???
-            String queryURL = repo.getRestaurantByName(order.restaurant).url +"order";
+            Restaurant restaurant = repo.getRestaurantByName(order.restaurant);
+            String queryUrl = UrlHelper.getUrlOrStringEmpty(restaurant) + "order";
 
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             com.sun.jersey.api.client.Client client = Client.create(clientConfig);
-            WebResource webResourcePost = client.resource(queryURL);
-            ClientResponse response =  webResourcePost
+            WebResource webResourcePost = client.resource(queryUrl);
+            ClientResponse response = webResourcePost
                     .accept("application/json")
                     .type("application/json")
                     .post(ClientResponse.class, order);
@@ -45,7 +48,6 @@ public class SendOrder implements JavaDelegate {
             }
 
         } catch (Exception e) {
-            //TODO: log properly
             e.printStackTrace();
             LOGGER.severe(e.getMessage());
         }

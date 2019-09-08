@@ -8,6 +8,8 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.Status;
+import it.unibo.models.entities.DeliveryCompany;
+import it.unibo.utils.UrlHelper;
 import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -20,25 +22,25 @@ import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class AbortOrder implements JavaDelegate {
 
-	private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
+    private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
     private ClientConfig clientConfig = new DefaultClientConfig();
     private final Logger LOGGER = Logger.getLogger(AbortOrder.class.getName());
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-        try{
+        try {
             // retrieve delivery order
             DeliveryOrder deliveryOrder = (DeliveryOrder) execution.getVariable(DELIVERY_ORDER);
 
-            // TODO: not handled possible null reference exception???
-            String queryURL = repo.getCompanyByName(deliveryOrder.company).url +"order/" + deliveryOrder.id
-                    +"/status/" + Status.ABORTED.toString();
+            DeliveryCompany company = repo.getCompanyByName(deliveryOrder.company);
+            String queryURL = UrlHelper.getUrlOrStringEmpty(company) + "order/" + deliveryOrder.id
+                    + "/status/" + Status.ABORTED.toString();
 
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             Client client = Client.create(clientConfig);
             WebResource webResourcePost = client.resource(queryURL);
-            ClientResponse response =  webResourcePost
+            ClientResponse response = webResourcePost
                     .accept("application/json")
                     .type("application/json")
                     .put(ClientResponse.class);
@@ -48,7 +50,6 @@ public class AbortOrder implements JavaDelegate {
             }
 
         } catch (Exception e) {
-            //TODO: log properly
             e.printStackTrace();
             LOGGER.severe(e.getMessage());
         }

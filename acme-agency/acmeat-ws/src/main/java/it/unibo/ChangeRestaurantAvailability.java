@@ -33,7 +33,6 @@ public class ChangeRestaurantAvailability extends HttpServlet {
         ResponseFactory responseFactory = new ResponseFactory();
         RestaurantAvailability availability = g.fromJson(req.getReader(), RestaurantAvailability.class);
 
-        //todo: Check if db insert fail
         RestaurantRepository repo = new RestaurantRepositoryImpl();
         repo.addOrUpdateOpeningTime(availability);
 
