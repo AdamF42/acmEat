@@ -1,6 +1,9 @@
 package it.unibo.bank;
 
-import it.unibo.bank.generated.*;
+import it.unibo.bank.generated.Bank;
+import it.unibo.bank.generated.BankService;
+import it.unibo.bank.generated.VerifyToken;
+import it.unibo.bank.generated.VerifyTokenResponse;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
@@ -20,7 +23,7 @@ public class VerifyBankToken implements JavaDelegate {
             verifyToken.setSid(token);
             VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
             delegateExecution.setVariable(IS_VALID_TOKEN, resp.isSuccess());
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             delegateExecution.setVariable(IS_VALID_TOKEN, false);
         }

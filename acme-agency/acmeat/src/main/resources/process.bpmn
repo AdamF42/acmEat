@@ -330,7 +330,7 @@
     <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_01eoimu" name="Manda conferma all&#39;utente">
       <bpmn:incoming>SequenceFlow_0bcr247</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1tt4g45</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1bmspfh" camunda:class="it.unibo.LoggerDelegate" />
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1bmspfh" />
     </bpmn:intermediateThrowEvent>
     <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1xqajde" name="Send confirmation to restaurant">
       <bpmn:incoming>SequenceFlow_0wftk0y</bpmn:incoming>

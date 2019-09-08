@@ -34,7 +34,6 @@ public class ChangeRestaurantMenu extends HttpServlet {
         ResponseFactory responseFactory = new ResponseFactory();
         RestaurantMenu menuChange = g.fromJson(req.getReader(), RestaurantMenu.class);
 
-        //todo: Check if db insert fail
         RestaurantRepository repo = new RestaurantRepositoryImpl();
         repo.addOrUpdateMenu(menuChange);
         processEngine.getRuntimeService()

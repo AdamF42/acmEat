@@ -7,6 +7,8 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.RestaurantOrder;
+import it.unibo.models.entities.Restaurant;
+import it.unibo.utils.UrlHelper;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -25,18 +27,18 @@ public class AbortOrder implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
 
-        try{
+        try {
 
             // retrieve restaurant order
             RestaurantOrder order = (RestaurantOrder) execution.getVariable(RESTAURANT_ORDER);
 
-            // TODO: not handled possible null reference exception???
-            String queryURL = repo.getRestaurantByName(order.restaurant).url +"order/abort";
+            Restaurant restaurant = repo.getRestaurantByName(order.restaurant);
+            String queryURL = UrlHelper.getUrlOrStringEmpty(restaurant) + "order/abort";
 
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             Client client = Client.create(clientConfig);
             WebResource webResourcePost = client.resource(queryURL);
-            ClientResponse response =  webResourcePost
+            ClientResponse response = webResourcePost
                     .accept("application/json")
                     .type("application/json")
                     .put(ClientResponse.class, order);
@@ -46,7 +48,6 @@ public class AbortOrder implements JavaDelegate {
             }
 
         } catch (Exception e) {
-            //TODO: log properly
             e.printStackTrace();
             LOGGER.severe(e.getMessage());
         }

@@ -23,7 +23,7 @@ public class AbortPayment implements JavaDelegate {
             refound.setSid(token);
             RefoundResponse resp = bankService.refound(refound);
             delegateExecution.setVariable(IS_USER_REFOUNDED, resp.isSuccess());
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             delegateExecution.setVariable(IS_USER_REFOUNDED, false);
         }
