@@ -4,6 +4,7 @@ import camundajar.com.google.gson.Gson;
 import camundajar.com.google.gson.GsonBuilder;
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
+import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import it.unibo.utils.ResponseService;
 import org.apache.logging.log4j.LogManager;
@@ -13,14 +14,10 @@ import org.camunda.bpm.engine.ProcessEngine;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +26,7 @@ import static it.unibo.utils.AcmeVariables.*;
 
 
 @WebServlet("/get-restaurant")
-public class GetRestaurants extends HttpServlet {
+public class GetRestaurants extends ApiHttpServlet {
 
     @Inject
     ProcessEngine processEngine;
@@ -40,6 +37,7 @@ public class GetRestaurants extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        System.out.println("Requested restaurants");
         HttpSession session = req.getSession(true);
         Gson g = new GsonBuilder().serializeNulls().create();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
@@ -65,11 +63,6 @@ public class GetRestaurants extends HttpServlet {
         RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
 
         Response response = responseService.getResponse(outOfTimeVar, restaurants);
-
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(g.toJson(response));
-        out.flush();
+        sendResponse(resp, g.toJson(response));
     }
 }

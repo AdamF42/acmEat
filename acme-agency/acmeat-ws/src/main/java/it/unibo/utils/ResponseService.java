@@ -1,13 +1,13 @@
 package it.unibo.utils;
 
-import it.unibo.models.DeliveryOrder;
-import it.unibo.models.RestaurantList;
-import it.unibo.models.RestaurantOrder;
-import it.unibo.models.SendOrderContent;
+import it.unibo.models.*;
 import it.unibo.models.factory.ResponseFactory;
 import it.unibo.models.responses.Response;
+import it.unibo.utils.repo.RestaurantRepository;
 
 import javax.servlet.http.HttpSession;
+
+import java.io.IOException;
 
 import static it.unibo.models.Status.AVAILABLE;
 import static it.unibo.utils.AcmeMessages.*;
@@ -78,6 +78,38 @@ public class ResponseService {
         } else {
             session.setAttribute(ABORT_ORDER, ABORT_ORDER);
             response = responseFactory.createSuccessResponse();
+        }
+        return response;
+    }
+
+    public Response getResponse(ProcessEngineAdapter process, RestaurantRepository repo, RestaurantAvailability availability) {
+        Response response;
+        if (!process.isCorrelationSuccessful()) {
+            response = responseFactory.createFailureResponse("Out of time");
+        } else {
+            try {
+                repo.addOrUpdateOpeningTime(availability);
+                response = responseFactory.createSuccessResponse();
+            } catch (IOException e) {
+                response = responseFactory.createFailureResponse("Unable to update db");
+                e.printStackTrace();
+            }
+        }
+        return response;
+    }
+
+    public Response getResponse(ProcessEngineAdapter process, RestaurantRepository repo, RestaurantMenu menuChange) {
+        Response response;
+        if (!process.isCorrelationSuccessful()) {
+            response = responseFactory.createFailureResponse("Out of time");
+        } else {
+            try {
+                repo.addOrUpdateMenu(menuChange);
+                response = responseFactory.createSuccessResponse();
+            } catch (IOException e) {
+                response = responseFactory.createFailureResponse("Unable to update db");
+                e.printStackTrace();
+            }
         }
         return response;
     }

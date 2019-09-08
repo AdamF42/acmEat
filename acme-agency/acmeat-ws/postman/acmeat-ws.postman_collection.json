@@ -1,0 +1,338 @@
+{
+	"info": {
+		"_postman_id": "45ae5a0a-3cee-4f06-bfbb-28f3a894ea34",
+		"name": "acmeat-ws",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. GetRestaurant",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8c9722ce-3f76-45d7-9883-cdaeb3a5899b",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "{{cookie}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{acmeat-ws-url}}/get-restaurant?city=Bologna",
+					"host": [
+						"{{acmeat-ws-url}}"
+					],
+					"path": [
+						"get-restaurant"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Bologna"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "1. GetRestaurant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/get-restaurant?city=Bologna",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"get-restaurant"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Bologna"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "JSESSIONID=RDgoVIuyJcOXVrBHl16FBU17fXp5Bvz7O2wC7XEs.adamf42-pc; path=/acmeat-ws"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=ISO-8859-1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 15 Aug 2019 20:29:32 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"restaurants\": [\n        {\n            \"name\": \"Ciccio\",\n            \"menu\": [\n                {\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                },\n                {\n                    \"name\": \"Pizza\",\n                    \"price\": \"3\"\n                }\n            ],\n            \"city\": \"Bologna\"\n        },\n        {\n            \"name\": \"Yoma\",\n            \"menu\": [\n                {\n                    \"name\": \"Ravioli\",\n                    \"price\": \"5\"\n                },\n                {\n                    \"name\": \"Sushi\",\n                    \"price\": \"3\"\n                }\n            ],\n            \"city\": \"Bologna\"\n        }\n    ],\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "2. SendOrder",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"restaurant\": \"debug\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+				},
+				"url": {
+					"raw": "{{acmeat-ws-url}}/send-order",
+					"host": [
+						"{{acmeat-ws-url}}"
+					],
+					"path": [
+						"send-order"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "2. SendOrder",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/send-order",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"send-order"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=ISO-8859-1"
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 15 Aug 2019 20:30:41 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"bank_url\": \"\",\n    \"total_price\": \"17.0\",\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "2.1 GetToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "047cd775-822b-42e7-a782-59f905e300f9",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.token);",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bank-url}}/name/debug/price/1",
+					"host": [
+						"{{bank-url}}"
+					],
+					"path": [
+						"name",
+						"debug",
+						"price",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetToken",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:10001/bank/name/debug/price/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "10001",
+							"path": [
+								"bank",
+								"name",
+								"debug",
+								"price",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "82"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"token\": \"84ce8a35-a09f-417e-9639-a525b2f48f57\",\n    \"user\": \"debug\"\n}"
+				}
+			]
+		},
+		{
+			"name": "3. ConfirmOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{acmeat-ws-url}}/confirm?token={{token}}",
+					"host": [
+						"{{acmeat-ws-url}}"
+					],
+					"path": [
+						"confirm"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. AbortOrder",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{acmeat-ws-url}}/abort",
+					"host": [
+						"{{acmeat-ws-url}}"
+					],
+					"path": [
+						"abort"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "4. AbortOrder",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/acmeat-ws/abort",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acmeat-ws",
+								"abort"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=ISO-8859-1"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 31 Aug 2019 19:55:39 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"status\": \"success\",\n        \"message\": \"Confirmed\"\n    }\n}"
+				}
+			]
+		}
+	]
+}
