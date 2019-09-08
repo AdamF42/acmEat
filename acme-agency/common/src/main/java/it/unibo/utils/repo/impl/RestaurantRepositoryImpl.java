@@ -58,7 +58,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
         this.db.restaurants
                 .stream()
                 .filter(restaurant -> restaurantMenuChange.name.equals(restaurant.name))
-                .forEach(restaurant -> restaurant.setMenu(restaurantMenuChange.menu));
+                .forEach(restaurant -> restaurant.updateMenu(restaurantMenuChange.menu));
 
         db.saveChanges();
     }

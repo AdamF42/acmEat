@@ -60,7 +60,7 @@ public class GetRestaurants extends ApiHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
+        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS),RestaurantList.class);
 
         Response response = responseService.getResponse(outOfTimeVar, restaurants);
         sendResponse(resp, g.toJson(response));

@@ -2,27 +2,23 @@ package it.unibo.models;
 
 import com.google.gson.annotations.Expose;
 import it.unibo.models.entities.Restaurant;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class RestaurantList {
 
     @Expose
-    private ArrayList<Restaurant> restaurants;
-
-    public RestaurantList() {
-        this.restaurants = new ArrayList<>();
-    }
+    private List<Restaurant> restaurants;
 
     public void setRestaurants(List<Restaurant> restaurants) {
-        this.restaurants = new ArrayList<>(restaurants);
+        this.restaurants = restaurants;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.restaurants.isEmpty();
     }
 
-    public ArrayList<Restaurant> getRestaurants() {
+    public List<Restaurant> getRestaurants() {
         return this.restaurants;
     }
 }
