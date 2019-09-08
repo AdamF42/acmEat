@@ -41,7 +41,7 @@ public class ChangeRestaurantAvailability extends HttpServlet {
                 .correlate();
 
         Response response = responseFactory
-                .getSuccessResponse();
+                .createSuccessResponse();
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());

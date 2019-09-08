@@ -14,19 +14,19 @@ public class ResponseFactory {
 
     private static final Result SUCCESS_RESULT = new Result(SUCCESS,"");
 
-    public Response getSuccessResponse() {
+    public Response createSuccessResponse() {
         return new SimpleResponse(SUCCESS_RESULT);
     }
 
-    public Response getSuccessResponse(RestaurantList list) {
+    public Response createSuccessResponse(RestaurantList list) {
         return new GetRestaurantResponse(list, SUCCESS_RESULT);
     }
 
-    public Response getSuccessResponse(SendOrderContent content) {
+    public Response createSuccessResponse(SendOrderContent content) {
         return new SendOrderResponse(content, SUCCESS_RESULT);
     }
 
-    public Response getFailureResponse(String msg) {
+    public Response createFailureResponse(String msg) {
         Result result = new Result();
         result.setMessage(msg);
         result.setStatus(Result.FAILURE);

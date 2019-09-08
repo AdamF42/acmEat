@@ -24,25 +24,6 @@ public class Restaurant {
 
     public Restaurant(){}
 
-    @Override
-    public String toString() {
-        return "Restaurant{" +
-                "name='" + name + '\'' +
-                ", menu=" + menu +
-                ", city='" + city + '\'' +
-                ", url='" + url + '\'' +
-                ", is_open=" + is_open +
-                '}';
-    }
-
-    public Restaurant(String name, List<Dish> menu, String city, String url, Boolean is_open) {
-        this.name = name;
-        this.menu = menu;
-        this.city = city;
-        this.url = url;
-        this.is_open = is_open;
-    }
-
     public String getName() {
         return name;
     }

@@ -3,9 +3,9 @@ package it.unibo;
 import camundajar.com.google.gson.Gson;
 import camundajar.com.google.gson.GsonBuilder;
 import it.unibo.models.RestaurantList;
-import it.unibo.models.factory.ResponseFactory;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ProcessEngineWrapper;
+import it.unibo.utils.ProcessEngineAdapter;
+import it.unibo.utils.ResponseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -28,7 +28,6 @@ import static it.unibo.utils.AcmeMessages.GET_RESTAURANT;
 import static it.unibo.utils.AcmeVariables.*;
 
 
-
 @WebServlet("/get-restaurant")
 public class GetRestaurants extends HttpServlet {
 
@@ -36,11 +35,15 @@ public class GetRestaurants extends HttpServlet {
     ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
+    private final ResponseService responseService = new ResponseService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession(true);
+        Gson g = new GsonBuilder().serializeNulls().create();
+        ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
+        Map<String, Object> cityVariable = new HashMap<>();
 
         if (!session.isNew()) {
             LOGGER.warn("Client with active session requested new process");
@@ -48,43 +51,25 @@ public class GetRestaurants extends HttpServlet {
             session = req.getSession(true);
         }
 
-        ProcessEngineWrapper process = new ProcessEngineWrapper(processEngine);
-        Map<String, Object> cityVariable = new HashMap<>();
-        String cityParam = "city";
-        cityVariable.put(cityParam,req.getParameter(cityParam));
+        cityVariable.put("city", req.getParameter("city"));
 
         String processInstanceId = process
-                .startProcessInstanceByMessage(GET_RESTAURANT,cityVariable)
+                .startProcessInstanceByMessage(GET_RESTAURANT, cityVariable)
                 .getProcessInstanceId();
 
-        //check if the request is out of time
-        String outOfTimeVar = (String) process.getVariable(processInstanceId,OUT_OF_TIME);
-
-        Gson g = new GsonBuilder()
-                .serializeNulls()
-                .create();
+        String outOfTimeVar = (String) process.getVariable(processInstanceId, OUT_OF_TIME);
 
         session.setAttribute(PROCESS_ID, processInstanceId);
-        LOGGER.info("Started process instance with id: {}",processInstanceId);
+        LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        Response response;
-        ResponseFactory responseFactory = new ResponseFactory();
-        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId,RESTAURANTS),RestaurantList.class);
+        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
 
-        if (outOfTimeVar != null){
-            response = responseFactory.getFailureResponse("No restaurant available. Retry between 10 a.m. and 23.59 p.m.");
-        } else if (restaurants == null  || restaurants.isEmpty()){
-            response = responseFactory.getFailureResponse("No restaurants available in selected city");
-        } else {
-            response = responseFactory.getSuccessResponse(restaurants);
-        }
+        Response response = responseService.getResponse(outOfTimeVar, restaurants);
 
         PrintWriter out = resp.getWriter();
         resp.setContentType(MediaType.APPLICATION_JSON);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
         out.print(g.toJson(response));
         out.flush();
-
     }
-
 }

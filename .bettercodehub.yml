@@ -6,6 +6,9 @@ exclude:
 - /acme-agency/acmeat/src/test/.*
 - /acme-agency/acmeat/src/main/java/it/unibo/bank/generated/.*
 - /acme-agency/acmeat-ws/src/test/.*
-- /bankService/src/main/java/it/unibo/ws/generated/.*
+- /bankService/.*
 - /gisService/.*
+- /deliveryService/.*
 - /restaurantService/.*
+- .*/build\.sh
+- .*/clear\.sh
