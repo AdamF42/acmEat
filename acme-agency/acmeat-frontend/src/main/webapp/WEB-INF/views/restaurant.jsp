@@ -47,13 +47,13 @@
             var isAvailable = aval.options[aval.selectedIndex].value;
             var availabilityBody =
                 {
-                    "restaurant": document.getElementById("restName").value.toString(),
-                    "availability": isAvailable.toString()
+                    "name": document.getElementById("restName").value.toString(),
+                    "is_available": isAvailable.toString()
                 };
 
             console.log("Inviando disponibilita ad acme-ws " + JSON.stringify(availabilityBody));
 
-            var avalability_url = "http://localhost:8080/acmeat-frontend/change-availability";
+            var avalability_url = "http://localhost:8080/acmeat-ws/change-availability";
 
             var xhr = new XMLHttpRequest();
             xhr.open("PUT", avalability_url, true);
@@ -102,12 +102,12 @@
             if (!allEmpty) {
                 var menuBody =
                     {
-                        "restaurant": document.getElementById("restName").value.toString(),
+                        "name": document.getElementById("restName").value.toString(),
                         "menu": dishes
                     };
                 console.log(menuBody);
 
-                var menu_url = "http://localhost:8080/acmeat-frontend/change-menu";
+                var menu_url = "http://localhost:8080/acmeat-ws/change-menu";
 
                 var xhr = new XMLHttpRequest();
                 xhr.open("PUT", menu_url, true);
