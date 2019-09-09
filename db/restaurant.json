@@ -7,9 +7,9 @@
                 "price": "5"
             }
         ],
-        "city": "Bologna",
+        "city": "Via San Mamolo, 5, 40136 Bologna BO",
         "url": "http://localhost:10005/restaurant/",
-        "is_open": false
+        "is_open": true
     },
     {
         "name": "Yoma",
@@ -23,7 +23,7 @@
                 "price": "3"
             }
         ],
-        "city": "Bologna",
+        "city": "Via Emilia Ponente, 72, 40133 Bologna BO",
         "url": "http://localhost:10006/restaurant/",
         "is_open": true
     },
@@ -39,7 +39,7 @@
                 "price": "3"
             }
         ],
-        "city": "Bologna",
+        "city": "Piazza Camillo Benso Conte di Cavour, 1/d/e, 40124 Bologna BO",
         "url": "http://localhost:10006/restaurant/",
         "is_open": true
     }
