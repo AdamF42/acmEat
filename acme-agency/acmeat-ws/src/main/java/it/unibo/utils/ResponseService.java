@@ -55,11 +55,14 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, HttpSession session, String camundaProcessId, Boolean isValidToken) {
+    public Response getResponse(ProcessEngineAdapter process, HttpSession session, String camundaProcessId, Boolean isValidToken, Boolean isUnreachableBankService) {
         Response response;
         if (session == null || camundaProcessId == null
                 || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER) == null) {
             response = responseFactory.createFailureResponse("No active session found");
+        } else if (isUnreachableBankService != null && isUnreachableBankService) {
+            response = responseFactory.createFailureResponse("Unable to verify bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         } else if (isValidToken != null && !isValidToken) {
             response = responseFactory.createFailureResponse("Invalid bank token");
             session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);

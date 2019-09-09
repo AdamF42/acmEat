@@ -7,8 +7,7 @@ import it.unibo.bank.generated.VerifyTokenResponse;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import static it.unibo.utils.AcmeVariables.IS_VALID_TOKEN;
-import static it.unibo.utils.AcmeVariables.USER_TOKEN;
+import static it.unibo.utils.AcmeVariables.*;
 
 public class VerifyBankToken implements JavaDelegate {
 
@@ -23,10 +22,11 @@ public class VerifyBankToken implements JavaDelegate {
             verifyToken.setSid(token);
             VerifyTokenResponse resp = bankService.verifyToken(verifyToken);
             delegateExecution.setVariable(IS_VALID_TOKEN, resp.isSuccess());
+            delegateExecution.setVariable(IS_UNREACHABLE_BANK_SERVICE, false);
         } catch (Exception e) {
             e.printStackTrace();
             delegateExecution.setVariable(IS_VALID_TOKEN, false);
+            delegateExecution.setVariable(IS_UNREACHABLE_BANK_SERVICE, true);
         }
-
     }
 }
