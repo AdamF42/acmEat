@@ -22,9 +22,9 @@ public class ResponseService {
         this.responseFactory = new ResponseFactory();
     }
 
-    public Response getResponse(String outOfTimeVar, RestaurantList restaurants) {
+    public Response getResponse(String inTimeVar, RestaurantList restaurants) {
         Response response;
-        if (outOfTimeVar != null) {
+        if (inTimeVar == null) {
             response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 23.59 p.m.");
         } else if (restaurants == null || restaurants.isEmpty()) {
             response = responseFactory.createFailureResponse("No restaurants available in selected city");

@@ -55,7 +55,7 @@ public class GetRestaurants extends ApiHttpServlet {
                 .startProcessInstanceByMessage(GET_RESTAURANT, cityVariable)
                 .getProcessInstanceId();
 
-        String outOfTimeVar = (String) process.getVariable(processInstanceId, OUT_OF_TIME);
+        String outOfTimeVar = (String) process.getVariable(processInstanceId, IN_TIME);
 
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
