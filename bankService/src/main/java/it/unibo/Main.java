@@ -1,6 +1,7 @@
 package it.unibo;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.http.server.StaticHttpHandler;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -36,6 +37,9 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        //serve static assets
+        StaticHttpHandler staticHttpHandler = new StaticHttpHandler("src/main/webapp");
+        server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/");
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl", BASE_URI));
     }

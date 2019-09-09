@@ -130,7 +130,7 @@
         var e = document.getElementById("comune");
         var city = e.options[e.selectedIndex].text;
 
-        var restaurant_url="http://localhost:8080/acmeat-frontend/get-restaurants?city=".concat(city);
+        var restaurant_url="http://localhost:8080/acmeat-ws/get-restaurants?city=".concat(city);
 
         var xhr = new XMLHttpRequest();
         xhr.withCredentials=true;
@@ -141,7 +141,7 @@
                 if (xhr.status === 200){
                     console.log("xhr done successfully");
                     var resp = xhr.responseText;
-                    var respParsed = JSON.parse(resp);
+                    var respParsed = JSON.parse(resp).restaurants;
                     console.log(respParsed);
                     //TODO, gestire ingresso fuori orario, vedi nel messaggio di risposta
                     if(respParsed.length>0){
@@ -253,7 +253,7 @@
                 };
 
             console.log(order);
-            var restaurant_url = "http://localhost:8080/acmeat-frontend/send-order";
+            var restaurant_url = "http://localhost:8080/acmeat-ws/send-order";
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
             xhr.open("POST", restaurant_url, true);
@@ -266,7 +266,11 @@
                         console.log("xhr done successfully");
                         var resp = xhr.responseText;
                         console.log(resp);
-                        //var respParsed = JSON.parse(resp);
+                        var respParsed = JSON.parse(resp);
+
+
+                        //TODO: chiama interfaccia banca dove vi fate un altro bell'index.html
+                        window.location=respParsed.bank_url + "?total_price="+ respParsed.total_price + "callback_url=" + window.location;
                         //console.log(respParsed);
                     } else {
                         //console.log("xhr failed with " + xhr.status);
