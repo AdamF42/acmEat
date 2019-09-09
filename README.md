@@ -1,7 +1,8 @@
 
 # ACMEat
 [![BCH compliance](https://bettercodehub.com/edge/badge/AdamF42/acmEat?branch=master&token=bc829a4d4c6eb3d65cc8ab6dc721de1f05fc2fff)](https://bettercodehub.com/)
- Service Oriented Software Engineering Project 18/19 University of Bologna
+ 
+Service Oriented Software Engineering Project 18/19 University of Bologna
 
 ## Requirements (Italian only)
 
