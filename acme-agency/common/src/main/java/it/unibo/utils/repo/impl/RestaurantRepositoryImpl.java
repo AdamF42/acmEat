@@ -27,7 +27,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
 
         return this.db.restaurants
                 .stream()
-                .filter(company -> city.equals(company.city) && company.is_open)
+                .filter(company -> company.city.contains(city) && company.is_open)
                 .collect(Collectors.toList());
     }
 
