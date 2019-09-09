@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>AcmEat</title>
-
+    <title>Client</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -130,7 +130,7 @@
         var e = document.getElementById("comune");
         var city = e.options[e.selectedIndex].text;
 
-        var restaurant_url="http://localhost:8060/acmeat/get-restaurant/"+city;
+        var restaurant_url="http://localhost:8080/acmeat-frontend/get-restaurants?city=".concat(city);
 
         var xhr = new XMLHttpRequest();
         xhr.withCredentials=true;
@@ -144,29 +144,29 @@
                     var respParsed = JSON.parse(resp);
                     console.log(respParsed);
                     //TODO, gestire ingresso fuori orario, vedi nel messaggio di risposta
-                    if(respParsed.restaurants.length>0){
+                    if(respParsed.length>0){
                         $('#info').html("");
                         var elenco =  document.getElementById('ristorante');
-                        for( i=0; i<respParsed.restaurants.length; i++) {
+                        for( i=0; i<respParsed.length; i++) {
                             var option = document.createElement("option");
-                            option.text = respParsed.restaurants[i].name;
-                            option.value = respParsed.restaurants[i].name;
+                            option.text = respParsed[i].name;
+                            option.value = respParsed[i].name;
                             elenco.append(option);
                         }
                         var elencoPiatti =  document.getElementById('piatti');
                         elencoPiatti.innerText="";
-                        for( i=0; i<respParsed.restaurants[0].menu.length; i++) {
+                        for( i=0; i<respParsed[0].menu.length; i++) {
                             var option = document.createElement("option");
-                            option.text = respParsed.restaurants[0].menu[i].name.toString().concat(" €"+respParsed.restaurants[0].menu[i].price);
-                            option.value = respParsed.restaurants[0].menu[i].name.toString().concat(" "+respParsed.restaurants[0].menu[i].price);
+                            option.text = respParsed[0].menu[i].name.toString().concat(" "+respParsed[0].menu[i].price);
+                            option.value = respParsed[0].menu[i].name.toString().concat(" "+respParsed[0].menu[i].price);
                             elencoPiatti.append(option);
                         }
                         $('#ristorante').on('change', function (e) {
                             var optionSelected = $("option:selected", this);
                             var valueSelected = this.value;
-                            for( i=0; i<respParsed.restaurants.length; i++) {
-                                if(valueSelected.toString()==respParsed.restaurants[i].name.toString()){
-                                    var pietanze=respParsed.restaurants[i].menu;
+                            for( i=0; i<respParsed.length; i++) {
+                                if(valueSelected.toString()==respParsed[i].name.toString()){
+                                    var pietanze=respParsed[i].menu;
                                 }
                             };
 
@@ -174,7 +174,7 @@
                             elencoPiatti.innerText="";
                             for( i=0; i<pietanze.length; i++) {
                                 var option = document.createElement("option");
-                                option.text = pietanze[i].name.toString().concat(" €"+pietanze[i].price);
+                                option.text = pietanze[i].name.toString().concat(" "+pietanze[i].price);
                                 option.value = pietanze[i].name;
                                 elencoPiatti.append(option);
                             }
@@ -240,6 +240,7 @@
         }
 
 
+        //TODO: get address of the selected restaurants
 
         if(!somethingEmpty) {
             var order =
@@ -252,7 +253,7 @@
                 };
 
             console.log(order);
-            var restaurant_url = "http://localhost:8060/acmeat/send-order";
+            var restaurant_url = "http://localhost:8080/acmeat-frontend/send-order";
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
             xhr.open("POST", restaurant_url, true);
@@ -262,7 +263,6 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log("Cookies dopo aver ordinato " + document.cookie);
                         console.log("xhr done successfully");
                         var resp = xhr.responseText;
                         console.log(resp);
@@ -322,3 +322,4 @@
 
 </body>
 </html>
+

@@ -29,24 +29,34 @@ public class ChangeAvailability extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        String queryUrl = BASE_URL + "/change-availability";
+        try {
+            String queryUrl = BASE_URL + "/change-availability";
+            WebResource webResource = new RestClient(queryUrl).getWebResource();
+            ClientResponse serviceResponse = webResource
+                    .accept(MediaType.APPLICATION_JSON_TYPE)
+                    .type(MediaType.APPLICATION_JSON_TYPE)
+                    .put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
 
-        ClientResponse serviceResponse = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
 
-        String response;
-        if (serviceResponse.getStatus() == OK.getStatusCode()
-                && serviceResponse
-                .getEntity(SimpleResponse.class)
-                .result.getStatus().equals(Result.SUCCESS)) {
-            response = "Disponibilita comunicata con successo";
-        } else {
-            response = "Impossibile aggiornare la disponibilità";
+            String response;
+            if (serviceResponse.getStatus() == OK.getStatusCode()) {
+                SimpleResponse serviceResponseEntity = serviceResponse.getEntity(SimpleResponse.class);
+                if (serviceResponseEntity.result.getStatus().equals(Result.SUCCESS)){
+                    response = "Disponibilita comunicata con successo";
+                } else {
+                    response = serviceResponseEntity.result.getMessage();
+                }
+            } else {
+                response = "Impossibile aggiornare la disponibilità";
+            }
+
+            PrintWriter out = resp.getWriter();
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            out.print(response);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(response);
-        out.flush();
     }
 }

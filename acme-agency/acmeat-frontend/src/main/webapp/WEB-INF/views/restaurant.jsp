@@ -174,8 +174,8 @@
         <div id="info4" style="color:blue"></div>
         <br>
     </div>
-    <div id="fourth" style="color:blue" hidden="true">
-        Tra le 10 e le 23.59 non puoi apportare modifiche alla tua disponibilta o al menu.
+    <div id="fourth" style="color:blue">
+        Ricorda che tra le 10 e le 23.59 non puoi apportare modifiche alla tua disponibilta o al menu.
     </div>
 </body>
 </html>

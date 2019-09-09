@@ -12,4 +12,7 @@ public class SimpleResponse implements Response {
     public SimpleResponse(Result result) {
         this.result = result;
     }
+
+    public SimpleResponse() {
+    }
 }

@@ -22,4 +22,6 @@ public class SendOrderResponse  implements Response {
         this.result = result;
     }
 
+    public SendOrderResponse() {
+    }
 }

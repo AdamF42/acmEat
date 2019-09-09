@@ -27,24 +27,29 @@ public class ChangeMenu extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        try {
+            String url = BASE_URL + "/change-menu";
+            ClientResponse serviceResponse = WebResourceBuilder.getBuilder(url).post(ClientResponse.class, g.fromJson(req.getReader(), RestaurantMenu.class));
+            String response;
+            if (serviceResponse.getStatus() == OK.getStatusCode()){
+                SimpleResponse serviceResponseEntity = serviceResponse.getEntity(SimpleResponse.class);
+                if (serviceResponseEntity.result.getStatus().equals(Result.SUCCESS)){
+                    response = "Variazione menu comunicata con successo";
+                } else {
+                    response = serviceResponseEntity.result.getMessage();
+                }
+            } else {
+                response = "Impossibile aggiornare il menu";
+            }
 
-        String url = BASE_URL + "/change-menu";
-        ClientResponse serviceResponse = WebResourceBuilder.getBuilder(url).post(ClientResponse.class, g.fromJson(req.getReader(), RestaurantMenu.class));
 
-        String response;
-        if (serviceResponse.getStatus() == OK.getStatusCode()
-                && serviceResponse
-                .getEntity(SimpleResponse.class)
-                .result.getStatus().equals(Result.SUCCESS)) {
-            response = "Menu aggiornato con successo";
-        } else {
-            response = "Impossibile aggiornare il menu";
+            PrintWriter out = resp.getWriter();
+            resp.setContentType(MediaType.APPLICATION_JSON);
+            resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
+            out.print(response);
+            out.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(response);
-        out.flush();
     }
 }

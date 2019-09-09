@@ -11,14 +11,17 @@ import java.util.List;
 public class GetRestaurantResponse implements Response {
 
     @Expose
-    private List<Restaurant> restaurants;
+    public List<Restaurant> restaurants;
 
     @Expose
-    private Result result;
+    public Result result;
 
     public GetRestaurantResponse(RestaurantList restaurants, Result result) {
         this.restaurants = restaurants.getRestaurants();
         this.result = result;
+    }
+
+    public GetRestaurantResponse() {
     }
 }
 
