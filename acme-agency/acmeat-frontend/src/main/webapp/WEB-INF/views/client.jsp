@@ -77,14 +77,6 @@
 
 <div id="info5" style="color:red"></div>
 
-<div id="fourth" hidden="true">
-
-
-    <div><input type="submit" value="Cancella ordine" onclick="cancelOrder()"></div>
-    <div id="canc"></div>
-
-</div>
-
 <script type='text/JavaScript'>
     var d = new Date();
     var h = d.getHours();
@@ -247,10 +239,9 @@
                         var respParsed = JSON.parse(resp);
                         $('#third').hide();
                         if(respParsed.result.status.toString()=="success"){
-                            //TODO: chiama interfaccia banca dove c e' un altro bell'index.html
-                            //window.location=respParsed.bank_url + "?total_price="+ respParsed.total_price + "callback_url=" + window.location;
-                            //console.log(respParsed);
-                            $('#fourth').show();
+                            var callback_url=encodeURIComponent("http://localhost:8080/acmeat-frontend/client-after-payment");
+                            var bank_url="http://localhost:8070/bank/home/"+"price/"+ respParsed.total_price + "/callback_url/" + callback_url;
+                            window.location.assign(bank_url);
                         }else{
                             //TODO: ridargli la pox di formulare un ordine? partendo dall'inizio con $('#first').show();
                             $('#info5').html(JSON.parse(resp).result.message);
@@ -264,40 +255,7 @@
                 }
             }
             //console.log("request sent succesfully");
-
-
-
         }
-
-
-
-    }
-
-
-
-    function cancelOrder(){
-        console.log("Cancellando ordine");
-
-        var url="http://localhost:8060/acmeat/cancel";
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("PUT",url, true);
-        xhr.send();
-        xhr.onreadystatechange = function(){
-            if (xhr.readyState === 4){
-                if (xhr.status === 200){
-                    console.log("xhr done successfully");
-                    var resp = xhr.responseText;
-                    console.log(resp);
-                    $('#canc').html("Il tuo ordine e stato cancellato");
-                } else {
-                    console.log("xhr failed");
-                }
-            } else {
-                console.log("xhr processing going on");
-            }
-        }
-        console.log("request sent succesfully");
     }
 
 

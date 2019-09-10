@@ -14,7 +14,7 @@ import java.net.URI;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://0.0.0.0:8070/";
+    public static final String BANK_URI = "http://0.0.0.0:8070/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -27,7 +27,7 @@ public class Main {
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
-        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BANK_URI), rc);
     }
 
     /**
@@ -38,10 +38,11 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
         //serve static assets
-        StaticHttpHandler staticHttpHandler = new StaticHttpHandler("src/main/webapp");
-        server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/");
+        //StaticHttpHandler staticHttpHandler = new StaticHttpHandler("src/main/webapp");
+        //server.getServerConfiguration().addHttpHandler(staticHttpHandler, "/");
         System.out.println(String.format("Jersey app started with WADL available at "
-                + "%sapplication.wadl", BASE_URI));
+                + "%sapplication.wadl", BANK_URI));
+        System.out.println("Visit start page for client user at: "+"http://localhost:8070/bank/home");
     }
 }
 

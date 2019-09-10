@@ -1,0 +1,34 @@
+package it.unibo.frontoffice;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet({"/client-after-payment"})
+public class ClientAfterPayment extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+
+        String token=req.getParameter("token");
+
+        //TODO:call acme-ws to verify token with /confirm?token=mytoken
+
+
+        //TODO: check if the token has been verified or not with the status
+        String status="success";
+
+        if(status.equals("success")){
+            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/success-payment.jsp");
+            dispatcher.forward(req, resp);
+        }else {
+            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/failure-payment.jsp");
+            dispatcher.forward(req, resp);
+        }
+    }
+}
+
