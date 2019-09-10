@@ -34,7 +34,7 @@
 </div>
 
 <br>
-<div id="info"></div>
+<div id="info"  style="color:blue"></div>
 <br>
 
 <div id="second" hidden="true">
@@ -55,8 +55,7 @@
     <br><br>
 
     Inserisci l'orario di consegna, entro le 23:59:  <br>
-    Ora :    <label id="demo"></label><input type="range" min="10" max="23" value="12"  step ="1" class="slider" id="myRange"><br>
-    Minuto : <label id="demo1"></label><input type="range" min="0" max="59" value="30"  step ="1" class="slider" id="myRange1">
+    <input type="time" id="deliveryTimeC" name="deliveryTimeC" required><br>
     <div id="info3"  style="color:red"></div>
 
     <br><br>
@@ -71,20 +70,12 @@
 
 </div>
 
-<br><br>
-
-<div id="third" hidden="true">
-
-    Inserisci il numero della carta di credito:<br>
-    <input type="text" id="numero" name="numero" value=" ">
-    <br>
-    <br>
-    <div><input type="submit" value="Conferma pagamento" onclick="pay()"></div>
-
-
-</div>
 
 <br><br>
+<div id="third" hidden="true"> Stiamo elaborando il tuo ordine, se ci sono le disponibilita verrai reindirizzato alla banca per il pagamento.</div>
+<br><br>
+
+<div id="info5" style="color:red"></div>
 
 <div id="fourth" hidden="true">
 
@@ -96,30 +87,10 @@
 
 <script type='text/JavaScript'>
     var d = new Date();
-    var n = d.getHours();
+    var h = d.getHours();
+    var m = d.getMinutes();
 
-    var slider = document.getElementById("myRange");
-    slider.min=n;
-    var output = document.getElementById("demo");
-    output.innerHTML = slider.value; // Display the default slider value
-    // Update the current slider value (each time you drag the slider handle)
-    slider.oninput = function() {
-        output.innerHTML = this.value;
-    }
-
-    var slider1 = document.getElementById("myRange1");
-    slider1.min=n;
-    var output1 = document.getElementById("demo1");
-    output1.innerHTML = slider.value; // Display the default slider value
-
-    // Update the current slider value (each time you drag the slider handle)
-    slider1.oninput = function() {
-        output1.innerHTML = this.value;
-    }
-
-
-
-
+    document.getElementById("deliveryTimeC").setAttribute("min",h.toString().concat(":"+m.toString()));
 
 </script>
 
@@ -141,16 +112,15 @@
                 if (xhr.status === 200){
                     console.log("xhr done successfully");
                     var resp = xhr.responseText;
-                    var respParsed = JSON.parse(resp).restaurants;
-                    console.log(respParsed);
-                    //TODO, gestire ingresso fuori orario, vedi nel messaggio di risposta
-                    if(respParsed.length>0){
+                    console.log(JSON.parse(resp).result.status);
+                    if(JSON.parse(resp).result.status.toString()=="success"){
+                        var respParsed = JSON.parse(resp).restaurants;
                         $('#info').html("");
                         var elenco =  document.getElementById('ristorante');
                         for( i=0; i<respParsed.length; i++) {
                             var option = document.createElement("option");
                             option.text = respParsed[i].name;
-                            option.value = respParsed[i].name;
+                            option.value = respParsed[i].name.toString().concat(";"+respParsed[i].city);
                             elenco.append(option);
                         }
                         var elencoPiatti =  document.getElementById('piatti');
@@ -158,15 +128,16 @@
                         for( i=0; i<respParsed[0].menu.length; i++) {
                             var option = document.createElement("option");
                             option.text = respParsed[0].menu[i].name.toString().concat(" "+respParsed[0].menu[i].price);
-                            option.value = respParsed[0].menu[i].name.toString().concat(" "+respParsed[0].menu[i].price);
+                            option.value = respParsed[0].menu[i].name.toString().concat(";"+respParsed[0].menu[i].price);
                             elencoPiatti.append(option);
                         }
                         $('#ristorante').on('change', function (e) {
                             var optionSelected = $("option:selected", this);
                             var valueSelected = this.value;
+                            var pietenze;
                             for( i=0; i<respParsed.length; i++) {
-                                if(valueSelected.toString()==respParsed[i].name.toString()){
-                                    var pietanze=respParsed[i].menu;
+                                if(valueSelected.toString().split(";")[0]==respParsed[i].name.toString()){
+                                    pietanze=respParsed[i].menu;
                                 }
                             };
 
@@ -175,17 +146,16 @@
                             for( i=0; i<pietanze.length; i++) {
                                 var option = document.createElement("option");
                                 option.text = pietanze[i].name.toString().concat(" "+pietanze[i].price);
-                                option.value = pietanze[i].name;
+                                option.value = pietanze[i].name.toString().concat(";"+pietanze[i].price);
                                 elencoPiatti.append(option);
                             }
                         });
-
                         $('#first').hide();
                         $('#second').show();
-                    }else{
-                        $('#info').html("Siamo spiacenti, non ci sono ristoranti dosponibili nel comune selezionato. Riprova");
                     }
-
+                    else {
+                        $('#info').html(JSON.parse(resp).result.message);
+                    }
                 } else {
                     console.log("xhr failed");
                 }
@@ -205,11 +175,13 @@
         $('#info4').html("");
 
         console.log("Manda ordine");
-        //TODO: raccogliere tutti i campi nel form 2 e formare un ordine in json
+
 
         //get selected restaurant
         var selectR = document.getElementById("ristorante");
-        var choosenR = selectR.options[selectR.selectedIndex].value;
+        var choosenRname = selectR.options[selectR.selectedIndex].value.split(";")[0];
+        var choosenRaddress = selectR.options[selectR.selectedIndex].value.split(";")[1];
+
 
         //check and get selected dishes
         if ($('#piatti :selected').length > 0) {
@@ -220,8 +192,8 @@
                 // check if selected
                 if (opt.selected) {
                     var singleDish={};
-                    singleDish.name=opt.value.split(" ")[0];
-                    singleDish.price=opt.value.split(" ")[1];
+                    singleDish.name=opt.value.split(";")[0];
+                    singleDish.price=opt.value.split(";")[1];
                     opts.push(singleDish);
                 }
             }
@@ -230,25 +202,32 @@
             $('#info2').html("Seleziona almeno una portata dall'elenco");
         }
 
-
-        //TODO: get selected time
+        var deliveryTimeField=document.getElementById('deliveryTimeC');
+        if(!deliveryTimeField.checkValidity()){
+            somethingEmpty=true;
+            $('#info3').html(deliveryTimeField.validationMessage);
+        }else{
+            var deliveryTime=document.getElementById("deliveryTimeC").value;
+        }
 
         //check and get selected delivery address
         if (!document.getElementById("indirizzo").value){
             somethingEmpty=true;
-            $('#info4').html("inserire indirizzo");
+            $('#info4').html("Inserisci l'indirizzo di consegna");
         }
 
 
-        //TODO: get address of the selected restaurants
-
         if(!somethingEmpty) {
+
+            $('#second').hide();
+            $('#third').show();
+
             var order =
                 {
-                    "restaurant": choosenR,
-                    "delivery_time": "11",
+                    "restaurant": choosenRname,
+                    "delivery_time": deliveryTime,
                     "dishes": opts,
-                    "from": "indirizzo del ristorante?", //TODO:save
+                    "from": choosenRaddress,
                     "to": document.getElementById("indirizzo").value
                 };
 
@@ -265,13 +244,18 @@
                     if (xhr.status === 200) {
                         console.log("xhr done successfully");
                         var resp = xhr.responseText;
-                        console.log(resp);
                         var respParsed = JSON.parse(resp);
+                        $('#third').hide();
+                        if(respParsed.result.status.toString()=="success"){
+                            //TODO: chiama interfaccia banca dove c e' un altro bell'index.html
+                            //window.location=respParsed.bank_url + "?total_price="+ respParsed.total_price + "callback_url=" + window.location;
+                            //console.log(respParsed);
+                            $('#fourth').show();
+                        }else{
+                            //TODO: ridargli la pox di formulare un ordine? partendo dall'inizio con $('#first').show();
+                            $('#info5').html(JSON.parse(resp).result.message);
+                        }
 
-
-                        //TODO: chiama interfaccia banca dove vi fate un altro bell'index.html
-                        window.location=respParsed.bank_url + "?total_price="+ respParsed.total_price + "callback_url=" + window.location;
-                        //console.log(respParsed);
                     } else {
                         //console.log("xhr failed with " + xhr.status);
                     }
@@ -281,19 +265,15 @@
             }
             //console.log("request sent succesfully");
 
-            // commented for the moment
-            $('#second').hide();
-            $('#third').show();
+
+
         }
 
 
 
     }
 
-    function pay(){
-        $('#third').hide();
-        $('#fourth').show();
-    }
+
 
     function cancelOrder(){
         console.log("Cancellando ordine");
