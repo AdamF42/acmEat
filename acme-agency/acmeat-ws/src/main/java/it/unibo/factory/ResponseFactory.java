@@ -1,4 +1,4 @@
-package it.unibo.models.factory;
+package it.unibo.factory;
 
 import it.unibo.models.RestaurantList;
 import it.unibo.models.Result;

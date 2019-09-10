@@ -51,7 +51,7 @@ public class GetDistance implements JavaDelegate {
 
             if (response.getStatus() == OK.getStatusCode()) {
                 Distance distance = response.getEntity(Distance.class);
-                delegateExecution.setVariable(DISTANCE, distance);
+                delegateExecution.setVariable(DISTANCE, distance.distance);
                 LOGGER.info("GetDistance: " + distance.distance + "\nfrom: " + fromDistance + "\nto: " + toDistance);
             } else {
                 delegateExecution.setVariable(DISTANCE, Double.MAX_VALUE);

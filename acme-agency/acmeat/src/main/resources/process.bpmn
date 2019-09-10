@@ -37,350 +37,36 @@
     <bpmn:messageFlow id="MessageFlow_1cmvo61" sourceRef="EndEvent_1ry6l5p" targetRef="IntermediateCatchEvent_0sdwhbo" />
   </bpmn:collaboration>
   <bpmn:process id="Process_1" isExecutable="true">
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1sw2z02" name="Riceve info disponibilità">
-      <bpmn:incoming>SequenceFlow_12g3v94</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0ug4jfk</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_19w5bih">
-        <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_10o9cks" messageRef="Message_0jlxgfj" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1uoxhwg" name="Riceve richiesta cambio menù">
-      <bpmn:incoming>SequenceFlow_1yslafd</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_08t536y</bpmn:outgoing>
-      <bpmn:dataOutputAssociation id="DataOutputAssociation_0t911jm">
-        <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
-      </bpmn:dataOutputAssociation>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0a8v68l" messageRef="Message_1ketppx" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:endEvent id="EndEvent_04ag94e">
-      <bpmn:incoming>SequenceFlow_1kxqw6l</bpmn:incoming>
-      <bpmn:terminateEventDefinition />
-    </bpmn:endEvent>
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_0gjxq6p" name="10 a.m">
-      <bpmn:incoming>SequenceFlow_03f7g54</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1kxqw6l</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_1jnorsu">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/1970-01-01T10:00:00Z/PT24H</bpmn:timeCycle>
-      </bpmn:timerEventDefinition>
-    </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1kxqw6l" sourceRef="IntermediateCatchEvent_0gjxq6p" targetRef="EndEvent_04ag94e" />
-    <bpmn:eventBasedGateway id="EventBasedGateway_13samjf">
-      <bpmn:incoming>SequenceFlow_0l7uq3y</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_08t536y</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0ug4jfk</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_03f7g54</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_1yslafd</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_12g3v94</bpmn:outgoing>
-    </bpmn:eventBasedGateway>
     <bpmn:sequenceFlow id="SequenceFlow_03f7g54" sourceRef="EventBasedGateway_13samjf" targetRef="IntermediateCatchEvent_0gjxq6p" />
     <bpmn:sequenceFlow id="SequenceFlow_1yslafd" sourceRef="EventBasedGateway_13samjf" targetRef="IntermediateCatchEvent_1uoxhwg" />
-    <bpmn:startEvent id="StartEvent_0ocvseq" name="6 a.m">
-      <bpmn:outgoing>SequenceFlow_0l7uq3y</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_0jvn0gz">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/1970-01-01T06:00:00Z/PT24H</bpmn:timeCycle>
-      </bpmn:timerEventDefinition>
-    </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0l7uq3y" sourceRef="StartEvent_0ocvseq" targetRef="EventBasedGateway_13samjf" />
     <bpmn:sequenceFlow id="SequenceFlow_08t536y" sourceRef="IntermediateCatchEvent_1uoxhwg" targetRef="EventBasedGateway_13samjf" />
     <bpmn:sequenceFlow id="SequenceFlow_12g3v94" sourceRef="EventBasedGateway_13samjf" targetRef="IntermediateCatchEvent_1sw2z02" />
     <bpmn:sequenceFlow id="SequenceFlow_0ug4jfk" sourceRef="IntermediateCatchEvent_1sw2z02" targetRef="EventBasedGateway_13samjf" />
     <bpmn:sequenceFlow id="SequenceFlow_193n4wa" sourceRef="BoundaryEvent_01irebl" targetRef="EndEvent_0hybauh" />
-    <bpmn:dataStoreReference id="DataStoreReference_1dmfm6x" name="Database" />
     <bpmn:sequenceFlow id="SequenceFlow_0yy53ri" sourceRef="StartEvent_1p7z9v2" targetRef="SubProcess_1pkqfgg" />
-    <bpmn:subProcess id="SubProcess_1pkqfgg">
-      <bpmn:incoming>SequenceFlow_0yy53ri</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_19urce4</bpmn:outgoing>
-      <bpmn:startEvent id="StartEvent_1maad30">
-        <bpmn:outgoing>SequenceFlow_19i0s93</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:serviceTask id="ServiceTask_1ku6njz" name="Get restaurants in selected city" camunda:class="it.unibo.acme.GetRestaurantByCity">
-        <bpmn:incoming>SequenceFlow_1mgwy8v</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1w3pvb1</bpmn:outgoing>
-        <bpmn:dataOutputAssociation id="DataOutputAssociation_1ivytak">
-          <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
-        </bpmn:dataOutputAssociation>
-      </bpmn:serviceTask>
-      <bpmn:sequenceFlow id="SequenceFlow_19i0s93" sourceRef="StartEvent_1maad30" targetRef="ExclusiveGateway_06cw8o3" />
-      <bpmn:exclusiveGateway id="ExclusiveGateway_0p69t9s" default="SequenceFlow_0lkzv01">
-        <bpmn:incoming>SequenceFlow_1w3pvb1</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0lkzv01</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_14hb5hx</bpmn:outgoing>
-      </bpmn:exclusiveGateway>
-      <bpmn:sequenceFlow id="SequenceFlow_1w3pvb1" sourceRef="ServiceTask_1ku6njz" targetRef="ExclusiveGateway_0p69t9s" />
-      <bpmn:endEvent id="EndEvent_0u4mceu">
-        <bpmn:incoming>SequenceFlow_0s9gzz4</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_0lkzv01" sourceRef="ExclusiveGateway_0p69t9s" targetRef="IntermediateThrowEvent_1kyhggh" />
-      <bpmn:sequenceFlow id="SequenceFlow_14hb5hx" sourceRef="ExclusiveGateway_0p69t9s" targetRef="IntermediateThrowEvent_1kqu04r">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("restaurants") != null }</bpmn:conditionExpression>
-      </bpmn:sequenceFlow>
-      <bpmn:sequenceFlow id="SequenceFlow_0s9gzz4" sourceRef="IntermediateThrowEvent_1kqu04r" targetRef="EndEvent_0u4mceu" />
-      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1kqu04r" name="Send restaurants list in selected city">
-        <bpmn:incoming>SequenceFlow_14hb5hx</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0s9gzz4</bpmn:outgoing>
-        <bpmn:messageEventDefinition />
-      </bpmn:intermediateThrowEvent>
-      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1kyhggh" name="Send failure to user">
-        <bpmn:incoming>SequenceFlow_0lkzv01</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0rktox9</bpmn:outgoing>
-        <bpmn:messageEventDefinition id="MessageEventDefinition_02vbqr3" />
-      </bpmn:intermediateThrowEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_0rktox9" sourceRef="IntermediateThrowEvent_1kyhggh" targetRef="EndEvent_1jmvakw" />
-      <bpmn:endEvent id="EndEvent_1jmvakw">
-        <bpmn:incoming>SequenceFlow_0rktox9</bpmn:incoming>
-        <bpmn:escalationEventDefinition escalationRef="Escalation_0oom336" />
-      </bpmn:endEvent>
-      <bpmn:exclusiveGateway id="ExclusiveGateway_06cw8o3" default="SequenceFlow_0vyzj0o">
-        <bpmn:incoming>SequenceFlow_19i0s93</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1mgwy8v</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_0vyzj0o</bpmn:outgoing>
-      </bpmn:exclusiveGateway>
-      <bpmn:sequenceFlow id="SequenceFlow_1mgwy8v" name="in time" sourceRef="ExclusiveGateway_06cw8o3" targetRef="ServiceTask_1ku6njz">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${(dateTime().getHourOfDay()&gt;=10)&amp;&amp;(dateTime().getHourOfDay()&lt;=23)}</bpmn:conditionExpression>
-      </bpmn:sequenceFlow>
-      <bpmn:sequenceFlow id="SequenceFlow_0vyzj0o" sourceRef="ExclusiveGateway_06cw8o3" targetRef="EndEvent_0jgv288" />
-      <bpmn:endEvent id="EndEvent_0jgv288">
-        <bpmn:incoming>SequenceFlow_0vyzj0o</bpmn:incoming>
-        <bpmn:escalationEventDefinition id="EscalationEventDefinition_0kdhs76" escalationRef="Escalation_0oom336" />
-      </bpmn:endEvent>
-    </bpmn:subProcess>
     <bpmn:sequenceFlow id="SequenceFlow_1ubbptw" sourceRef="BoundaryEvent_1p8go7e" targetRef="EndEvent_0kb8y9e" />
-    <bpmn:boundaryEvent id="BoundaryEvent_01irebl" attachedToRef="SubProcess_1pkqfgg">
-      <bpmn:outgoing>SequenceFlow_193n4wa</bpmn:outgoing>
-      <bpmn:escalationEventDefinition escalationRef="Escalation_0oom336" />
-    </bpmn:boundaryEvent>
-    <bpmn:startEvent id="StartEvent_1p7z9v2" name="Get restaurant menu request">
-      <bpmn:outgoing>SequenceFlow_0yy53ri</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0u5k8ab" messageRef="Message_0xwksgl" />
-    </bpmn:startEvent>
-    <bpmn:endEvent id="EndEvent_0hybauh" name="Send user failure msg">
-      <bpmn:incoming>SequenceFlow_193n4wa</bpmn:incoming>
-      <bpmn:messageEventDefinition />
-    </bpmn:endEvent>
-    <bpmn:endEvent id="EndEvent_0kb8y9e" name="Send user failure msg">
-      <bpmn:incoming>SequenceFlow_1ubbptw</bpmn:incoming>
-      <bpmn:messageEventDefinition />
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1uvrnqa" sourceRef="IntermediateCatchEvent_1tpw082" targetRef="SubProcess_0mbzw7g" />
     <bpmn:sequenceFlow id="SequenceFlow_1ambmiv" sourceRef="SubProcess_0mbzw7g" targetRef="IntermediateCatchEvent_090xkl6" />
     <bpmn:sequenceFlow id="SequenceFlow_1jf7sfx" sourceRef="SubProcess_1371ahl" targetRef="EventBasedGateway_0qytewf" />
     <bpmn:sequenceFlow id="SequenceFlow_1qx3snd" sourceRef="BoundaryEvent_1ylay6o" targetRef="EndEvent_1ry6l5p" />
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_090xkl6" name="Receive bank token">
-      <bpmn:incoming>SequenceFlow_1ambmiv</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0408qks</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_12w7dtd" messageRef="Message_1hhadtr" />
-    </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0408qks" sourceRef="IntermediateCatchEvent_090xkl6" targetRef="SubProcess_1371ahl" />
-    <bpmn:subProcess id="SubProcess_1371ahl">
-      <bpmn:incoming>SequenceFlow_0408qks</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1jf7sfx</bpmn:outgoing>
-      <bpmn:startEvent id="StartEvent_08t48dr">
-        <bpmn:outgoing>SequenceFlow_0yegjuu</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:subProcess id="SubProcess_1ormmmj">
-        <bpmn:incoming>SequenceFlow_0yegjuu</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0mkb4hp</bpmn:outgoing>
-        <bpmn:endEvent id="EndEvent_1u70hc4">
-          <bpmn:incoming>SequenceFlow_0gkymzz</bpmn:incoming>
-        </bpmn:endEvent>
-        <bpmn:startEvent id="StartEvent_172d4tq">
-          <bpmn:outgoing>SequenceFlow_0jc02zf</bpmn:outgoing>
-        </bpmn:startEvent>
-        <bpmn:serviceTask id="Task_05eqi72" name="Verify token" camunda:class="it.unibo.bank.VerifyBankToken">
-          <bpmn:incoming>SequenceFlow_0jc02zf</bpmn:incoming>
-          <bpmn:outgoing>SequenceFlow_1r0adb0</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:endEvent id="EndEvent_09co6lz">
-          <bpmn:incoming>SequenceFlow_0kij616</bpmn:incoming>
-          <bpmn:escalationEventDefinition escalationRef="Escalation_1h25stm" />
-        </bpmn:endEvent>
-        <bpmn:sequenceFlow id="SequenceFlow_0jc02zf" sourceRef="StartEvent_172d4tq" targetRef="Task_05eqi72" />
-        <bpmn:sequenceFlow id="SequenceFlow_0kij616" sourceRef="ExclusiveGateway_1udce62" targetRef="EndEvent_09co6lz" />
-        <bpmn:sequenceFlow id="SequenceFlow_0gkymzz" sourceRef="ExclusiveGateway_1udce62" targetRef="EndEvent_1u70hc4">
-          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${IsValidToken &amp;&amp; !UnreachableBankService}</bpmn:conditionExpression>
-        </bpmn:sequenceFlow>
-        <bpmn:sequenceFlow id="SequenceFlow_1r0adb0" sourceRef="Task_05eqi72" targetRef="ExclusiveGateway_1udce62" />
-        <bpmn:exclusiveGateway id="ExclusiveGateway_1udce62" default="SequenceFlow_0kij616">
-          <bpmn:incoming>SequenceFlow_1r0adb0</bpmn:incoming>
-          <bpmn:outgoing>SequenceFlow_0kij616</bpmn:outgoing>
-          <bpmn:outgoing>SequenceFlow_0gkymzz</bpmn:outgoing>
-        </bpmn:exclusiveGateway>
-      </bpmn:subProcess>
-      <bpmn:sequenceFlow id="SequenceFlow_0yegjuu" sourceRef="StartEvent_08t48dr" targetRef="SubProcess_1ormmmj" />
-      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0d9sh6s" name="Send order confirmation">
-        <bpmn:incoming>SequenceFlow_0xdgt69</bpmn:incoming>
-        <bpmn:messageEventDefinition id="MessageEventDefinition_1sqlgxg" />
-      </bpmn:intermediateThrowEvent>
-      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0g08xkw" name="Send confirmation to restaurant">
-        <bpmn:incoming>SequenceFlow_0elns3b</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0dke1ub</bpmn:outgoing>
-        <bpmn:messageEventDefinition id="MessageEventDefinition_1uem1tr" camunda:class="it.unibo.restaurant.SendOrder" />
-      </bpmn:intermediateThrowEvent>
-      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0bxuvb9" name="Send confirmation to delivery company">
-        <bpmn:incoming>SequenceFlow_1kha73p</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_04lpe3v</bpmn:outgoing>
-        <bpmn:messageEventDefinition id="MessageEventDefinition_15zfph4" camunda:class="it.unibo.delivery.PlaceOrder" />
-      </bpmn:intermediateThrowEvent>
-      <bpmn:parallelGateway id="ParallelGateway_1qvwt9a">
-        <bpmn:incoming>SequenceFlow_0mkb4hp</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0elns3b</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_1kha73p</bpmn:outgoing>
-      </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="ParallelGateway_0sv8c9j">
-        <bpmn:incoming>SequenceFlow_04lpe3v</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_0dke1ub</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1g2jfyl</bpmn:outgoing>
-      </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="SequenceFlow_0elns3b" sourceRef="ParallelGateway_1qvwt9a" targetRef="IntermediateThrowEvent_0g08xkw" />
-      <bpmn:sequenceFlow id="SequenceFlow_1kha73p" sourceRef="ParallelGateway_1qvwt9a" targetRef="IntermediateThrowEvent_0bxuvb9" />
-      <bpmn:sequenceFlow id="SequenceFlow_04lpe3v" sourceRef="IntermediateThrowEvent_0bxuvb9" targetRef="ParallelGateway_0sv8c9j" />
-      <bpmn:sequenceFlow id="SequenceFlow_0dke1ub" sourceRef="IntermediateThrowEvent_0g08xkw" targetRef="ParallelGateway_0sv8c9j" />
-      <bpmn:sequenceFlow id="SequenceFlow_0mkb4hp" sourceRef="SubProcess_1ormmmj" targetRef="ParallelGateway_1qvwt9a" />
-      <bpmn:exclusiveGateway id="ExclusiveGateway_0wavuoz" default="SequenceFlow_1g1uqlg">
-        <bpmn:incoming>SequenceFlow_1g2jfyl</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0xdgt69</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_1g1uqlg</bpmn:outgoing>
-      </bpmn:exclusiveGateway>
-      <bpmn:endEvent id="EndEvent_1o7r2co">
-        <bpmn:incoming>SequenceFlow_1g1uqlg</bpmn:incoming>
-        <bpmn:escalationEventDefinition id="EscalationEventDefinition_0octnzx" escalationRef="Escalation_1h25stm" />
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_1g2jfyl" sourceRef="ParallelGateway_0sv8c9j" targetRef="ExclusiveGateway_0wavuoz" />
-      <bpmn:sequenceFlow id="SequenceFlow_0xdgt69" sourceRef="ExclusiveGateway_0wavuoz" targetRef="IntermediateThrowEvent_0d9sh6s">
-        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
-      </bpmn:sequenceFlow>
-      <bpmn:sequenceFlow id="SequenceFlow_1g1uqlg" sourceRef="ExclusiveGateway_0wavuoz" targetRef="EndEvent_1o7r2co" />
-    </bpmn:subProcess>
-    <bpmn:intermediateThrowEvent id="EndEvent_1ry6l5p" name="Send failure">
-      <bpmn:incoming>SequenceFlow_1qx3snd</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0axsj24</bpmn:outgoing>
-      <bpmn:messageEventDefinition />
-    </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0axsj24" sourceRef="EndEvent_1ry6l5p" targetRef="SubProcess_0009tv3" />
     <bpmn:sequenceFlow id="SequenceFlow_1ik3c69" sourceRef="EventBasedGateway_0qytewf" targetRef="IntermediateCatchEvent_10pqbry" />
-    <bpmn:eventBasedGateway id="EventBasedGateway_0qytewf">
-      <bpmn:incoming>SequenceFlow_1jf7sfx</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1ik3c69</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_0052lgf</bpmn:outgoing>
-    </bpmn:eventBasedGateway>
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1oyxrhu" name="Scadenza cancelllazione ordine: 1 ora prima della consegna">
-      <bpmn:incoming>SequenceFlow_0052lgf</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_08sc4b8</bpmn:outgoing>
-      <bpmn:timerEventDefinition id="TimerEventDefinition_0z3nc3e">
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1H</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0052lgf" sourceRef="EventBasedGateway_0qytewf" targetRef="IntermediateCatchEvent_1oyxrhu" />
     <bpmn:sequenceFlow id="SequenceFlow_08sc4b8" sourceRef="IntermediateCatchEvent_1oyxrhu" targetRef="ExclusiveGateway_1okaqlw" />
     <bpmn:sequenceFlow id="SequenceFlow_1mdks03" sourceRef="IntermediateCatchEvent_10pqbry" targetRef="SubProcess_0009tv3" />
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_10pqbry" name="Richiesta di cancellazione">
-      <bpmn:incoming>SequenceFlow_1ik3c69</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1mdks03</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_0xieoq4" messageRef="Message_1nlkfu0" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:subProcess id="SubProcess_0009tv3">
-      <bpmn:incoming>SequenceFlow_1mdks03</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0axsj24</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0iq54nl</bpmn:outgoing>
-      <bpmn:startEvent id="StartEvent_00uvlh4">
-        <bpmn:outgoing>SequenceFlow_17merge</bpmn:outgoing>
-      </bpmn:startEvent>
-      <bpmn:serviceTask id="ServiceTask_1r05xum" name="Abort delivery order" camunda:class="it.unibo.delivery.AbortOrder">
-        <bpmn:incoming>SequenceFlow_07ze4rb</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0ukl8wv</bpmn:outgoing>
-      </bpmn:serviceTask>
-      <bpmn:serviceTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.delivery.AbortOrder">
-        <bpmn:incoming>SequenceFlow_15b3td1</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1sk4q1l</bpmn:outgoing>
-      </bpmn:serviceTask>
-      <bpmn:serviceTask id="ServiceTask_1g6qbwj" name="abort restaurant order" camunda:class="it.unibo.restaurant.AbortOrder">
-        <bpmn:incoming>SequenceFlow_1ya6twn</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_0lzz90l</bpmn:outgoing>
-      </bpmn:serviceTask>
-      <bpmn:parallelGateway id="ExclusiveGateway_12fov1a">
-        <bpmn:incoming>SequenceFlow_17merge</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_15b3td1</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_07ze4rb</bpmn:outgoing>
-        <bpmn:outgoing>SequenceFlow_1ya6twn</bpmn:outgoing>
-      </bpmn:parallelGateway>
-      <bpmn:parallelGateway id="ParallelGateway_0nkyw4x">
-        <bpmn:incoming>SequenceFlow_1sk4q1l</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_0lzz90l</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_0ukl8wv</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_03ln9b5</bpmn:outgoing>
-      </bpmn:parallelGateway>
-      <bpmn:sequenceFlow id="SequenceFlow_15b3td1" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_0xr8nkc" />
-      <bpmn:sequenceFlow id="SequenceFlow_07ze4rb" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_1r05xum" />
-      <bpmn:sequenceFlow id="SequenceFlow_1ya6twn" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_1g6qbwj" />
-      <bpmn:sequenceFlow id="SequenceFlow_1sk4q1l" sourceRef="ServiceTask_0xr8nkc" targetRef="ParallelGateway_0nkyw4x" />
-      <bpmn:sequenceFlow id="SequenceFlow_0lzz90l" sourceRef="ServiceTask_1g6qbwj" targetRef="ParallelGateway_0nkyw4x" />
-      <bpmn:sequenceFlow id="SequenceFlow_0ukl8wv" sourceRef="ServiceTask_1r05xum" targetRef="ParallelGateway_0nkyw4x" />
-      <bpmn:endEvent id="EndEvent_1tk9ots">
-        <bpmn:incoming>SequenceFlow_03ln9b5</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_13f1jno</bpmn:incoming>
-      </bpmn:endEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_03ln9b5" sourceRef="ParallelGateway_0nkyw4x" targetRef="EndEvent_1tk9ots" />
-      <bpmn:boundaryEvent id="BoundaryEvent_196fy56" attachedToRef="ServiceTask_1g6qbwj">
-        <bpmn:outgoing>SequenceFlow_1qclifw</bpmn:outgoing>
-        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
-      </bpmn:boundaryEvent>
-      <bpmn:boundaryEvent id="BoundaryEvent_0fxgclj" attachedToRef="ServiceTask_1r05xum">
-        <bpmn:outgoing>SequenceFlow_0nmx336</bpmn:outgoing>
-        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
-      </bpmn:boundaryEvent>
-      <bpmn:sequenceFlow id="SequenceFlow_17merge" sourceRef="StartEvent_00uvlh4" targetRef="ExclusiveGateway_12fov1a" />
-      <bpmn:boundaryEvent id="BoundaryEvent_17qffpk" attachedToRef="ServiceTask_0xr8nkc">
-        <bpmn:outgoing>SequenceFlow_1ylip07</bpmn:outgoing>
-        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
-      </bpmn:boundaryEvent>
-      <bpmn:userTask id="Task_05brbub" name="Manully contact failed service">
-        <bpmn:incoming>SequenceFlow_0nmx336</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_1qclifw</bpmn:incoming>
-        <bpmn:incoming>SequenceFlow_1ylip07</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_13f1jno</bpmn:outgoing>
-      </bpmn:userTask>
-      <bpmn:sequenceFlow id="SequenceFlow_0nmx336" sourceRef="BoundaryEvent_0fxgclj" targetRef="Task_05brbub" />
-      <bpmn:sequenceFlow id="SequenceFlow_1qclifw" sourceRef="BoundaryEvent_196fy56" targetRef="Task_05brbub" />
-      <bpmn:sequenceFlow id="SequenceFlow_1ylip07" sourceRef="BoundaryEvent_17qffpk" targetRef="Task_05brbub" />
-      <bpmn:sequenceFlow id="SequenceFlow_13f1jno" sourceRef="Task_05brbub" targetRef="EndEvent_1tk9ots" />
-    </bpmn:subProcess>
     <bpmn:sequenceFlow id="SequenceFlow_0iq54nl" sourceRef="SubProcess_0009tv3" targetRef="ExclusiveGateway_1okaqlw" />
-    <bpmn:endEvent id="EndEvent_17wsf9h">
-      <bpmn:incoming>SequenceFlow_0jyd3qx</bpmn:incoming>
-      <bpmn:terminateEventDefinition id="TerminateEventDefinition_1kjp0ey" />
-    </bpmn:endEvent>
-    <bpmn:parallelGateway id="ExclusiveGateway_1okaqlw">
-      <bpmn:incoming>SequenceFlow_08sc4b8</bpmn:incoming>
-      <bpmn:incoming>SequenceFlow_0iq54nl</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0jyd3qx</bpmn:outgoing>
-    </bpmn:parallelGateway>
     <bpmn:sequenceFlow id="SequenceFlow_0jyd3qx" sourceRef="ExclusiveGateway_1okaqlw" targetRef="EndEvent_17wsf9h" />
-    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1tpw082" name="Get order">
-      <bpmn:incoming>SequenceFlow_01evk8p</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_1uvrnqa</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_13u5vqt" messageRef="Message_0whc0ty" />
-    </bpmn:intermediateCatchEvent>
-    <bpmn:eventBasedGateway id="ExclusiveGateway_0o5xdrp">
-      <bpmn:incoming>SequenceFlow_19urce4</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_01evk8p</bpmn:outgoing>
-      <bpmn:outgoing>SequenceFlow_1pt6ky4</bpmn:outgoing>
-    </bpmn:eventBasedGateway>
     <bpmn:sequenceFlow id="SequenceFlow_19urce4" sourceRef="SubProcess_1pkqfgg" targetRef="ExclusiveGateway_0o5xdrp" />
     <bpmn:sequenceFlow id="SequenceFlow_01evk8p" sourceRef="ExclusiveGateway_0o5xdrp" targetRef="IntermediateCatchEvent_1tpw082" />
     <bpmn:sequenceFlow id="SequenceFlow_1pt6ky4" sourceRef="ExclusiveGateway_0o5xdrp" targetRef="IntermediateThrowEvent_139scoc" />
-    <bpmn:endEvent id="EndEvent_1t3dug2" name="User do not order">
-      <bpmn:incoming>SequenceFlow_01vkj1t</bpmn:incoming>
-      <bpmn:terminateEventDefinition />
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_01vkj1t" sourceRef="IntermediateThrowEvent_139scoc" targetRef="EndEvent_1t3dug2" />
-    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_139scoc" name="10 minutes">
-      <bpmn:incoming>SequenceFlow_1pt6ky4</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_01vkj1t</bpmn:outgoing>
-      <bpmn:timerEventDefinition>
-        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10M</bpmn:timeDuration>
-      </bpmn:timerEventDefinition>
-    </bpmn:intermediateCatchEvent>
+    <bpmn:boundaryEvent id="BoundaryEvent_01irebl" attachedToRef="SubProcess_1pkqfgg">
+      <bpmn:outgoing>SequenceFlow_193n4wa</bpmn:outgoing>
+      <bpmn:escalationEventDefinition escalationRef="Escalation_0oom336" />
+    </bpmn:boundaryEvent>
     <bpmn:boundaryEvent id="BoundaryEvent_1ylay6o" attachedToRef="SubProcess_1371ahl">
       <bpmn:outgoing>SequenceFlow_1qx3snd</bpmn:outgoing>
       <bpmn:escalationEventDefinition escalationRef="Escalation_1h25stm" />
@@ -412,7 +98,7 @@
         <bpmn:subProcess id="SubProcess_02p1ykb">
           <bpmn:incoming>SequenceFlow_1vu0m2a</bpmn:incoming>
           <bpmn:outgoing>SequenceFlow_10930kz</bpmn:outgoing>
-          <bpmn:multiInstanceLoopCharacteristics camunda:collection="deliveryCompaniesList" camunda:elementVariable="company">
+          <bpmn:multiInstanceLoopCharacteristics camunda:collection="${deliveryCompaniesList.getCompanies()}" camunda:elementVariable="company">
             <bpmn:loopCardinality xsi:type="bpmn:tFormalExpression">${deliveryCompaniesList.size()}</bpmn:loopCardinality>
           </bpmn:multiInstanceLoopCharacteristics>
           <bpmn:startEvent id="StartEvent_0rms6e3">
@@ -493,7 +179,7 @@
         </bpmn:exclusiveGateway>
         <bpmn:sequenceFlow id="SequenceFlow_16gh8dy" sourceRef="Task_0d4m7z3" targetRef="EndEvent_1b2bkhl" />
         <bpmn:sequenceFlow id="SequenceFlow_1lr962a" sourceRef="ExclusiveGateway_0t3vvoz" targetRef="Task_0d4m7z3">
-          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("AvailableDeliveryCompaniesList").size()&gt;0}</bpmn:conditionExpression>
+          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!AvailableDeliveryCompaniesList.isEmpty()}</bpmn:conditionExpression>
         </bpmn:sequenceFlow>
         <bpmn:sequenceFlow id="SequenceFlow_05vwv0l" sourceRef="ExclusiveGateway_0t3vvoz" targetRef="EndEvent_17w8xrd" />
       </bpmn:subProcess>
@@ -525,6 +211,320 @@
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
     </bpmn:subProcess>
+    <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_139scoc" name="10 minutes">
+      <bpmn:incoming>SequenceFlow_1pt6ky4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_01vkj1t</bpmn:outgoing>
+      <bpmn:timerEventDefinition>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10M</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_1t3dug2" name="User do not order">
+      <bpmn:incoming>SequenceFlow_01vkj1t</bpmn:incoming>
+      <bpmn:terminateEventDefinition />
+    </bpmn:endEvent>
+    <bpmn:eventBasedGateway id="ExclusiveGateway_0o5xdrp">
+      <bpmn:incoming>SequenceFlow_19urce4</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_01evk8p</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1pt6ky4</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1tpw082" name="Get order">
+      <bpmn:incoming>SequenceFlow_01evk8p</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1uvrnqa</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_13u5vqt" messageRef="Message_0whc0ty" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:parallelGateway id="ExclusiveGateway_1okaqlw">
+      <bpmn:incoming>SequenceFlow_08sc4b8</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0iq54nl</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0jyd3qx</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="EndEvent_17wsf9h">
+      <bpmn:incoming>SequenceFlow_0jyd3qx</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition_1kjp0ey" />
+    </bpmn:endEvent>
+    <bpmn:subProcess id="SubProcess_0009tv3">
+      <bpmn:incoming>SequenceFlow_1mdks03</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0axsj24</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0iq54nl</bpmn:outgoing>
+      <bpmn:startEvent id="StartEvent_00uvlh4">
+        <bpmn:outgoing>SequenceFlow_17merge</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="ServiceTask_1r05xum" name="Abort delivery order" camunda:class="it.unibo.delivery.AbortOrder">
+        <bpmn:incoming>SequenceFlow_07ze4rb</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0ukl8wv</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.delivery.AbortOrder">
+        <bpmn:incoming>SequenceFlow_15b3td1</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1sk4q1l</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="ServiceTask_1g6qbwj" name="abort restaurant order" camunda:class="it.unibo.restaurant.AbortOrder">
+        <bpmn:incoming>SequenceFlow_1ya6twn</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0lzz90l</bpmn:outgoing>
+      </bpmn:serviceTask>
+      <bpmn:parallelGateway id="ExclusiveGateway_12fov1a">
+        <bpmn:incoming>SequenceFlow_17merge</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_15b3td1</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_07ze4rb</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_1ya6twn</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="ParallelGateway_0nkyw4x">
+        <bpmn:incoming>SequenceFlow_1sk4q1l</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0lzz90l</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0ukl8wv</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_03ln9b5</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_15b3td1" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_0xr8nkc" />
+      <bpmn:sequenceFlow id="SequenceFlow_07ze4rb" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_1r05xum" />
+      <bpmn:sequenceFlow id="SequenceFlow_1ya6twn" sourceRef="ExclusiveGateway_12fov1a" targetRef="ServiceTask_1g6qbwj" />
+      <bpmn:sequenceFlow id="SequenceFlow_1sk4q1l" sourceRef="ServiceTask_0xr8nkc" targetRef="ParallelGateway_0nkyw4x" />
+      <bpmn:sequenceFlow id="SequenceFlow_0lzz90l" sourceRef="ServiceTask_1g6qbwj" targetRef="ParallelGateway_0nkyw4x" />
+      <bpmn:sequenceFlow id="SequenceFlow_0ukl8wv" sourceRef="ServiceTask_1r05xum" targetRef="ParallelGateway_0nkyw4x" />
+      <bpmn:endEvent id="EndEvent_1tk9ots">
+        <bpmn:incoming>SequenceFlow_03ln9b5</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_13f1jno</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_03ln9b5" sourceRef="ParallelGateway_0nkyw4x" targetRef="EndEvent_1tk9ots" />
+      <bpmn:boundaryEvent id="BoundaryEvent_196fy56" attachedToRef="ServiceTask_1g6qbwj">
+        <bpmn:outgoing>SequenceFlow_1qclifw</bpmn:outgoing>
+        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
+      </bpmn:boundaryEvent>
+      <bpmn:boundaryEvent id="BoundaryEvent_0fxgclj" attachedToRef="ServiceTask_1r05xum">
+        <bpmn:outgoing>SequenceFlow_0nmx336</bpmn:outgoing>
+        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
+      </bpmn:boundaryEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_17merge" sourceRef="StartEvent_00uvlh4" targetRef="ExclusiveGateway_12fov1a" />
+      <bpmn:boundaryEvent id="BoundaryEvent_17qffpk" attachedToRef="ServiceTask_0xr8nkc">
+        <bpmn:outgoing>SequenceFlow_1ylip07</bpmn:outgoing>
+        <bpmn:errorEventDefinition errorRef="Error_1xwe7ow" />
+      </bpmn:boundaryEvent>
+      <bpmn:userTask id="Task_05brbub" name="Manully contact failed service">
+        <bpmn:incoming>SequenceFlow_0nmx336</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_1qclifw</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_1ylip07</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_13f1jno</bpmn:outgoing>
+      </bpmn:userTask>
+      <bpmn:sequenceFlow id="SequenceFlow_0nmx336" sourceRef="BoundaryEvent_0fxgclj" targetRef="Task_05brbub" />
+      <bpmn:sequenceFlow id="SequenceFlow_1qclifw" sourceRef="BoundaryEvent_196fy56" targetRef="Task_05brbub" />
+      <bpmn:sequenceFlow id="SequenceFlow_1ylip07" sourceRef="BoundaryEvent_17qffpk" targetRef="Task_05brbub" />
+      <bpmn:sequenceFlow id="SequenceFlow_13f1jno" sourceRef="Task_05brbub" targetRef="EndEvent_1tk9ots" />
+    </bpmn:subProcess>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_10pqbry" name="Richiesta di cancellazione">
+      <bpmn:incoming>SequenceFlow_1ik3c69</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1mdks03</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0xieoq4" messageRef="Message_1nlkfu0" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1oyxrhu" name="Scadenza cancelllazione ordine: 1 ora prima della consegna">
+      <bpmn:incoming>SequenceFlow_0052lgf</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_08sc4b8</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0z3nc3e">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT1H</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:eventBasedGateway id="EventBasedGateway_0qytewf">
+      <bpmn:incoming>SequenceFlow_1jf7sfx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1ik3c69</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0052lgf</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateThrowEvent id="EndEvent_1ry6l5p" name="Send failure">
+      <bpmn:incoming>SequenceFlow_1qx3snd</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0axsj24</bpmn:outgoing>
+      <bpmn:messageEventDefinition />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:subProcess id="SubProcess_1371ahl">
+      <bpmn:incoming>SequenceFlow_0408qks</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1jf7sfx</bpmn:outgoing>
+      <bpmn:startEvent id="StartEvent_08t48dr">
+        <bpmn:outgoing>SequenceFlow_0yegjuu</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:subProcess id="SubProcess_1ormmmj">
+        <bpmn:incoming>SequenceFlow_0yegjuu</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0mkb4hp</bpmn:outgoing>
+        <bpmn:endEvent id="EndEvent_1u70hc4">
+          <bpmn:incoming>SequenceFlow_0gkymzz</bpmn:incoming>
+        </bpmn:endEvent>
+        <bpmn:startEvent id="StartEvent_172d4tq">
+          <bpmn:outgoing>SequenceFlow_0jc02zf</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:serviceTask id="Task_05eqi72" name="Verify token" camunda:class="it.unibo.bank.VerifyBankToken">
+          <bpmn:incoming>SequenceFlow_0jc02zf</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_1r0adb0</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:endEvent id="EndEvent_09co6lz">
+          <bpmn:incoming>SequenceFlow_0kij616</bpmn:incoming>
+          <bpmn:escalationEventDefinition escalationRef="Escalation_1h25stm" />
+        </bpmn:endEvent>
+        <bpmn:sequenceFlow id="SequenceFlow_0jc02zf" sourceRef="StartEvent_172d4tq" targetRef="Task_05eqi72" />
+        <bpmn:sequenceFlow id="SequenceFlow_0kij616" sourceRef="ExclusiveGateway_1udce62" targetRef="EndEvent_09co6lz" />
+        <bpmn:sequenceFlow id="SequenceFlow_0gkymzz" sourceRef="ExclusiveGateway_1udce62" targetRef="EndEvent_1u70hc4">
+          <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${IsValidToken &amp;&amp; !UnreachableBankService}</bpmn:conditionExpression>
+        </bpmn:sequenceFlow>
+        <bpmn:sequenceFlow id="SequenceFlow_1r0adb0" sourceRef="Task_05eqi72" targetRef="ExclusiveGateway_1udce62" />
+        <bpmn:exclusiveGateway id="ExclusiveGateway_1udce62" default="SequenceFlow_0kij616">
+          <bpmn:incoming>SequenceFlow_1r0adb0</bpmn:incoming>
+          <bpmn:outgoing>SequenceFlow_0kij616</bpmn:outgoing>
+          <bpmn:outgoing>SequenceFlow_0gkymzz</bpmn:outgoing>
+        </bpmn:exclusiveGateway>
+      </bpmn:subProcess>
+      <bpmn:sequenceFlow id="SequenceFlow_0yegjuu" sourceRef="StartEvent_08t48dr" targetRef="SubProcess_1ormmmj" />
+      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0d9sh6s" name="Send order confirmation">
+        <bpmn:incoming>SequenceFlow_0xdgt69</bpmn:incoming>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_1sqlgxg" />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0g08xkw" name="Send confirmation to restaurant">
+        <bpmn:incoming>SequenceFlow_0elns3b</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0dke1ub</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_1uem1tr" camunda:class="it.unibo.restaurant.SendOrder" />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_0bxuvb9" name="Send confirmation to delivery company">
+        <bpmn:incoming>SequenceFlow_1kha73p</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_04lpe3v</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_15zfph4" camunda:class="it.unibo.delivery.PlaceOrder" />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:parallelGateway id="ParallelGateway_1qvwt9a">
+        <bpmn:incoming>SequenceFlow_0mkb4hp</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0elns3b</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_1kha73p</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:parallelGateway id="ParallelGateway_0sv8c9j">
+        <bpmn:incoming>SequenceFlow_04lpe3v</bpmn:incoming>
+        <bpmn:incoming>SequenceFlow_0dke1ub</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1g2jfyl</bpmn:outgoing>
+      </bpmn:parallelGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_0elns3b" sourceRef="ParallelGateway_1qvwt9a" targetRef="IntermediateThrowEvent_0g08xkw" />
+      <bpmn:sequenceFlow id="SequenceFlow_1kha73p" sourceRef="ParallelGateway_1qvwt9a" targetRef="IntermediateThrowEvent_0bxuvb9" />
+      <bpmn:sequenceFlow id="SequenceFlow_04lpe3v" sourceRef="IntermediateThrowEvent_0bxuvb9" targetRef="ParallelGateway_0sv8c9j" />
+      <bpmn:sequenceFlow id="SequenceFlow_0dke1ub" sourceRef="IntermediateThrowEvent_0g08xkw" targetRef="ParallelGateway_0sv8c9j" />
+      <bpmn:sequenceFlow id="SequenceFlow_0mkb4hp" sourceRef="SubProcess_1ormmmj" targetRef="ParallelGateway_1qvwt9a" />
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0wavuoz" default="SequenceFlow_1g1uqlg">
+        <bpmn:incoming>SequenceFlow_1g2jfyl</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0xdgt69</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_1g1uqlg</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:endEvent id="EndEvent_1o7r2co">
+        <bpmn:incoming>SequenceFlow_1g1uqlg</bpmn:incoming>
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_0octnzx" escalationRef="Escalation_1h25stm" />
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_1g2jfyl" sourceRef="ParallelGateway_0sv8c9j" targetRef="ExclusiveGateway_0wavuoz" />
+      <bpmn:sequenceFlow id="SequenceFlow_0xdgt69" sourceRef="ExclusiveGateway_0wavuoz" targetRef="IntermediateThrowEvent_0d9sh6s">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${true}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_1g1uqlg" sourceRef="ExclusiveGateway_0wavuoz" targetRef="EndEvent_1o7r2co" />
+    </bpmn:subProcess>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_090xkl6" name="Receive bank token">
+      <bpmn:incoming>SequenceFlow_1ambmiv</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0408qks</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_12w7dtd" messageRef="Message_1hhadtr" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_0kb8y9e" name="Send user failure msg">
+      <bpmn:incoming>SequenceFlow_1ubbptw</bpmn:incoming>
+      <bpmn:messageEventDefinition />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="EndEvent_0hybauh" name="Send user failure msg">
+      <bpmn:incoming>SequenceFlow_193n4wa</bpmn:incoming>
+      <bpmn:messageEventDefinition />
+    </bpmn:endEvent>
+    <bpmn:startEvent id="StartEvent_1p7z9v2" name="Get restaurant menu request">
+      <bpmn:outgoing>SequenceFlow_0yy53ri</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0u5k8ab" messageRef="Message_0xwksgl" />
+    </bpmn:startEvent>
+    <bpmn:subProcess id="SubProcess_1pkqfgg">
+      <bpmn:incoming>SequenceFlow_0yy53ri</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_19urce4</bpmn:outgoing>
+      <bpmn:startEvent id="StartEvent_1maad30">
+        <bpmn:outgoing>SequenceFlow_19i0s93</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:serviceTask id="ServiceTask_1ku6njz" name="Get restaurants in selected city" camunda:class="it.unibo.acme.GetRestaurantByCity">
+        <bpmn:incoming>SequenceFlow_1mgwy8v</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1w3pvb1</bpmn:outgoing>
+        <bpmn:dataOutputAssociation id="DataOutputAssociation_1ivytak">
+          <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
+        </bpmn:dataOutputAssociation>
+      </bpmn:serviceTask>
+      <bpmn:sequenceFlow id="SequenceFlow_19i0s93" sourceRef="StartEvent_1maad30" targetRef="ExclusiveGateway_06cw8o3" />
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0p69t9s" default="SequenceFlow_0lkzv01">
+        <bpmn:incoming>SequenceFlow_1w3pvb1</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0lkzv01</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_14hb5hx</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_1w3pvb1" sourceRef="ServiceTask_1ku6njz" targetRef="ExclusiveGateway_0p69t9s" />
+      <bpmn:endEvent id="EndEvent_0u4mceu">
+        <bpmn:incoming>SequenceFlow_0s9gzz4</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_0lkzv01" sourceRef="ExclusiveGateway_0p69t9s" targetRef="IntermediateThrowEvent_1kyhggh" />
+      <bpmn:sequenceFlow id="SequenceFlow_14hb5hx" sourceRef="ExclusiveGateway_0p69t9s" targetRef="IntermediateThrowEvent_1kqu04r">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("restaurants") != null }</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_0s9gzz4" sourceRef="IntermediateThrowEvent_1kqu04r" targetRef="EndEvent_0u4mceu" />
+      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1kqu04r" name="Send restaurants list in selected city">
+        <bpmn:incoming>SequenceFlow_14hb5hx</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0s9gzz4</bpmn:outgoing>
+        <bpmn:messageEventDefinition />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:intermediateThrowEvent id="IntermediateThrowEvent_1kyhggh" name="Send failure to user">
+        <bpmn:incoming>SequenceFlow_0lkzv01</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_0rktox9</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_02vbqr3" />
+      </bpmn:intermediateThrowEvent>
+      <bpmn:sequenceFlow id="SequenceFlow_0rktox9" sourceRef="IntermediateThrowEvent_1kyhggh" targetRef="EndEvent_1jmvakw" />
+      <bpmn:endEvent id="EndEvent_1jmvakw">
+        <bpmn:incoming>SequenceFlow_0rktox9</bpmn:incoming>
+        <bpmn:escalationEventDefinition escalationRef="Escalation_0oom336" />
+      </bpmn:endEvent>
+      <bpmn:exclusiveGateway id="ExclusiveGateway_06cw8o3" default="SequenceFlow_0vyzj0o">
+        <bpmn:incoming>SequenceFlow_19i0s93</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1mgwy8v</bpmn:outgoing>
+        <bpmn:outgoing>SequenceFlow_0vyzj0o</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+      <bpmn:sequenceFlow id="SequenceFlow_1mgwy8v" name="in time" sourceRef="ExclusiveGateway_06cw8o3" targetRef="ServiceTask_1ku6njz">
+        <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${(dateTime().getHourOfDay()&gt;=10)&amp;&amp;(dateTime().getHourOfDay()&lt;=23)}</bpmn:conditionExpression>
+      </bpmn:sequenceFlow>
+      <bpmn:sequenceFlow id="SequenceFlow_0vyzj0o" sourceRef="ExclusiveGateway_06cw8o3" targetRef="EndEvent_0jgv288" />
+      <bpmn:endEvent id="EndEvent_0jgv288">
+        <bpmn:incoming>SequenceFlow_0vyzj0o</bpmn:incoming>
+        <bpmn:escalationEventDefinition id="EscalationEventDefinition_0kdhs76" escalationRef="Escalation_0oom336" />
+      </bpmn:endEvent>
+    </bpmn:subProcess>
+    <bpmn:dataStoreReference id="DataStoreReference_1dmfm6x" name="Database" />
+    <bpmn:startEvent id="StartEvent_0ocvseq" name="6 a.m">
+      <bpmn:outgoing>SequenceFlow_0l7uq3y</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0jvn0gz">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/1970-01-01T06:00:00Z/PT24H</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:eventBasedGateway id="EventBasedGateway_13samjf">
+      <bpmn:incoming>SequenceFlow_0l7uq3y</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_08t536y</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_0ug4jfk</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_03f7g54</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1yslafd</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_12g3v94</bpmn:outgoing>
+    </bpmn:eventBasedGateway>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_0gjxq6p" name="10 a.m">
+      <bpmn:incoming>SequenceFlow_03f7g54</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1kxqw6l</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1jnorsu">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/1970-01-01T10:00:00Z/PT24H</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="EndEvent_04ag94e">
+      <bpmn:incoming>SequenceFlow_1kxqw6l</bpmn:incoming>
+      <bpmn:terminateEventDefinition />
+    </bpmn:endEvent>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1uoxhwg" name="Riceve richiesta cambio menù">
+      <bpmn:incoming>SequenceFlow_1yslafd</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_08t536y</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0t911jm">
+        <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0a8v68l" messageRef="Message_1ketppx" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:intermediateCatchEvent id="IntermediateCatchEvent_1sw2z02" name="Riceve info disponibilità">
+      <bpmn:incoming>SequenceFlow_12g3v94</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ug4jfk</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_19w5bih">
+        <bpmn:targetRef>DataStoreReference_1dmfm6x</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_10o9cks" messageRef="Message_0jlxgfj" />
+    </bpmn:intermediateCatchEvent>
   </bpmn:process>
   <bpmn:process id="Process_1s5c0in" isExecutable="false">
     <bpmn:startEvent id="StartEvent_0lt7fhj" name="Receive distance request">
@@ -933,13 +933,13 @@
       <bpmndi:BPMNShape id="IntermediateCatchEvent_10pqbry_di" bpmnElement="IntermediateCatchEvent_10pqbry">
         <dc:Bounds x="4128" y="1605" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="4112.5" y="1650.5" width="67" height="27" />
+          <dc:Bounds x="4113" y="1651" width="67" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="IntermediateCatchEvent_1oyxrhu_di" bpmnElement="IntermediateCatchEvent_1oyxrhu">
         <dc:Bounds x="4072" y="1112" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="4055" y="1036" width="69" height="66" />
+          <dc:Bounds x="4055" y="1036" width="70" height="66" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="EndEvent_17wsf9h_di" bpmnElement="EndEvent_17wsf9h">
@@ -954,7 +954,7 @@
       <bpmndi:BPMNShape id="IntermediateCatchEvent_1sw2z02_di" bpmnElement="IntermediateCatchEvent_1sw2z02">
         <dc:Bounds x="675" y="2035" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="714" y="2037" width="59" height="27" />
+          <dc:Bounds x="715" y="2037" width="58" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="SubProcess_1ormmmj_di" bpmnElement="SubProcess_1ormmmj" isExpanded="true">
@@ -1266,7 +1266,7 @@
         <di:waypoint x="2013" y="2486" />
         <di:waypoint x="2013" y="1926" />
         <di:waypoint x="1880" y="1926" />
-        <di:waypoint x="1880" y="1370" />
+        <di:waypoint x="1880" y="1365" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_06oudr8_di" bpmnElement="EndEvent_0zaappg">
         <dc:Bounds x="1678" y="2813" width="36" height="36" />
@@ -1657,7 +1657,7 @@
         <di:waypoint x="1767" y="1430" />
         <di:waypoint x="1932" y="1430" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1842" y="1412" width="14" height="14" />
+          <dc:Bounds x="1842" y="1412" width="15" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_1k2czat_di" bpmnElement="SequenceFlow_1k2czat">
@@ -1673,7 +1673,7 @@
       <bpmndi:BPMNShape id="DataStoreReference_1dmfm6x_di" bpmnElement="DataStoreReference_1dmfm6x">
         <dc:Bounds x="535" y="1695" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="536" y="1752" width="47" height="14" />
+          <dc:Bounds x="536" y="1752" width="48" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataOutputAssociation_1ivytak_di" bpmnElement="DataOutputAssociation_1ivytak">
@@ -1705,7 +1705,7 @@
       <bpmndi:BPMNShape id="IntermediateCatchEvent_0gjxq6p_di" bpmnElement="IntermediateCatchEvent_0gjxq6p">
         <dc:Bounds x="484" y="1926" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="486" y="1969" width="35" height="14" />
+          <dc:Bounds x="487" y="1969" width="34" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1kxqw6l_di" bpmnElement="SequenceFlow_1kxqw6l">
@@ -1728,7 +1728,7 @@
       <bpmndi:BPMNShape id="StartEvent_1p7z9v2_di" bpmnElement="StartEvent_1p7z9v2">
         <dc:Bounds x="302" y="1428" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="286" y="1471" width="71" height="27" />
+          <dc:Bounds x="286" y="1471" width="72" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0yy53ri_di" bpmnElement="SequenceFlow_0yy53ri">
@@ -1922,7 +1922,7 @@
       <bpmndi:BPMNShape id="ExclusiveGateway_0vmpxwu_di" bpmnElement="ExclusiveGateway_0vmpxwu" isMarkerVisible="true">
         <dc:Bounds x="1825" y="1616" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1823" y="1579" width="54" height="27" />
+          <dc:Bounds x="1823" y="1579" width="55" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1b0k6li_di" bpmnElement="SequenceFlow_1b0k6li">
@@ -2196,7 +2196,7 @@
       <bpmndi:BPMNShape id="IntermediateCatchEvent_01ff2t1_di" bpmnElement="IntermediateThrowEvent_139scoc">
         <dc:Bounds x="1079" y="1593" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1071" y="1632" width="54" height="14" />
+          <dc:Bounds x="1071" y="1632" width="55" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1pt6ky4_di" bpmnElement="SequenceFlow_1pt6ky4">
@@ -2296,8 +2296,8 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_13pa8m8_di" bpmnElement="SequenceFlow_13pa8m8">
         <di:waypoint x="1990" y="1350" />
-        <di:waypoint x="1990" y="1381" />
-        <di:waypoint x="1950" y="1381" />
+        <di:waypoint x="1990" y="1370" />
+        <di:waypoint x="1950" y="1370" />
         <di:waypoint x="1950" y="1412" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ExclusiveGateway_0t3vvoz_di" bpmnElement="ExclusiveGateway_0t3vvoz" isMarkerVisible="true">

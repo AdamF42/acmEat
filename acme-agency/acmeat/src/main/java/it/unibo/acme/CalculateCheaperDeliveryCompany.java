@@ -5,12 +5,10 @@ import it.unibo.models.DeliveryOrderList;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
-import static it.unibo.utils.AcmeVariables.*;
+import static it.unibo.utils.AcmeVariables.AVAILABLE_DELIVERY_COMPANIES;
+import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
@@ -19,8 +17,8 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
-        ArrayList<DeliveryOrder> deliveryCompanies =
-                (ArrayList<DeliveryOrder>) delegateExecution
+        DeliveryOrderList deliveryCompanies =
+                (DeliveryOrderList) delegateExecution
                         .getVariable(AVAILABLE_DELIVERY_COMPANIES);
 
         if (deliveryCompanies == null || deliveryCompanies.isEmpty()) {
@@ -28,10 +26,7 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
             return;
         }
 
-        //TODO: use DeliveryOrderList
-        DeliveryOrder order = deliveryCompanies.stream()
-                .min(Comparator.comparing(DeliveryOrder::getPrice))
-                .orElseThrow(NoSuchElementException::new);
+        DeliveryOrder order = deliveryCompanies.calculateMinPriceOrder();
 
         delegateExecution.setVariable(DELIVERY_ORDER, order);
         LOGGER.info("Selected delivery company: " + order.company);

@@ -36,7 +36,7 @@ public class ChangeRestaurantAvailability extends ApiHttpServlet {
         RestaurantAvailability availability = g.fromJson(req.getReader(), RestaurantAvailability.class);
         process.correlate(CHANGE_RESTAURANT_AVAILABILITY);
 
-        Response response = responseService.getResponse(process, repo, availability);
+        Response response = responseService.getResponse(repo, process.isCorrelationSuccessful(), availability);
         sendResponse(resp, g.toJson(response));
     }
 }

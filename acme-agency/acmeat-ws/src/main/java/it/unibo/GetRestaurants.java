@@ -37,7 +37,6 @@ public class GetRestaurants extends ApiHttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        System.out.println("Requested restaurants");
         HttpSession session = req.getSession(true);
         Gson g = new GsonBuilder().serializeNulls().create();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);

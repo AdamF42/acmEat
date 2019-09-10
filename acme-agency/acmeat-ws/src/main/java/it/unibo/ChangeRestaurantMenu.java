@@ -34,7 +34,7 @@ public class ChangeRestaurantMenu extends ApiHttpServlet {
 
         RestaurantMenu menuChange = g.fromJson(req.getReader(), RestaurantMenu.class);
         process.correlate(CHANGE_RESTAURANT_MENU);
-        Response response = responseService.getResponse(process, repo, menuChange);
+        Response response = responseService.getResponse(repo, process.isCorrelationSuccessful(), menuChange);
         sendResponse(resp, g.toJson(response));
 
     }

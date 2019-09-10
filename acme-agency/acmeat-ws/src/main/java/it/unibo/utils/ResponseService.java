@@ -1,12 +1,11 @@
 package it.unibo.utils;
 
+import it.unibo.factory.ResponseFactory;
 import it.unibo.models.*;
-import it.unibo.models.factory.ResponseFactory;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.repo.RestaurantRepository;
 
 import javax.servlet.http.HttpSession;
-
 import java.io.IOException;
 
 import static it.unibo.models.Status.AVAILABLE;
@@ -34,10 +33,10 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, HttpSession session, DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {
+    public Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {
         Response response;
         if (session == null || session.getAttribute(PROCESS_ID) == null
-                || (!process.isCorrelationSuccessful()
+                || (!isCorrelationSuccessful
                 && session.getAttribute(SEND_ORDER) == null)) {
             response = responseFactory.createFailureResponse("No active session found");
         } else if (deliveryOrder == null || deliveryOrder.getPrice() == null) {
@@ -55,10 +54,10 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, HttpSession session, String camundaProcessId, Boolean isValidToken, Boolean isUnreachableBankService) {
+    public Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, String camundaProcessId, Boolean isValidToken, Boolean isUnreachableBankService) {
         Response response;
         if (session == null || camundaProcessId == null
-                || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER) == null) {
+                || !isCorrelationSuccessful && session.getAttribute(CONFIRM_ORDER) == null) {
             response = responseFactory.createFailureResponse("No active session found");
         } else if (isUnreachableBankService != null && isUnreachableBankService) {
             response = responseFactory.createFailureResponse("Unable to verify bank token");
@@ -73,10 +72,10 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, HttpSession session, String camundaProcessId) {
+    public Response getResponse(HttpSession session, Boolean isCorrelationSuccessful) {
         Response response;
         if (session == null || session.getAttribute(PROCESS_ID) == null ||
-                (!process.correlate(camundaProcessId, ABORT_ORDER).isCorrelationSuccessful() && session.getAttribute(ABORT_ORDER) == null)) {
+                (!isCorrelationSuccessful && session.getAttribute(ABORT_ORDER) == null)) {
             response = responseFactory.createFailureResponse("No active session found");
         } else {
             session.setAttribute(ABORT_ORDER, ABORT_ORDER);
@@ -85,9 +84,9 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, RestaurantRepository repo, RestaurantAvailability availability) {
+    public Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantAvailability availability) {
         Response response;
-        if (!process.isCorrelationSuccessful()) {
+        if (!isCorrelationSuccessful) {
             response = responseFactory.createFailureResponse("Out of time");
         } else {
             try {
@@ -101,9 +100,9 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(ProcessEngineAdapter process, RestaurantRepository repo, RestaurantMenu menuChange) {
+    public Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantMenu menuChange) {
         Response response;
-        if (!process.isCorrelationSuccessful()) {
+        if (!isCorrelationSuccessful) {
             response = responseFactory.createFailureResponse("Out of time");
         } else {
             try {

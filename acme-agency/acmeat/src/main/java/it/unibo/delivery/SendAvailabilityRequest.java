@@ -39,7 +39,7 @@ public class SendAvailabilityRequest implements JavaDelegate {
             order.dest_address = userOrder.to;
 
             DeliveryCompany company = (DeliveryCompany) delegateExecution.getVariable(CURRENT_DELIVERY_COMPANY);
-
+            LOGGER.info("DeliveryCompany: "+ company.toString());
             ClientConfig clientConfig = new DefaultClientConfig();
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             Client client = Client.create(clientConfig);
@@ -53,51 +53,11 @@ public class SendAvailabilityRequest implements JavaDelegate {
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
                 if (responseOrder.status == Status.AVAILABLE) {
                     delegateExecution.setVariable(CURRENT_DELIVERY_ORDER, responseOrder);
-                    LOGGER.info("Company " + responseOrder.toString());
+                    LOGGER.info("DeliveryCompany Response| " + responseOrder.toString());
                 }
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    private DeliveryOrderList getAvailableDeliveryCompanies(List<CompletableFuture<ClientResponse>> webResources) {
-        DeliveryOrderList deliveryCompanies = new DeliveryOrderList();
-        for (CompletableFuture<ClientResponse> futureResponse : webResources) {
-            try {
-                ClientResponse response = futureResponse.get();
-                if (response.getStatus() == OK.getStatusCode()) {
-                    DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
-                    if (responseOrder.status == Status.AVAILABLE) {
-                        deliveryCompanies.addOrder(responseOrder);
-                        LOGGER.info("Company " + responseOrder.toString());
-                    }
-                }
-            } catch (Exception e) {
-                LOGGER.warning(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        return deliveryCompanies;
-    }
-
-    private List<CompletableFuture<ClientResponse>> getCompletableFutures(DeliveryOrder order, List<DeliveryCompany> companies, ClientConfig clientConfig) {
-        List<CompletableFuture<ClientResponse>> webResources = new ArrayList<>();
-        for (DeliveryCompany company : companies) {
-
-            Client client = Client.create(clientConfig);
-            WebResource resource = client.resource(company.url + "availability");
-            order.company = company.name;
-            try {
-                Supplier<ClientResponse> clientResponseSupplier = () -> resource.accept("application/json")
-                        .type("application/json").put(ClientResponse.class, order);
-                webResources.add(CompletableFuture.supplyAsync(clientResponseSupplier));
-                LOGGER.info("Delivery order request: " + order.toString() + " uri: " + resource.getURI());
-            } catch (Exception e) {
-                LOGGER.warning(e.getMessage());
-                e.printStackTrace();
-            }
-        }
-        return webResources;
     }
 }

@@ -40,7 +40,7 @@ public class ConfirmOrder extends ApiHttpServlet {
         Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
         Boolean isReachableBankService = (Boolean) process.getVariable(camundaProcessId, IS_UNREACHABLE_BANK_SERVICE);
 
-        Response response = responseService.getResponse(process, session, camundaProcessId, isValidToken, isReachableBankService);
+        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), camundaProcessId, isValidToken, isReachableBankService);
         sendResponse(resp, g.toJson(response));
     }
 }

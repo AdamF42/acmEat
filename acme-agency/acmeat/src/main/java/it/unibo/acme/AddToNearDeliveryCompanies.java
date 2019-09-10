@@ -1,6 +1,7 @@
 package it.unibo.acme;
 
 import it.unibo.models.DeliveryOrder;
+import it.unibo.models.DeliveryOrderList;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
@@ -17,8 +18,8 @@ public class AddToNearDeliveryCompanies implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
         DeliveryOrder order = (DeliveryOrder) delegateExecution.getVariable(CURRENT_DELIVERY_ORDER);
-        ArrayList<DeliveryOrder> orderList = (ArrayList<DeliveryOrder>) delegateExecution.getVariable(AVAILABLE_DELIVERY_COMPANIES);
-        orderList.add(order);
+        DeliveryOrderList orderList = (DeliveryOrderList) delegateExecution.getVariable(AVAILABLE_DELIVERY_COMPANIES);
+        orderList.addOrder(order);
 
         delegateExecution.setVariable(AVAILABLE_DELIVERY_COMPANIES, orderList);
 
