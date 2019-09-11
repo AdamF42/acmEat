@@ -4,9 +4,18 @@
 <html>
 <head>
     <title>Client failure</title>
+
+    <script type='text/JavaScript'>
+        function goHome(){
+            var url="http://localhost:8080/acmeat-frontend/client-home";
+            window.location=url;
+        }
+    </script>
+
 </head>
 <body>
 Payment failed
-//TODO:pulsante per tornare alla schermata iniziale con href e riprovare?
+
+<div><input type="submit" value="Back to homepage" onclick="goHome()"></div>
 </body>
 </html>

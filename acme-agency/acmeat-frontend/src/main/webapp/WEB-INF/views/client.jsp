@@ -54,8 +54,29 @@
 
     <br><br>
 
-    Inserisci l'orario di consegna, entro le 23:59:  <br>
+    Inserisci l'orario di consegna, 12-14 o 19-21:  <br>
     <input type="time" id="deliveryTimeC" name="deliveryTimeC" required><br>
+    <select>
+        <option value="12:00">12:00</option>
+        <option value="12:15">12:15</option>
+        <option value="12:30">12:30</option>
+        <option value="12:45">12:45</option>
+        <option value="13:00">13:00</option>
+        <option value="13:15">13:15</option>
+        <option value="13:30">13:30</option>
+        <option value="13:45">13:45</option>
+        <option value="14:00">14:00</option>
+
+        <option value="19:00">19:00</option>
+        <option value="19:15">19:15</option>
+        <option value="19:30">19:30</option>
+        <option value="19:45">19:45</option>
+        <option value="20:00">20:00</option>
+        <option value="20:15">20:15</option>
+        <option value="20:30">20:30</option>
+        <option value="20:45">20:45</option>
+        <option value="21:00">21:00</option>
+    </select>
     <div id="info3"  style="color:red"></div>
 
     <br><br>
@@ -194,6 +215,8 @@
             $('#info2').html("Seleziona almeno una portata dall'elenco");
         }
 
+        //TODO: check validity of the choosen time, > ora attuale
+        //TODO: nel BPMN definire orario in cui il cliente può accedere, fino a prima delle 21...?
         var deliveryTimeField=document.getElementById('deliveryTimeC');
         if(!deliveryTimeField.checkValidity()){
             somethingEmpty=true;

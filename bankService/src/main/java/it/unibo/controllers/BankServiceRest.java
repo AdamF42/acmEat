@@ -53,7 +53,7 @@ public class BankServiceRest {
         getToken.setAmount(price);
         try {
             GetTokenResponse resp = bankService.getToken(getToken);
-            System.out.println(resp.getSid());
+            System.out.println("Token per "+ name + " "+resp.getSid());
             //Send rest response
             TokenResponse json = new TokenResponse();
             json.token = resp.getSid();

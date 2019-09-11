@@ -6,13 +6,14 @@
     <title>Client success</title>
     <script type='text/JavaScript'>
     function cancelOrder(){
+
         console.log("Cancellando ordine");
 
-        var url="http://localhost:8060/acmeat/cancel";
-
+        var url="http://localhost:8080/acmeat-ws/abort";
         var xhr = new XMLHttpRequest();
         xhr.open("PUT",url, true);
         xhr.send();
+
         xhr.onreadystatechange = function(){
             if (xhr.readyState === 4){
                 if (xhr.status === 200){
