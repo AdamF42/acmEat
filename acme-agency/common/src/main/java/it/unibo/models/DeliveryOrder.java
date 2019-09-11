@@ -2,8 +2,10 @@ package it.unibo.models;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 
-public class DeliveryOrder {
+
+public class DeliveryOrder implements Serializable {
 
     @Expose
     public String company;
@@ -19,6 +21,10 @@ public class DeliveryOrder {
 
     @Expose
     public Integer id;
+
+    public Status getStatus() {
+        return status;
+    }
 
     @Expose
     public Status status;

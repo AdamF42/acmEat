@@ -31,15 +31,15 @@ public class SendAvailabilityRequest implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
         try {
-
+            DeliveryCompany company = (DeliveryCompany) delegateExecution.getVariable(CURRENT_DELIVERY_COMPANY);
             RestaurantOrder userOrder = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
             DeliveryOrder order = new DeliveryOrder();
             order.delivery_time = userOrder.delivery_time;
             order.src_address = userOrder.from;
             order.dest_address = userOrder.to;
+            order.company = company.name;
 
-            DeliveryCompany company = (DeliveryCompany) delegateExecution.getVariable(CURRENT_DELIVERY_COMPANY);
-            LOGGER.info("DeliveryCompany: "+ company.toString());
+            LOGGER.info("DeliveryCompany: "+ company.name);
             ClientConfig clientConfig = new DefaultClientConfig();
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
             Client client = Client.create(clientConfig);
@@ -53,7 +53,7 @@ public class SendAvailabilityRequest implements JavaDelegate {
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
                 if (responseOrder.status == Status.AVAILABLE) {
                     delegateExecution.setVariable(CURRENT_DELIVERY_ORDER, responseOrder);
-                    LOGGER.info("DeliveryCompany Response| " + responseOrder.toString());
+                    LOGGER.info("DeliveryCompany Response| " + responseOrder.status);
                 }
             }
         } catch (Exception e){

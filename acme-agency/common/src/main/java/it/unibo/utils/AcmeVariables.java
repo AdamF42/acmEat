@@ -19,5 +19,6 @@ public class AcmeVariables {
     public static final String AVAILABLE_DELIVERY_COMPANIES = "AvailableDeliveryCompaniesList";
     public static final String CURRENT_DELIVERY_COMPANY = "company";
     public static final String CURRENT_DELIVERY_ORDER = "currentDeliveryOrder";
+    public static final String DELIVERY_TIME = "deliveryTime";
 
 }

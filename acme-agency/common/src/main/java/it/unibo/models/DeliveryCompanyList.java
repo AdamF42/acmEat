@@ -3,9 +3,10 @@ package it.unibo.models;
 import com.google.gson.annotations.Expose;
 import it.unibo.models.entities.DeliveryCompany;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DeliveryCompanyList {
+public class DeliveryCompanyList implements Serializable {
 
     @Expose
     private ArrayList<DeliveryCompany> companies;
@@ -14,18 +15,12 @@ public class DeliveryCompanyList {
         return this.companies;
     }
 
-    public boolean isEmpty(){
-        return this.companies.isEmpty();
-    }
-
     public int size(){
         return this.companies.size();
-    }
-
-    public DeliveryCompanyList() {
     }
 
     public DeliveryCompanyList(ArrayList<DeliveryCompany> companies) {
         this.companies = companies;
     }
+
 }

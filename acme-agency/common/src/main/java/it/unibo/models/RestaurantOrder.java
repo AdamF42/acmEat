@@ -27,6 +27,10 @@ public class RestaurantOrder {
     @Expose
     public String to;
 
+    public Status getStatus() {
+        return status;
+    }
+
     public Double calculateTotalPrice(){
 
         return dishes
