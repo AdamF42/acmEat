@@ -89,9 +89,7 @@
                 var piattoC = piatto.replace("<br>", "");
                 var prezzo = cells[1].innerHTML;
                 var prezzoC = prezzo.replace("<br>", "");
-                if (piattoC == '' || piattoC == null || prezzoC == null || piattoC == "") {
-                    console.log("riga con cella vuota");
-                } else {
+                if (!(piattoC == '' || piattoC == null || prezzoC == null || piattoC == "")) {
                     allEmpty = false;
                     var singleDish = {};
                     singleDish.name = cells[0].innerHTML;

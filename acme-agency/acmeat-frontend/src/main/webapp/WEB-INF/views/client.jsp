@@ -54,30 +54,10 @@
 
     <br><br>
 
-    Inserisci l'orario di consegna, 12-14 o 19-21:  <br>
-    <input type="time" id="deliveryTimeC" name="deliveryTimeC" required><br>
-    <select>
-        <option value="12:00">12:00</option>
-        <option value="12:15">12:15</option>
-        <option value="12:30">12:30</option>
-        <option value="12:45">12:45</option>
-        <option value="13:00">13:00</option>
-        <option value="13:15">13:15</option>
-        <option value="13:30">13:30</option>
-        <option value="13:45">13:45</option>
-        <option value="14:00">14:00</option>
+    Inserisci l'orario di consegna, sono fasce di 15 minuti:  <br>
+    <select id="orari" name="orari" >
 
-        <option value="19:00">19:00</option>
-        <option value="19:15">19:15</option>
-        <option value="19:30">19:30</option>
-        <option value="19:45">19:45</option>
-        <option value="20:00">20:00</option>
-        <option value="20:15">20:15</option>
-        <option value="20:30">20:30</option>
-        <option value="20:45">20:45</option>
-        <option value="21:00">21:00</option>
     </select>
-    <div id="info3"  style="color:red"></div>
 
     <br><br>
 
@@ -98,14 +78,6 @@
 
 <div id="info5" style="color:red"></div>
 
-<script type='text/JavaScript'>
-    var d = new Date();
-    var h = d.getHours();
-    var m = d.getMinutes();
-
-    document.getElementById("deliveryTimeC").setAttribute("min",h.toString().concat(":"+m.toString()));
-
-</script>
 
 <script type='text/JavaScript'>
 
@@ -127,6 +99,20 @@
                     var resp = xhr.responseText;
                     console.log(JSON.parse(resp).result.status);
                     if(JSON.parse(resp).result.status.toString()=="success"){
+
+                        //TODO: get available fasce orarie da JSON.parse(resp).result.timeintervals
+                        //ipotizzando che l'utente si sia collegato alle 13
+                        var fasce_orarie=["13.30-13.45","13.45-14.00",
+                            "19.00-19.15","19.15-19.30","19.30-19.45","19.45-20.00",
+                            "20.00-20.15","20.15-20.30","20.30-20.45","20.45-21.00"];
+                        var orari =  document.getElementById('orari');
+                        for(var i=0;i<fasce_orarie.length; i++){
+                                var option = document.createElement("option");
+                                option.text = fasce_orarie[i];
+                                option.value = fasce_orarie[i];
+                                orari.append(option);
+                        }
+
                         var respParsed = JSON.parse(resp).restaurants;
                         $('#info').html("");
                         var elenco =  document.getElementById('ristorante');
@@ -173,10 +159,10 @@
                     console.log("xhr failed");
                 }
             } else {
-                //console.log("xhr processing going on");
+                console.log("xhr processing going on");
             }
         }
-        //console.log("request sent succesfully");
+        console.log("request sent succesfully");
 
     }
 
@@ -188,7 +174,6 @@
         $('#info4').html("");
 
         console.log("Manda ordine");
-
 
         //get selected restaurant
         var selectR = document.getElementById("ristorante");
@@ -215,15 +200,8 @@
             $('#info2').html("Seleziona almeno una portata dall'elenco");
         }
 
-        //TODO: check validity of the choosen time, > ora attuale
-        //TODO: nel BPMN definire orario in cui il cliente può accedere, fino a prima delle 21...?
-        var deliveryTimeField=document.getElementById('deliveryTimeC');
-        if(!deliveryTimeField.checkValidity()){
-            somethingEmpty=true;
-            $('#info3').html(deliveryTimeField.validationMessage);
-        }else{
-            var deliveryTime=document.getElementById("deliveryTimeC").value;
-        }
+        var orarioS = document.getElementById("orari");
+        var deliveryTime = orarioS.options[orarioS.selectedIndex].value;
 
         //check and get selected delivery address
         if (!document.getElementById("indirizzo").value){
@@ -246,7 +224,6 @@
                     "to": document.getElementById("indirizzo").value
                 };
 
-            console.log(order);
             var restaurant_url = "http://localhost:8080/acmeat-ws/send-order";
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
@@ -266,7 +243,6 @@
                             var bank_url="http://localhost:8070/bank/home/"+"price/"+ respParsed.total_price + "/callback_url/" + callback_url;
                             window.location.assign(bank_url);
                         }else{
-                            //TODO: ridargli la pox di formulare un ordine? partendo dall'inizio con $('#first').show();
                             $('#info5').html(JSON.parse(resp).result.message);
                         }
 
