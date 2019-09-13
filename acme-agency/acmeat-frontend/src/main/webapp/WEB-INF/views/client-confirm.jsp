@@ -6,6 +6,11 @@
     <title>Client</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type='text/JavaScript'>
+        function goHome(){
+            var url="http://localhost:8080/acmeat-frontend/client-home";
+            window.location=url;
+        }
+
         function cancelOrder(){
 
             console.log("Cancellando ordine");
@@ -21,7 +26,16 @@
                         console.log("xhr done successfully");
                         var resp = xhr.responseText;
                         console.log(resp);
-                        $('#canc').html("Il tuo ordine e stato cancellato");
+                        $('#cancel-button').hide();
+                        //TODO: mettere messaggio corretto nella cancellazione
+                        var respParsed= JSON.parse(resp);
+                        var message;
+                        if(respParsed.result.message=="") {
+                            message = "Il tuo ordine e stato cancellato";
+                        }else{
+                            message=respParsed.result.message;
+                        }
+                        $('#canc').html(message);
                     } else {
                         console.log("xhr failed");
                     }
@@ -35,9 +49,8 @@
         function sendToken(){
 
             console.log("Cliente invia token ad acme");
-
-            var token="a";//TODO:take it from window.location, splitto per & e levo token=, la parte dopo è il token
-            //http://localhost:8080/acmeat-frontend/client-after-payment?status=success&token=f357b821-cfa2-445b-8a1b-b52b1cc17f3e
+            var token="<%=request.getParameter("token") %>";
+            console.log("token " + token);
 
             var url="http://localhost:8080/acmeat-ws/confirm?token="+token;
             var xhr = new XMLHttpRequest();
@@ -50,10 +63,14 @@
                         console.log("xhr done successfully");
                         var resp = xhr.responseText;
                         console.log(resp);
-                        //TODO: verify succes or failure of the token verify
-                        //if success
-                        $('#first').hide();
-                        $('#token-success').show();
+                        var respParsed= JSON.parse(resp);
+                        if(respParsed.result.status=="success"){
+                            $('#first').hide();
+                            $('#token-success').show();
+                        }else {
+                            $('#first').hide();
+                            $('#token-failure').show();
+                        }
                     } else {
                         console.log("xhr failed");
                     }
@@ -70,7 +87,10 @@
 <input type="submit" value="Conferma pagamento" onclick="sendToken()"></div>
 
 
-<div id="token-success"  hidden="true"><input type="submit" value="Cancella ordine" onclick="cancelOrder()">
+<div id="token-success"  hidden="true"><input id="cancel-button" type="submit" value="Cancella ordine" onclick="cancelOrder()">
 <div id="canc"></div></div>
+
+
+<div id="token-failure" hidden="true">Pagamento fallito<input type="submit" value="Ritorna alla homepage" onclick="goHome()"></div>
 </body>
 </html>

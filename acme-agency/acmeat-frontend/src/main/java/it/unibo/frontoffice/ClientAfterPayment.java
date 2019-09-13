@@ -23,24 +23,8 @@ public class ClientAfterPayment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        String token=req.getParameter("token");
-        System.out.println("Token ricevuto dalla banca: "+token);
-
-
-
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/client-confirm.jsp");
         dispatcher.forward(req, resp);
-
-        //TODO: check if the token has been verified or not with the status field
-        /*String status="success";
-
-        if(status.equals("success")){ //pagamento con successo
-            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/success-payment.jsp");
-            dispatcher.forward(req, resp);
-        }else {  //pagamento con insuccesso
-            RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/failure-payment.jsp");
-            dispatcher.forward(req, resp);
-        }*/
     }
 }
 

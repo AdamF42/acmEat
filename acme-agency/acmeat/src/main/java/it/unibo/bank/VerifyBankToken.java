@@ -20,10 +20,7 @@ public class VerifyBankToken implements JavaDelegate {
 
         String token = (String) delegateExecution.getVariable(USER_TOKEN);
 
-        System.out.println("Sono acme e sto chiamando bankservice per la verifica del token");
-
         try {
-            System.out.println("bank try");
             Bank bankService = new BankService().getBankServicePort();
             VerifyToken verifyToken = new VerifyToken();
             verifyToken.setSid(token);
