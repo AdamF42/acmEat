@@ -1,0 +1,88 @@
+•Coreografia GIS
+
+(
+	askDist#acme;
+	replyDist@acme;
+)*
+
+
+•Coreografia BANCA 			
+
+(
+
+	payReq#user;		//richiesta pagamento
+	sendToken@user;			//rilascio token pagamento
+	receiveToken#acme;	//controllo pagamento acme
+	sendResponse@acme;
+
+	1
+
+	+
+
+	deletePayment#acme			
+)
+
+
+•Coregrafia DELIVERY AGENCY
+
+(
+	askAvailability#acme;
+	replyAvailability@acme;
+
+	1		//proposta di prezzo non è andata a buon fine
+
+	+
+	
+	(
+		orderConfirm#acme;
+
+		1
+
+		+
+			
+		deleteDelivery#acme
+
+	)
+)					
+
+
+
+
+•Coreografia RESTAURANT
+
+(
+	serviceNotAvailable@acme 		//locale non disponibile
+
+	+	
+	
+	changedMenu@acme 		//variazioni nel menu
+		
+)
+
++
+
+(
+	(			
+		(
+			askAvailability#acme;		//verifica effettiva disponibilità
+			replyAvailability@acme
+		);
+
+		(
+			1		//acme non ordina
+
+			+
+
+			(
+				orderConfirm#acme;
+
+				1		//cliente non ha cancellato ordine
+
+				+
+
+				deleteOrder#acme
+			)
+		)	
+	)
+	
+)

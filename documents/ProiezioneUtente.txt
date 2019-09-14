@@ -1,0 +1,55 @@
+
+•Coreografia USER
+
+(
+	(
+		sendComune@acme; 
+
+		(
+			noTime#acme
+
+			+
+
+			(	
+				replyRestaurant#acme;							//u manda indirizzo, acme restituisce liste ristoranti
+
+				1
+
+				+
+
+				(
+					order@acme;	
+
+					failureOrder#acme 			//nel caso ci sia una o due failure
+
+					+
+
+					(
+
+						bankLink#acme;			
+						payment@bank;
+						receiveToken#bank;
+						sendToken@acme;
+
+						tokenFail#acme		//verifica token fallita
+
+						+
+
+						(	
+							receiveOrderConfirm#acme;
+
+							(
+								1
+
+								+
+
+								deleteReq@acme
+							)
+						)									
+					)
+				)
+			)
+		)
+	)
+
+)

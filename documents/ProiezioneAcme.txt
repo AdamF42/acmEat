@@ -1,0 +1,182 @@
+•Proiezione ACME
+
+(
+	(
+		(
+			changeAvalability#restaurant 		
+		)
+
+		+
+
+		(	
+			changeMenu#restaurant 		
+		)
+	)
+
+	+
+
+	(
+
+		sendCity#user; 
+
+		(
+			notInTime@user
+
+			+
+
+			(	
+				replyRestaurantList@user;								
+
+				1
+
+				+
+
+				(
+					sendOrder#user;	
+
+					(
+						(
+							askRestaurantAvailability@restaurant;
+							replyAvailabiliy#restaurant
+						)
+
+						|
+
+						(			
+							(
+								askDistance@GIS; 
+								replyDistance#GIS
+							)
+
+							1					//the delivery company is far
+
+							+
+
+							(
+								(askDeliveryAvailability@deliveryA);	
+
+								1			//the deliveryA do not reply in 15sec
+
+								+	
+
+								(replyAvailability#deliveryA); 				//reply with positive or negative avalability
+							)
+						)*
+					);
+
+					failureOrder@user 			//nel caso ci sia una o due failure
+
+					+
+
+					(
+
+						sendBankLink@user;					//redirect the user to the bank	
+
+						1										//the user do not send the token to acme
+
+						+
+
+						(
+
+							sendToken#user;
+							verifyToken@bank;
+							receiveVerifyResponse#bank;
+						
+							tokenFail@user		// token verify failure
+
+							+
+
+							(	
+								(
+
+									(
+										
+										sendOrderConfirm@restaurant
+										replyOrderConfirm#restaurant
+									
+									)
+								
+									|
+								
+									
+									(
+										
+										sendOrderConfirm@deliveryA
+										replyOrderConfirm#deliveryA
+									
+									)
+
+								);
+
+								(
+
+									sendOrderFailure@user			//the deliveryA or-and the restaurant failure the confirm
+
+									(
+										
+										refoundPayment@bank
+
+										|
+
+										(
+
+											1									
+
+											+
+
+											deleteDelivery@deliveryA			//if the deliveryA has replied succesfully to the orderConfirm
+
+										)
+
+										|
+
+										(
+
+											1
+
+											+
+
+											deleteOrder@restaurant				//if the deliveryA has replied succesfully to the orderConfirm
+
+										)
+									)
+
+								)
+
+								+
+
+								(
+
+									sendOrderConfirm@user
+
+									(
+
+										1		//user do nor abort the order and receive the food or the abort time limit expires
+
+										+
+
+										(
+											deleteRequest#user;
+
+											(
+												refoundPayment@bank
+												|
+												deleteDelivery@deliveryA
+												|
+												deleteOrder@restaurant
+											)
+										)
+
+									)
+
+								)
+
+							)	
+
+						)								
+					)
+				)
+			)
+		)
+	)
+)
