@@ -12,7 +12,6 @@ public class AcmeVariables {
     public static final String USER_TOKEN = "UserBankToken";
     public static final String IS_VALID_TOKEN = "IsValidToken";
     public static final String IS_UNREACHABLE_BANK_SERVICE = "UnreachableBankService";
-    public static final String IS_USER_REFUNDED = "IsUserRefunded";
     public static final String IN_TIME = "InTime";
     public static final String RESTAURANTS = "restaurants";
     public static final String DELIVERY_COMPANIES = "deliveryCompaniesList";

@@ -3,10 +3,12 @@ package it.unibo.acme;
 import it.unibo.models.DeliveryOrder;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.joda.time.Hours;
 
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.logging.Logger;
 
 import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
@@ -21,16 +23,16 @@ public class SetDeliveryTimeVariable implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) {
 
         DeliveryOrder order = (DeliveryOrder) delegateExecution.getVariable(DELIVERY_ORDER);
-        LocalTime time = LocalTime.parse(order.delivery_time);
+        LocalTime localTime = LocalTime.parse(order.delivery_time);
 
         Instant instant = Instant.now();
         instant = instant.atZone(ZoneOffset.UTC)
-                .withHour(time.getHour())
-                .withMinute(time.getMinute())
+                .withHour(localTime.getHour())
+                .withMinute(localTime.getMinute())
                 .toInstant();
-
-        String test = instant.toString();
-        LOGGER.info("Delivery Time: " + test);
-        delegateExecution.setVariable(DELIVERY_TIME, test);
+        instant.minus(1, ChronoUnit.HOURS);
+        String time = instant.toString();
+        LOGGER.info("Delivery Time: " + time);
+        delegateExecution.setVariable(DELIVERY_TIME, time);
     }
 }

@@ -24,7 +24,7 @@ public class ResponseService {
     public Response getResponse(String inTimeVar, RestaurantList restaurants) {
         Response response;
         if (inTimeVar == null) {
-            response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 21 p.m.");
+            response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
         } else if (restaurants == null || restaurants.isEmpty()) {
             response = responseFactory.createFailureResponse("No restaurants available in selected city");
         } else {
