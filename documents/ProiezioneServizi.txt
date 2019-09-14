@@ -1,49 +1,83 @@
 •Coreografia GIS
 
 (
-	askDist#acme;
-	replyDist@acme;
-)*
+	askDistance#acme; 
+	replyDistance@acme
+)
 
 
 •Coreografia BANCA 			
 
-(
+(						
+	payment#user;
+	sendToken@user;
 
-	payReq#user;		//richiesta pagamento
-	sendToken@user;			//rilascio token pagamento
-	receiveToken#acme;	//controllo pagamento acme
-	sendResponse@acme;
-
-	1
+	1										//the user do not send the token to acme
 
 	+
 
-	deletePayment#acme			
-)
+	(
+		verifyToken#acme;
+		receiveVerifyResponse@acme;
+							
+		refoundPayment#acme //NON MI PIACE
 
+		+
+
+		(
+			1		//user do nor abort the order and receive the food or the abort time limit expires
+
+			+
+
+			refoundPayment#acme			
+		)
+	)								
+)
 
 •Coregrafia DELIVERY AGENCY
 
-(
-	askAvailability#acme;
-	replyAvailability@acme;
-
-	1		//proposta di prezzo non è andata a buon fine
-
-	+
+(	
 	
-	(
-		orderConfirm#acme;
-
-		1
+	(			
+		1					//the delivery company is far
 
 		+
-			
-		deleteDelivery#acme
 
+		(
+			askDeliveryAvailability#acme;	
+
+			1			//the deliveryA do not reply in 15sec
+
+			+	
+
+			replyAvailability@acme				//reply with positive or negative avalability
+		)
+	)*;
+		
+	(	
+		sendOrderConfirm#acme
+		replyOrderConfirm@acme			//C'è QUALCOSA CHE NON MI TORNA	
+	);
+
+	(	
+		1									
+
+		+
+
+		deleteDelivery#acme			//if the deliveryA has replied succesfully to the orderConfirm
 	)
-)					
+
+	+
+
+	(
+		1		//user do nor abort the order and receive the food or the abort time limit expires
+
+		+
+	
+		deleteDelivery#acme						
+	)		
+											
+)
 
 
 
@@ -51,38 +85,60 @@
 •Coreografia RESTAURANT
 
 (
-	serviceNotAvailable@acme 		//locale non disponibile
-
-	+	
-	
-	changedMenu@acme 		//variazioni nel menu
-		
-)
-
-+
-
-(
-	(			
+	(
 		(
-			askAvailability#acme;		//verifica effettiva disponibilità
-			replyAvailability@acme
-		);
+			changeAvalability@acme 		
+		)
 
-		(
-			1		//acme non ordina
+		+
 
-			+
+		(	
+			changeMenu@acme 		
+		)
+	)
+
+	+
+
+	(					
+		1															//the user do not order or there are not available restaurants
+
+		+
+
+		(	
+			askRestaurantAvailability#acme;
+			replyAvailabiliy@acme;
 
 			(
-				orderConfirm#acme;
-
-				1		//cliente non ha cancellato ordine
+				1										//the user do not send the token to acme
 
 				+
 
-				deleteOrder#acme
+				(
+					
+					(		
+						sendOrderConfirm#acme
+						replyOrderConfirm@acme	
+					);
+
+					(	
+						1
+
+						+
+
+						deleteOrder#acme			//if the deliveryA has replied succesfully to the orderConfirm	
+					)
+
+					+
+
+					(
+						1		//user do nor abort the order and receive the food or the abort time limit expires
+
+						+
+
+						deleteOrder: acme → restaurant	
+					)
+				)								
 			)
 		)	
 	)
-	
 )

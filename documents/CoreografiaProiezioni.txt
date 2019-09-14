@@ -46,7 +46,7 @@
 							(
 								askDistance: acme → GIS; 
 								replyDistance: GIS → acme
-							)
+							);
 
 							1					//the delivery company is far
 
@@ -64,7 +64,7 @@
 						)*
 					);
 
-					failureOrder: acme → user;		//if there are one or two failure
+					failureOrder: acme → user		//if there are one or two failure
 
 					+
 
@@ -93,7 +93,7 @@
 
 									(
 										
-										sendOrderConfirm: acme → restaurant
+										sendOrderConfirm: acme → restaurant;
 										replyOrderConfirm: restaurant → acme
 									
 									)
@@ -103,7 +103,7 @@
 									
 									(
 										
-										sendOrderConfirm: acme → deliveryA
+										sendOrderConfirm: acme → deliveryA;
 										replyOrderConfirm: deliveryA → acme
 									
 									)
@@ -112,7 +112,7 @@
 
 								(
 
-									sendOrderFailure: acme → user			//the deliveryA or-and the restaurant failure the confirm
+									sendOrderFailure: acme → user;			//the deliveryA or-and the restaurant failure the confirm
 
 									(
 										
@@ -149,7 +149,7 @@
 
 								(
 
-									sendOrderConfirm: acme → user
+									sendOrderConfirm: acme → user;
 
 									(
 
