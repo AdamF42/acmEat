@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "db844a26-7324-4be1-a51c-f8265742324f",
+		"_postman_id": "b92c69e4-a311-49ad-bc36-b9933c455fde",
 		"name": "ResturantService",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -32,7 +32,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+					"raw": "{\n\t\"restaurant\": \"debug\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/availability",

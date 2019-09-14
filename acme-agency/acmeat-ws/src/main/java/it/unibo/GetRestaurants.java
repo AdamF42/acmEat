@@ -25,7 +25,7 @@ import static it.unibo.utils.AcmeMessages.GET_RESTAURANT;
 import static it.unibo.utils.AcmeVariables.*;
 
 
-@WebServlet("/get-restaurant")
+@WebServlet("/get-restaurants")
 public class GetRestaurants extends ApiHttpServlet {
 
     @Inject

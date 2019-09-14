@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fc89434f-1628-49dd-b8d9-fd6688e7d411",
+		"_postman_id": "e11af7b2-dde3-41b0-9970-0d239b55b771",
 		"name": "GisService",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,17 +10,13 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
-					"raw": "http://localhost:9000/getDistance?from=Milano&to=Bologna",
+					"raw": "http://localhost:10004/getDistance?from=Milano&to=Bologna",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "9000",
+					"port": "10004",
 					"path": [
 						"getDistance"
 					],
