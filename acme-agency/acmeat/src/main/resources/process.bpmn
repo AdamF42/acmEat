@@ -109,7 +109,7 @@
       <bpmn:incoming>SequenceFlow_03f7g54</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_1kxqw6l</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1jnorsu">
-        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/1970-01-01T10:00:00Z/PT24H</bpmn:timeCycle>
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT4H</bpmn:timeDuration>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:eventBasedGateway id="EventBasedGateway_13samjf">
