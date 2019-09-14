@@ -9,13 +9,17 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.Distance;
 import it.unibo.models.RestaurantOrder;
+import it.unibo.models.entities.DeliveryCompany;
 import it.unibo.utils.Services;
+import it.unibo.utils.repo.DeliveryCompaniesRepository;
+import it.unibo.utils.repo.impl.DeliveryCompaniesRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static com.sun.jersey.api.client.ClientResponse.Status.OK;
@@ -29,9 +33,10 @@ public class GetDistance implements JavaDelegate {
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
         try {
-            RestaurantOrder order = (RestaurantOrder) delegateExecution.getVariable(RESTAURANT_ORDER);
-            String fromDistance = order.from;
-            String toDistance = order.to;
+            DeliveryCompany company = (DeliveryCompany) delegateExecution.getVariable(CURRENT_DELIVERY_COMPANY);
+
+            String toDistance = (String) delegateExecution.getVariable("city");
+            String fromDistance = company.address;
 
             ClientConfig clientConfig = new DefaultClientConfig();
             clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -46,7 +51,7 @@ public class GetDistance implements JavaDelegate {
 
             if (response.getStatus() == OK.getStatusCode()) {
                 Distance distance = response.getEntity(Distance.class);
-                delegateExecution.setVariable(DELIVERY_ORDER, distance);
+                delegateExecution.setVariable(DISTANCE, distance.distance);
                 LOGGER.info("GetDistance: " + distance.distance + "\nfrom: " + fromDistance + "\nto: " + toDistance);
             } else {
                 delegateExecution.setVariable(DISTANCE, Double.MAX_VALUE);

@@ -50,7 +50,7 @@ public class SendOrder extends ApiHttpServlet {
         RestaurantOrder restaurantOrder =
                 (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
 
-        Response response = responseService.getResponse(process, session, deliveryOrder, restaurantOrder);
+        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), deliveryOrder, restaurantOrder);
         sendResponse(resp, g.toJson(response));
     }
 }

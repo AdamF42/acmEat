@@ -4,10 +4,11 @@ import it.unibo.bank.generated.Bank;
 import it.unibo.bank.generated.BankService;
 import it.unibo.bank.generated.Refound;
 import it.unibo.bank.generated.RefoundResponse;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import static it.unibo.utils.AcmeVariables.IS_USER_REFUNDED;
+import static it.unibo.utils.AcmeErrorMessages.UNAVAILABLE_BANK;
 import static it.unibo.utils.AcmeVariables.USER_TOKEN;
 
 public class AbortPayment implements JavaDelegate {
@@ -22,11 +23,9 @@ public class AbortPayment implements JavaDelegate {
             Refound refound = new Refound();
             refound.setSid(token);
             RefoundResponse resp = bankService.refound(refound);
-            delegateExecution.setVariable(IS_USER_REFUNDED, resp.isSuccess());
         } catch (Exception e) {
             e.printStackTrace();
-            delegateExecution.setVariable(IS_USER_REFUNDED, false);
+            throw new BpmnError(UNAVAILABLE_BANK);
         }
-
     }
 }

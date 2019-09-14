@@ -7,7 +7,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.logging.Logger;
 
-import static it.unibo.utils.AcmeVariables.DELIVERY_COMPANIES_PROPOSAL;
+import static it.unibo.utils.AcmeVariables.AVAILABLE_DELIVERY_COMPANIES;
 import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class CalculateCheaperDeliveryCompany implements JavaDelegate {
@@ -19,7 +19,7 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
         DeliveryOrderList deliveryCompanies =
                 (DeliveryOrderList) delegateExecution
-                        .getVariable(DELIVERY_COMPANIES_PROPOSAL);
+                        .getVariable(AVAILABLE_DELIVERY_COMPANIES);
 
         if (deliveryCompanies == null || deliveryCompanies.isEmpty()) {
             LOGGER.warning("No delivery companies found");
@@ -28,8 +28,7 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
 
         DeliveryOrder order = deliveryCompanies.calculateMinPriceOrder();
 
-        delegateExecution.setVariable(DELIVERY_ORDER, deliveryCompanies.calculateMinPriceOrder());
+        delegateExecution.setVariable(DELIVERY_ORDER, order);
         LOGGER.info("Selected delivery company: " + order.company);
-
     }
 }

@@ -3,10 +3,10 @@ package it.unibo.models.entities;
 
 import com.google.gson.annotations.Expose;
 
-public class DeliveryCompany {
+import java.io.Serializable;
 
-    @Expose
-    public Double price;
+
+public class DeliveryCompany implements Serializable {
 
     @Expose
     public String name;
@@ -14,11 +14,15 @@ public class DeliveryCompany {
     @Expose
     public String url;
 
-    public DeliveryCompany(){}
+    @Expose
+    public String address;
 
-    public DeliveryCompany(String name, String url){
-        this.name=name;
-        this.url=url;
+    public DeliveryCompany() {
     }
 
+    public DeliveryCompany(String name, String url, String address) {
+        this.name = name;
+        this.url = url;
+        this.address = address;
+    }
 }

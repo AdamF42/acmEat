@@ -4,7 +4,7 @@ import it.unibo.models.entities.DeliveryCompany;
 import it.unibo.utils.repo.DataBase;
 import it.unibo.utils.repo.DeliveryCompaniesRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class DeliveryCompaniesRepositoryImpl implements DeliveryCompaniesRepository {
 
@@ -16,20 +16,20 @@ public class DeliveryCompaniesRepositoryImpl implements DeliveryCompaniesReposit
     }
 
     public DeliveryCompaniesRepositoryImpl() {
-        this.db= new DataBase();
+        this.db = new DataBase();
     }
 
     @Override
-    public List<DeliveryCompany> getAllDeliveryCompanies() {
+    public ArrayList<DeliveryCompany> getAllDeliveryCompanies() {
         return db.deliveryCompanies;
     }
 
     @Override
     public DeliveryCompany getCompanyByName(String name) {
 
-        return  db.deliveryCompanies
+        return db.deliveryCompanies
                 .stream()
-                .filter(company-> name.equals(company.name))
+                .filter(company -> name.equals(company.name))
                 .findAny()
                 .orElse(new DeliveryCompany());
     }

@@ -48,7 +48,6 @@ public class SendOrder implements JavaDelegate {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.severe(e.getMessage());
         }
     }

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static it.unibo.utils.AcmeMessages.ABORT_ORDER;
 import static it.unibo.utils.AcmeVariables.PROCESS_ID;
 
 
@@ -31,8 +32,8 @@ public class AbortOrder extends ApiHttpServlet {
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
-
-        Response response = responseService.getResponse(process, session, camundaProcessId);
+        process.correlate(camundaProcessId, ABORT_ORDER);
+        Response response = responseService.getResponse(session, process.isCorrelationSuccessful());
         sendResponse(resp, g.toJson(response));
     }
 }

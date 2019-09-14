@@ -7,6 +7,7 @@ import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
+import static it.unibo.utils.AcmeVariables.IN_TIME;
 import static it.unibo.utils.AcmeVariables.RESTAURANTS;
 
 
@@ -16,6 +17,7 @@ public class GetRestaurantByCity implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegateExecution) throws Exception {
 
+        delegateExecution.setVariable(IN_TIME, IN_TIME);
         String city = (String) delegateExecution.getVariable("city");
         RestaurantRepository repo = new RestaurantRepositoryImpl();
         RestaurantList restaurantList = new RestaurantList();

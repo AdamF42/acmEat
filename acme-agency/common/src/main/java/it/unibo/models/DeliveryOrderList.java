@@ -2,9 +2,11 @@ package it.unibo.models;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class DeliveryOrderList {
+public class DeliveryOrderList implements Serializable {
+
 
     @Expose
     private ArrayList<DeliveryOrder> orders;
@@ -15,6 +17,10 @@ public class DeliveryOrderList {
 
     public void addOrder(DeliveryOrder order) {
         this.orders.add(order);
+    }
+
+    public ArrayList<DeliveryOrder> getOrders() {
+        return orders;
     }
 
     public boolean isEmpty(){

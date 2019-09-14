@@ -41,7 +41,7 @@ public class ProcessEngineAdapter {
                 .startProcessInstanceByMessage(message, variable);
     }
 
-    public ProcessEngineAdapter correlate(String processId, String message){
+    public void correlate(String processId, String message){
         try{
             this.processEngine.getRuntimeService()
                     .createMessageCorrelation(message)
@@ -49,21 +49,21 @@ public class ProcessEngineAdapter {
                     .correlate();
             this.isCorrelationSuccessful = true;
         }catch (Exception e){
+            //e.printStackTrace();
             this.isCorrelationSuccessful = false;
         }
-        return this;
     }
 
-    public ProcessEngineAdapter correlate(String message){
+    public void correlate(String message){
         try{
             this.processEngine.getRuntimeService()
                     .createMessageCorrelation(message)
                     .correlate();
             this.isCorrelationSuccessful = true;
         }catch (Exception e){
+//            e.printStackTrace();
             this.isCorrelationSuccessful = false;
         }
-        return this;
     }
 
     public boolean isActive(String processId){

@@ -10,12 +10,14 @@ import it.unibo.models.RestaurantOrder;
 import it.unibo.models.entities.Restaurant;
 import it.unibo.utils.UrlHelper;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 import java.util.logging.Logger;
 
 import static com.sun.jersey.api.client.ClientResponse.Status.OK;
+import static it.unibo.utils.AcmeErrorMessages.UNAVAILABLE_RESTAURANT;
 import static it.unibo.utils.AcmeVariables.RESTAURANT_ORDER;
 
 public class AbortOrder implements JavaDelegate {
@@ -48,8 +50,8 @@ public class AbortOrder implements JavaDelegate {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             LOGGER.severe(e.getMessage());
+            throw new BpmnError(UNAVAILABLE_RESTAURANT);
         }
     }
 }
