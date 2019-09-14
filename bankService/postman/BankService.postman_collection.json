@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "494ef7d9-267e-47a7-8d3c-b1469305ac6c",
+		"_postman_id": "6373d3ea-ef6c-463c-96b1-0f26094345b8",
 		"name": "BankService",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -11,16 +11,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8070/bank/name/gino/price/19.0",
+					"raw": "http://localhost:10001/bank/name/debug/price/19.0",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8070",
+					"port": "10001",
 					"path": [
 						"bank",
 						"name",
-						"gino",
+						"debug",
 						"price",
 						"19.0"
 					]
