@@ -8,6 +8,7 @@ import it.unibo.utils.repo.RestaurantRepository;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static it.unibo.models.Status.ACCEPTED;
 import static it.unibo.models.Status.AVAILABLE;
 import static it.unibo.utils.AcmeMessages.*;
 import static it.unibo.utils.AcmeVariables.PROCESS_ID;
@@ -54,7 +55,7 @@ public class ResponseService {
         return response;
     }
 
-    public Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, String camundaProcessId, Boolean isValidToken, Boolean isUnreachableBankService) {
+    public Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, String camundaProcessId, Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {
         Response response;
         if (session == null || camundaProcessId == null
                 || !isCorrelationSuccessful && session.getAttribute(CONFIRM_ORDER) == null) {
@@ -64,6 +65,12 @@ public class ResponseService {
             session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         } else if (isValidToken != null && !isValidToken) {
             response = responseFactory.createFailureResponse("Invalid bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else if (restaurantOrder != null && restaurantOrder.status != ACCEPTED) {
+            response = responseFactory.createFailureResponse("Impossible to confirm restaurant order");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else if (deliveryOrder != null && deliveryOrder.status != ACCEPTED) {
+            response = responseFactory.createFailureResponse("Impossible to confirm delivery order");
             session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
         } else {
             response = responseFactory.createSuccessResponse();

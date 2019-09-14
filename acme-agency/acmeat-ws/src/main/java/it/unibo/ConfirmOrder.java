@@ -1,6 +1,8 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
+import it.unibo.models.DeliveryOrder;
+import it.unibo.models.RestaurantOrder;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
@@ -27,7 +29,7 @@ public class ConfirmOrder extends ApiHttpServlet {
     private final Gson g = new Gson();
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         HttpSession session = req.getSession(false);
@@ -39,8 +41,10 @@ public class ConfirmOrder extends ApiHttpServlet {
         process.correlate(camundaProcessId, CONFIRM_ORDER);
         Boolean isValidToken = (Boolean) process.getVariable(camundaProcessId, IS_VALID_TOKEN);
         Boolean isReachableBankService = (Boolean) process.getVariable(camundaProcessId, IS_UNREACHABLE_BANK_SERVICE);
+        RestaurantOrder restaurantOrder = (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
+        DeliveryOrder deliveryOrder = (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
-        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), camundaProcessId, isValidToken, isReachableBankService);
+        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), camundaProcessId, isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
         sendResponse(resp, g.toJson(response));
     }
 }

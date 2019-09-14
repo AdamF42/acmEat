@@ -18,7 +18,6 @@ public class SetDeliveryTimeVariable implements JavaDelegate {
 
     private final Logger LOGGER = Logger.getLogger(SetDeliveryTimeVariable.class.getName());
 
-
     @Override
     public void execute(DelegateExecution delegateExecution) {
 
