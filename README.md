@@ -84,7 +84,7 @@ until finished
 End with an example of getting some data out of the system or using it for a little demo -->
 
 
-## Procedures (GitFlow)
+## Procedures
 
 1. Create a branch from master
 
@@ -100,6 +100,36 @@ End with an example of getting some data out of the system or using it for a lit
 5. Check your mods
 
 6. Create a pull request
+
+## Development Setup
+
+- Camunda Platform (Tomcat): https://camunda.org/download/
+- Camunda Modeler: https://camunda.org/download/modeler/
+- Jolie: http://www.jolie-lang.org/downloads.html
+- Intellij Idea: https://www.jetbrains.com/idea/download/
+- PyCharm: https://www.jetbrains.com/pycharm/download/
+- VSCode: https://code.visualstudio.com/download
+- Docker: https://www.docker.com/get-started
+- Postman: https://www.getpostman.com/downloads/
+- SoapUi: https://www.soapui.org/downloads/soapui.html
+- Maven: https://maven.apache.org/download.cgi?Preferred=ftp://mirror.reverse.net/pub/apache/
+
+## Installation Instructions (Linux)
+
+### Requirements
+- Docker
+- Maven
+- Camunda Platform
+
+### Steps
+1. Run `git clone https://github.com/AdamF42/acmEat.git`
+2. Go into project folder
+3. Run `build.sh` 
+4. Go into PROJ_DIR/acme-agency
+5. Run `mvn install`
+6. Copy PROJ_DIR/acme-agency/acmeat/acmeat.war, PROJ_DIR/acme-agency/acmeat-ws/acmeat-ws.war and PROJ_DIR/acme-agency/acmeat-frontend/acmeat-frontend.war into CamundaPlatform/server/apache-tomcat-9.0.19/webapps  
+7. Edit CamundaPlatform/server/apache-tomcat-9.0.19/conf/context.xml adding  `<Loader delegate="true"/>` inside `<Context>` 
+
 
 
 <!-- ## Running the tests
