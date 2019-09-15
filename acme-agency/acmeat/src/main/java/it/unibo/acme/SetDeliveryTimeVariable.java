@@ -3,12 +3,10 @@ package it.unibo.acme;
 import it.unibo.models.DeliveryOrder;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
-import org.joda.time.Hours;
 
 import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.logging.Logger;
 
 import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
@@ -24,14 +22,24 @@ public class SetDeliveryTimeVariable implements JavaDelegate {
         DeliveryOrder order = (DeliveryOrder) delegateExecution.getVariable(DELIVERY_ORDER);
         LocalTime localTime = LocalTime.parse(order.delivery_time);
 
-        Instant instant = Instant.now();
-        instant = instant.atZone(ZoneOffset.UTC)
-                .withHour(localTime.getHour())
+        Instant orderCancellationTime = Instant.now()
+                .atZone(ZoneOffset.UTC)
+                .withHour(localTime.getHour() - 1)
                 .withMinute(localTime.getMinute())
                 .toInstant();
-        instant.minus(1, ChronoUnit.HOURS);
-        String time = instant.toString();
-        LOGGER.info("Delivery Time: " + time);
-        delegateExecution.setVariable(DELIVERY_TIME, time);
+        LOGGER.info("Delivery Time: " + orderCancellationTime.toString());
+
+        Instant currentTime = Instant.now()
+                .atZone(ZoneOffset.UTC)
+                .toInstant();
+
+        int hour = orderCancellationTime.atZone(ZoneOffset.UTC).getHour();
+        int minutes = orderCancellationTime.atZone(ZoneOffset.UTC).getMinute();
+        int currentHour = currentTime.atZone(ZoneOffset.UTC).getHour();
+        int currentMinute = orderCancellationTime.atZone(ZoneOffset.UTC).getMinute();
+
+        if (!(currentHour > hour || (currentHour == hour && currentMinute > minutes))) {
+            delegateExecution.setVariable(DELIVERY_TIME, orderCancellationTime);
+        }
     }
 }

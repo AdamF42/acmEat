@@ -506,7 +506,7 @@
       <bpmn:incoming>SequenceFlow_1h7lz1r</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_17y8h5w</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0w1zb1r">
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${deliveryTime}</bpmn:timeDate>
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${ execution.getVariable("deliveryTime") ==null ? dateTime().toString() : deliveryTime.toString() }</bpmn:timeDate>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:parallelGateway id="ParallelGateway_1qvwt9a">
