@@ -1,15 +1,12 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatWsHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,11 +18,8 @@ import static it.unibo.utils.AcmeMessages.CONFIRM_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
 @WebServlet("/confirm")
-public class ConfirmOrder extends ApiHttpServlet {
+public class ConfirmOrder extends AcmeatWsHttpServlet {
 
-    @Inject
-    private ProcessEngine processEngine;
-    private final ResponseFactory responseFactory = new ResponseFactory();
     private final Gson g = new Gson();
 
     @Override
@@ -35,7 +29,7 @@ public class ConfirmOrder extends ApiHttpServlet {
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
-        if (process.isActive(camundaProcessId) && session!=null && session.getAttribute(CONFIRM_ORDER)==null)
+        if (process.isActive(camundaProcessId) && session != null && session.getAttribute(CONFIRM_ORDER) == null)
             process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
 
         process.correlate(camundaProcessId, CONFIRM_ORDER);

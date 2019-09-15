@@ -1,16 +1,13 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatWsHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import it.unibo.utils.repo.RestaurantRepository;
 import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,11 +17,8 @@ import static it.unibo.utils.AcmeMessages.CHANGE_RESTAURANT_AVAILABILITY;
 
 
 @WebServlet("/change-availability")
-public class ChangeRestaurantAvailability extends ApiHttpServlet {
+public class ChangeRestaurantAvailability extends AcmeatWsHttpServlet {
 
-    @Inject
-    private ProcessEngine processEngine;
-    private final ResponseFactory responseFactory = new ResponseFactory();
     private final Gson g = new Gson();
 
     @Override

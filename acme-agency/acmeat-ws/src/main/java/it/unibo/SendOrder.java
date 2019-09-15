@@ -1,17 +1,14 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.SendOrderContent;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeMessages;
+import it.unibo.utils.AcmeatWsHttpServlet;
 import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,21 +23,18 @@ import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 
 
 @WebServlet("/send-order")
-public class SendOrder extends ApiHttpServlet {
+public class SendOrder extends AcmeatWsHttpServlet {
 
-    @Inject
-    private ProcessEngine processEngine;
-    private final ResponseFactory responseFactory = new ResponseFactory();
     private Gson g = new Gson();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
-        if (process.isActive(camundaProcessId) && session!=null && session.getAttribute(SEND_ORDER)==null)
+        if (process.isActive(camundaProcessId) && session != null && session.getAttribute(SEND_ORDER) == null)
             process.setVariable(
                     camundaProcessId,
                     RESTAURANT_ORDER,

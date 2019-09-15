@@ -2,17 +2,13 @@ package it.unibo;
 
 import camundajar.com.google.gson.Gson;
 import camundajar.com.google.gson.GsonBuilder;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatWsHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,13 +22,9 @@ import static it.unibo.utils.AcmeVariables.*;
 
 
 @WebServlet("/get-restaurants")
-public class GetRestaurants extends ApiHttpServlet {
-
-    @Inject
-    ProcessEngine processEngine;
+public class GetRestaurants extends AcmeatWsHttpServlet {
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
-    private final ResponseFactory responseFactory = new ResponseFactory();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
