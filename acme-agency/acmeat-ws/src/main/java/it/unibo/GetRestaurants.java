@@ -1,7 +1,5 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
-import camundajar.com.google.gson.GsonBuilder;
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.AcmeatWsHttpServlet;
@@ -30,7 +28,6 @@ public class GetRestaurants extends AcmeatWsHttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         HttpSession session = req.getSession(true);
-        Gson g = new GsonBuilder().serializeNulls().create();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         Map<String, Object> cityVariable = new HashMap<>();
 
@@ -51,10 +48,10 @@ public class GetRestaurants extends AcmeatWsHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
+        RestaurantList restaurants = gsonFactory.getGson().fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
 
         Response response = getResponse(outOfTimeVar, restaurants);
-        sendResponse(resp, g.toJson(response));
+        sendResponse(resp, gsonFactory.getGson().toJson(response));
     }
 
     private Response getResponse(String inTimeVar, RestaurantList restaurants) {

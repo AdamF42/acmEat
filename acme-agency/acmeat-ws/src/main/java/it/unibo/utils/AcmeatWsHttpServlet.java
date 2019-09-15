@@ -13,4 +13,7 @@ public class AcmeatWsHttpServlet extends ApiHttpServlet{
     @Inject
     public ResponseFactory responseFactory;
 
+    @Inject
+    public GsonFactory gsonFactory;
+
 }

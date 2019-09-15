@@ -1,6 +1,5 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
 import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.AcmeatWsHttpServlet;
@@ -19,19 +18,17 @@ import static it.unibo.utils.AcmeMessages.CHANGE_RESTAURANT_AVAILABILITY;
 @WebServlet("/change-availability")
 public class ChangeRestaurantAvailability extends AcmeatWsHttpServlet {
 
-    private final Gson g = new Gson();
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         RestaurantRepository repo = new RestaurantRepositoryImpl();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
 
-        RestaurantAvailability availability = g.fromJson(req.getReader(), RestaurantAvailability.class);
+        RestaurantAvailability availability = gsonFactory.getGson().fromJson(req.getReader(), RestaurantAvailability.class);
         process.correlate(CHANGE_RESTAURANT_AVAILABILITY);
 
         Response response = getResponse(repo, process.isCorrelationSuccessful(), availability);
-        sendResponse(resp, g.toJson(response));
+        sendResponse(resp, gsonFactory.getGson().toJson(response));
     }
 
     private Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantAvailability availability) {

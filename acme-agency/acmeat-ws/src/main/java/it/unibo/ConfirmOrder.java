@@ -1,6 +1,5 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.responses.Response;
@@ -20,8 +19,6 @@ import static it.unibo.utils.AcmeVariables.*;
 @WebServlet("/confirm")
 public class ConfirmOrder extends AcmeatWsHttpServlet {
 
-    private final Gson g = new Gson();
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -39,7 +36,7 @@ public class ConfirmOrder extends AcmeatWsHttpServlet {
         DeliveryOrder deliveryOrder = (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
         Response response = getResponse(session, process.isCorrelationSuccessful(), isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
-        sendResponse(resp, g.toJson(response));
+        sendResponse(resp, gsonFactory.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {

@@ -9,13 +9,15 @@ import it.unibo.models.responses.SendOrderResponse;
 import it.unibo.models.responses.SimpleResponse;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import static it.unibo.models.Result.SUCCESS;
 
 @Named
-public class ResponseFactoryImpl implements ResponseFactory{
+@Singleton
+public class ResponseFactoryImpl implements ResponseFactory {
 
-    private static final Result SUCCESS_RESULT = new Result(SUCCESS,"");
+    private static final Result SUCCESS_RESULT = new Result(SUCCESS, "");
 
     public Response createSuccessResponse() {
         return new SimpleResponse(SUCCESS_RESULT);

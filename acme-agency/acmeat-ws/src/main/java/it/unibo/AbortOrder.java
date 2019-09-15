@@ -1,6 +1,5 @@
 package it.unibo;
 
-import com.google.gson.Gson;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.AcmeatWsHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
@@ -18,8 +17,6 @@ import static it.unibo.utils.AcmeVariables.PROCESS_ID;
 @WebServlet("/abort")
 public class AbortOrder extends AcmeatWsHttpServlet {
 
-    private final Gson g = new Gson();
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -28,7 +25,7 @@ public class AbortOrder extends AcmeatWsHttpServlet {
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
         process.correlate(camundaProcessId, ABORT_ORDER);
         Response response = getResponse(session, process.isCorrelationSuccessful());
-        sendResponse(resp, g.toJson(response));
+        sendResponse(resp, gsonFactory.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful) {

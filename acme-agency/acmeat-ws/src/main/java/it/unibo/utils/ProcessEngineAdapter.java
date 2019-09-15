@@ -4,6 +4,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.history.HistoricVariableInstance;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+
 import java.util.Map;
 
 public class ProcessEngineAdapter {
@@ -17,8 +18,8 @@ public class ProcessEngineAdapter {
         this.isCorrelationSuccessful = false;
     }
 
-    public void setVariable(String processId, String varName, Object o){
-        this.processEngine.getRuntimeService().setVariable(processId,varName,o);
+    public void setVariable(String processId, String varName, Object o) {
+        this.processEngine.getRuntimeService().setVariable(processId, varName, o);
     }
 
     public Object getVariable(String processId, String varName) {
@@ -34,40 +35,40 @@ public class ProcessEngineAdapter {
                 .orElse(null);
     }
 
-    public ProcessInstance startProcessInstanceByMessage(String message, Map<String, Object> variable){
+    public ProcessInstance startProcessInstanceByMessage(String message, Map<String, Object> variable) {
 
         return this.processEngine
                 .getRuntimeService()
                 .startProcessInstanceByMessage(message, variable);
     }
 
-    public void correlate(String processId, String message){
-        try{
+    public void correlate(String processId, String message) {
+        try {
             this.processEngine.getRuntimeService()
                     .createMessageCorrelation(message)
                     .processInstanceId(processId)
                     .correlate();
             this.isCorrelationSuccessful = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             //e.printStackTrace();
             this.isCorrelationSuccessful = false;
         }
     }
 
-    public void correlate(String message){
-        try{
+    public void correlate(String message) {
+        try {
             this.processEngine.getRuntimeService()
                     .createMessageCorrelation(message)
                     .correlate();
             this.isCorrelationSuccessful = true;
-        }catch (Exception e){
+        } catch (Exception e) {
 //            e.printStackTrace();
             this.isCorrelationSuccessful = false;
         }
     }
 
-    public boolean isActive(String processId){
-        return this.processEngine.getRuntimeService().getActivityInstance(processId)!=null;
+    public boolean isActive(String processId) {
+        return this.processEngine.getRuntimeService().getActivityInstance(processId) != null;
     }
 
     public boolean isCorrelationSuccessful() {
