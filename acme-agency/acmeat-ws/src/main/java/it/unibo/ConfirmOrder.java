@@ -35,7 +35,7 @@ public class ConfirmOrder extends ApiHttpServlet {
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
-        if (process.isActive(camundaProcessId))
+        if (process.isActive(camundaProcessId) && session!=null && session.getAttribute(CONFIRM_ORDER)==null)
             process.setVariable(camundaProcessId, USER_TOKEN, req.getParameter("token"));
 
         process.correlate(camundaProcessId, CONFIRM_ORDER);

@@ -40,7 +40,7 @@ public class SendOrder extends ApiHttpServlet {
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
-        if (process.isActive(camundaProcessId))
+        if (process.isActive(camundaProcessId) && session!=null && session.getAttribute(SEND_ORDER)==null)
             process.setVariable(
                     camundaProcessId,
                     RESTAURANT_ORDER,
@@ -66,9 +66,9 @@ public class SendOrder extends ApiHttpServlet {
             response = responseFactory.createFailureResponse("No active session found");
         } else if (deliveryOrder == null || deliveryOrder.getPrice() == null) {
             response = responseFactory.createFailureResponse("No delivery companies available");
-            session.setAttribute(SEND_ORDER, AcmeMessages.SEND_ORDER);
+            session.setAttribute(SEND_ORDER, SEND_ORDER);
         } else if (restaurantOrder == null || restaurantOrder.status != AVAILABLE) {
-            response = responseFactory.createFailureResponse("Restaurant temporally unavailable");
+            response = responseFactory.createFailureResponse("Restaurant temporarily unavailable");
             session.setAttribute(SEND_ORDER, SEND_ORDER);
         } else {
             SendOrderContent content = new SendOrderContent(BANK_REST_SERVICE_URL,
