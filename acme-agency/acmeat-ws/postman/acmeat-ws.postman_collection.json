@@ -63,12 +63,11 @@
 							"raw": "{\"name\":\"Ciccio\",\"is_available\":\"true\"}"
 						},
 						"url": {
-							"raw": "{{acmeat-ws-url}}/acmeat-ws/change-availability",
+							"raw": "{{acmeat-ws-url}}/change-availability",
 							"host": [
 								"{{acmeat-ws-url}}"
 							],
 							"path": [
-								"acmeat-ws",
 								"change-availability"
 							]
 						}
@@ -130,12 +129,11 @@
 							"raw": "{\n    \"name\": \"Ciccio\",\n    \"menu\": [\n        {\n            \"name\": \"Ravioli\",\n            \"price\": \"1\"\n        },\n        {\n            \"name\": \"fdff\",\n            \"price\": \"12\"\n        },\n        {\n            \"name\": \"Salsiccia\",\n            \"price\": \"14\"\n        }\n    ]\n}"
 						},
 						"url": {
-							"raw": "{{acmeat-ws-url}}/acmeat-ws/change-menu",
+							"raw": "{{acmeat-ws-url}}/change-menu",
 							"host": [
 								"{{acmeat-ws-url}}"
 							],
 							"path": [
-								"acmeat-ws",
 								"change-menu"
 							]
 						}
