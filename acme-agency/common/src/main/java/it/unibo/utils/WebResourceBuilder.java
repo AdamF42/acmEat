@@ -6,17 +6,17 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 
-public class RestClient {
-    private String queryUrl;
+import javax.ws.rs.core.MediaType;
 
-    public RestClient(String queryUrl) {
-        this.queryUrl = queryUrl;
-    }
+public class WebResourceBuilder {
 
-    public WebResource getWebResource() {
+    public static WebResource.Builder getBuilder(String queryURL) {
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
         Client client = Client.create(clientConfig);
-        return client.resource(queryUrl);
+        WebResource webResourceGet = client.resource(queryURL);
+        return webResourceGet
+                .accept(MediaType.APPLICATION_JSON_TYPE)
+                .type(MediaType.APPLICATION_JSON_TYPE);
     }
 }
