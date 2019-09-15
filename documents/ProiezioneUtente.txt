@@ -1,0 +1,73 @@
+
+•Coreografia USER
+
+(
+	sendCity@acme; 												//user send his hometown
+
+	(
+		notInTime#acme										    //the user is not connected during the opening time
+
+		+
+
+		(	
+			replyRestaurantList#acme;							
+
+			1													//the user do not order or there are not available restaurants
+
+			+
+
+			(
+				sendOrder@acme;						
+
+				failureOrder#acme                       //if there are one or two failure
+
+				+
+
+				(
+
+					sendBankLink#acme;					        //redirect the user to the bank	
+					payment@bank;
+					sendToken#bank;
+
+					1										    //the user do not send the token to acme
+
+					+
+
+					(
+
+						sendToken@acme;
+
+						tokenFail#acme		                    // token verify failure
+
+						+
+
+						(	
+							
+							sendOrderFailure#acme			   //the deliveryA or-and the restaurant failure the confirm
+
+							+
+
+							(
+
+								sendOrderConfirm#acme;
+
+								(
+
+									1		             //user do nor abort the order and receive the food or the abort time limit expires
+
+									+
+
+									deleteRequest@acme
+
+								)
+
+							)
+
+						)	
+
+					)								
+				)
+			)
+		)
+	)
+)

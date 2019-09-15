@@ -1,0 +1,186 @@
+•Coreografia generica
+
+(
+	(
+		(
+			changeAvalability: restaurant → acme 		
+		)
+
+		+
+
+		(	
+			changeMenu: restaurant → acme 		
+		)
+	)
+
+	+
+
+	(
+
+		sendCity: user → acme; 												//user send his hometown
+
+		(
+			notInTime: acme → user											//the user is not connected during the opening time
+
+			+
+
+			(	
+				replyRestaurantList: acme → user;							
+
+				1															//the user do not order or there are not available restaurants
+
+				+
+
+				(
+					sendOrder: user → acme;	
+
+					(
+						(
+							askRestaurantAvailability: acme → restaurant;
+							replyAvailabiliy: restaurant → acme
+						)
+
+						|
+
+						(			
+							(
+								askDistance: acme → GIS; 
+								replyDistance: GIS → acme
+							);
+
+							1					//the delivery company is far
+
+							+
+
+							(
+								(askDeliveryAvailability: acme → deliveryA);	
+
+								1			//the deliveryA do not reply in 15sec
+
+								+	
+
+								(replyAvailability: deliveryA → acme); 				//reply with positive or negative avalability
+							)
+						)*
+					);
+
+					failureOrder: acme → user		//if there are one or two failure
+
+					+
+
+					(
+
+						sendBankLink: acme → user;					//redirect the user to the bank	
+						payment: user → bank;
+						sendToken: bank → user;
+
+						1										//the user do not send the token to acme
+
+						+
+
+						(
+
+							sendToken: user → acme;
+							verifyToken: acme → bank;
+							receiveVerifyResponse: bank → acme;
+						
+							tokenFail:acme → user		// token verify failure
+
+							+
+
+							(	
+								(
+
+									(
+										
+										sendOrderConfirm: acme → restaurant;
+										replyOrderConfirm: restaurant → acme
+									
+									)
+								
+									|
+								
+									
+									(
+										
+										sendOrderConfirm: acme → deliveryA;
+										replyOrderConfirm: deliveryA → acme
+									
+									)
+
+								);
+
+								(
+
+									sendOrderFailure: acme → user;			//the deliveryA or-and the restaurant failure the confirm
+
+									(
+										
+										refoundPayment: acme → bank
+
+										|
+
+										(
+
+											1									
+
+											+
+
+											deleteDelivery: acme → deliveryA			//if the deliveryA has replied succesfully to the orderConfirm
+
+										)
+
+										|
+
+										(
+
+											1
+
+											+
+
+											deleteOrder: acme → restaurant				//if the deliveryA has replied succesfully to the orderConfirm
+
+										)
+									)
+
+								)
+
+								+
+
+								(
+
+									sendOrderConfirm: acme → user;
+
+									(
+
+										1		//user do nor abort the order and receive the food or the abort time limit expires
+
+										+
+
+										(
+											deleteRequest: user → acme;
+
+											(
+												refoundPayment: acme → bank
+												|
+												deleteDelivery: acme → deliveryA
+												|
+												deleteOrder: acme → restaurant
+											)
+										)
+
+									)
+
+								)
+
+							)	
+
+						)								
+					)
+				)
+			)
+		)
+	)
+)
+
+

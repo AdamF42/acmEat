@@ -1,0 +1,105 @@
+•Coreografia GIS
+
+(
+	askDistance#acme; 
+	replyDistance@acme
+)
+
+
+•Coreografia BANCA 			
+
+(						
+	payment#user;
+	sendToken@user;
+
+	1										//the user do not send the token to acme
+
+	+
+
+	(
+		verifyToken#acme;
+		receiveVerifyResponse@acme;
+
+		1		//user do nor abort the order and receive the food or the abort time limit expires
+
+		+
+
+		refoundPayment#acme				//the user abort or a confirmation to delivery or restaurant fails		
+		
+	)								
+)
+
+•Coregrafia DELIVERY AGENCY
+
+(	
+	
+			
+		
+	askDeliveryAvailability#acme;	
+	replyAvailability@acme;			//reply with positive or negative avalability
+	
+	1  					//price proposal not accepted or replied after 15sec
+
+	+
+
+	(
+				
+		sendOrderConfirm#acme;
+		replyOrderConfirm@acme;		
+
+		(
+			1		//user do nor abort the order and receive the food or the abort time limit expires
+
+			+
+		
+			deleteDelivery#acme				//the user abort or a confirmation restaurant fails				
+		)	
+
+	)	
+											
+)
+
+
+
+
+•Coreografia RESTAURANT
+
+(
+	(
+		changeAvalability@acme 		
+
+		+
+
+		changeMenu@acme 		
+		
+	)
+
+	+
+
+	(					
+		askRestaurantAvailability#acme;
+		replyAvailabiliy@acme;
+
+		(
+			1										//the user do not send the token to acme
+
+			+
+
+			(
+				
+				sendOrderConfirm#acme;
+				replyOrderConfirm@acme;	
+
+				(	
+					1			//user do nor abort the order and receive the food or the abort time limit expires
+
+					+
+
+					deleteOrder#acme			//if the deliveryA has replied succesfully to the orderConfirm and the restaurant not
+				)
+
+			)								
+		)
+		
+	)
+)
