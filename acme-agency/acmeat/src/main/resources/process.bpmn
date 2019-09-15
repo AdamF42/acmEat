@@ -138,7 +138,7 @@
         </bpmn:dataOutputAssociation>
       </bpmn:serviceTask>
       <bpmn:sequenceFlow id="SequenceFlow_19i0s93" sourceRef="StartEvent_1maad30" targetRef="ExclusiveGateway_06cw8o3" />
-      <bpmn:exclusiveGateway id="ExclusiveGateway_0p69t9s">
+      <bpmn:exclusiveGateway id="ExclusiveGateway_0p69t9s" default="SequenceFlow_1nsd9gy">
         <bpmn:incoming>SequenceFlow_1w3pvb1</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_14hb5hx</bpmn:outgoing>
         <bpmn:outgoing>SequenceFlow_1nsd9gy</bpmn:outgoing>
