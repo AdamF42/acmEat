@@ -1,7 +1,7 @@
 package it.unibo;
 
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeatWsHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +15,7 @@ import static it.unibo.utils.AcmeVariables.PROCESS_ID;
 
 
 @WebServlet("/abort")
-public class AbortOrder extends AcmeatWsHttpServlet {
+public class AbortOrder extends AcmeatHttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -25,7 +25,7 @@ public class AbortOrder extends AcmeatWsHttpServlet {
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
         process.correlate(camundaProcessId, ABORT_ORDER);
         Response response = getResponse(session, process.isCorrelationSuccessful());
-        sendResponse(resp, gsonFactory.getGson().toJson(response));
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful) {

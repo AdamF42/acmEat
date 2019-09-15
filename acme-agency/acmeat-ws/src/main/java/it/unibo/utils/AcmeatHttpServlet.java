@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 
 import javax.inject.Inject;
 
-public class AcmeatWsHttpServlet extends ApiHttpServlet{
+public class AcmeatHttpServlet extends ApiHttpServlet{
 
     @Inject
     public ProcessEngine processEngine;
@@ -14,6 +14,7 @@ public class AcmeatWsHttpServlet extends ApiHttpServlet{
     public ResponseFactory responseFactory;
 
     @Inject
-    public GsonFactory gsonFactory;
+    public CommonModules commonModules;
+
 
 }

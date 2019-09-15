@@ -4,7 +4,7 @@ import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.SendOrderContent;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeatWsHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +20,7 @@ import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 
 
 @WebServlet("/send-order")
-public class SendOrder extends AcmeatWsHttpServlet {
+public class SendOrder extends AcmeatHttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -33,7 +33,7 @@ public class SendOrder extends AcmeatWsHttpServlet {
             process.setVariable(
                     camundaProcessId,
                     RESTAURANT_ORDER,
-                    gsonFactory.getGson().fromJson(req.getReader(), RestaurantOrder.class));
+                    commonModules.getGson().fromJson(req.getReader(), RestaurantOrder.class));
 
         process.correlate(camundaProcessId, SEND_ORDER);
 
@@ -44,7 +44,7 @@ public class SendOrder extends AcmeatWsHttpServlet {
                 (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
 
         Response response = getResponse(session, process.isCorrelationSuccessful(), deliveryOrder, restaurantOrder);
-        sendResponse(resp, gsonFactory.getGson().toJson(response));
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {

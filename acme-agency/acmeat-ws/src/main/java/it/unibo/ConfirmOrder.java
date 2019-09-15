@@ -3,7 +3,7 @@ package it.unibo;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeatWsHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,7 @@ import static it.unibo.utils.AcmeMessages.CONFIRM_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
 @WebServlet("/confirm")
-public class ConfirmOrder extends AcmeatWsHttpServlet {
+public class ConfirmOrder extends AcmeatHttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -36,7 +36,7 @@ public class ConfirmOrder extends AcmeatWsHttpServlet {
         DeliveryOrder deliveryOrder = (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
         Response response = getResponse(session, process.isCorrelationSuccessful(), isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
-        sendResponse(resp, gsonFactory.getGson().toJson(response));
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {

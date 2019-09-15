@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-public interface RestaurantRepository {
+public interface RestaurantRepository extends Repository{
     List<Restaurant> getAvailableRestaurantsByCity(String city) throws FileNotFoundException;
     Restaurant getRestaurantByName(String name) throws FileNotFoundException;
     void addOrUpdateOpeningTime(RestaurantAvailability availability) throws IOException;

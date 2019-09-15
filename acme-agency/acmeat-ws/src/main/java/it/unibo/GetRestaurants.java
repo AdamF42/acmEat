@@ -2,7 +2,7 @@ package it.unibo;
 
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeatWsHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +20,7 @@ import static it.unibo.utils.AcmeVariables.*;
 
 
 @WebServlet("/get-restaurants")
-public class GetRestaurants extends AcmeatWsHttpServlet {
+public class GetRestaurants extends AcmeatHttpServlet {
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
@@ -48,10 +48,10 @@ public class GetRestaurants extends AcmeatWsHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = gsonFactory.getGson().fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
+        RestaurantList restaurants = commonModules.getGson().fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
 
         Response response = getResponse(outOfTimeVar, restaurants);
-        sendResponse(resp, gsonFactory.getGson().toJson(response));
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(String inTimeVar, RestaurantList restaurants) {

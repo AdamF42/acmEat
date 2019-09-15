@@ -2,10 +2,9 @@ package it.unibo;
 
 import it.unibo.models.RestaurantMenu;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeatWsHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import it.unibo.utils.repo.RestaurantRepository;
-import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -15,18 +14,18 @@ import java.io.IOException;
 import static it.unibo.utils.AcmeMessages.CHANGE_RESTAURANT_MENU;
 
 @WebServlet("/change-menu")
-public class ChangeRestaurantMenu extends AcmeatWsHttpServlet {
+public class ChangeRestaurantMenu extends AcmeatHttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        RestaurantRepository repo = new RestaurantRepositoryImpl();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
 
-        RestaurantMenu menuChange = gsonFactory.getGson().fromJson(req.getReader(), RestaurantMenu.class);
+        RestaurantMenu menuChange = commonModules.getGson().fromJson(req.getReader(), RestaurantMenu.class);
         process.correlate(CHANGE_RESTAURANT_MENU);
-        Response response = getResponse(repo, process.isCorrelationSuccessful(), menuChange);
-        sendResponse(resp, gsonFactory.getGson().toJson(response));
+        Response response = getResponse(commonModules.getRestaurantRepository(),
+                process.isCorrelationSuccessful(), menuChange);
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantMenu menuChange) {
