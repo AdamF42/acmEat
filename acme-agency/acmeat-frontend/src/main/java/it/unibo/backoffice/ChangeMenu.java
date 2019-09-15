@@ -1,16 +1,11 @@
 package it.unibo.backoffice;
 
 import com.google.gson.Gson;
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.RestaurantMenu;
 import it.unibo.models.Result;
 import it.unibo.models.responses.SimpleResponse;
-import it.unibo.utils.RestClient;
+import it.unibo.utils.WebResourceBuilder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,11 +29,7 @@ public class ChangeMenu extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String url = BASE_URL + "/change-menu";
-        WebResource webResource = new RestClient(url).getWebResource();
-        ClientResponse serviceResponse = webResource
-                .accept(MediaType.APPLICATION_JSON_TYPE)
-                .type(MediaType.APPLICATION_JSON_TYPE)
-                .post(ClientResponse.class, g.fromJson(req.getReader(), RestaurantMenu.class));
+        ClientResponse serviceResponse = WebResourceBuilder.getBuilder(url).post(ClientResponse.class, g.fromJson(req.getReader(), RestaurantMenu.class));
 
         String response;
         if (serviceResponse.getStatus() == OK.getStatusCode()

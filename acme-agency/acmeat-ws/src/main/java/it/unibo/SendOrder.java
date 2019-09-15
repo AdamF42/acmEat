@@ -1,12 +1,14 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
+import it.unibo.factory.ResponseFactory;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
+import it.unibo.models.SendOrderContent;
 import it.unibo.models.responses.Response;
+import it.unibo.utils.AcmeMessages;
 import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.ResponseService;
 import org.camunda.bpm.engine.ProcessEngine;
 
 import javax.inject.Inject;
@@ -17,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static it.unibo.models.Status.AVAILABLE;
 import static it.unibo.utils.AcmeMessages.SEND_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
+import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 
 
 @WebServlet("/send-order")
@@ -26,7 +30,7 @@ public class SendOrder extends ApiHttpServlet {
 
     @Inject
     private ProcessEngine processEngine;
-    private final ResponseService responseService = new ResponseService();
+    private final ResponseFactory responseFactory = new ResponseFactory();
     private Gson g = new Gson();
 
     @Override
@@ -50,7 +54,28 @@ public class SendOrder extends ApiHttpServlet {
         RestaurantOrder restaurantOrder =
                 (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
 
-        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), deliveryOrder, restaurantOrder);
+        Response response = getResponse(session, process.isCorrelationSuccessful(), deliveryOrder, restaurantOrder);
         sendResponse(resp, g.toJson(response));
+    }
+
+    private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {
+        Response response;
+        if (session == null || session.getAttribute(PROCESS_ID) == null
+                || (!isCorrelationSuccessful
+                && session.getAttribute(SEND_ORDER) == null)) {
+            response = responseFactory.createFailureResponse("No active session found");
+        } else if (deliveryOrder == null || deliveryOrder.getPrice() == null) {
+            response = responseFactory.createFailureResponse("No delivery companies available");
+            session.setAttribute(SEND_ORDER, AcmeMessages.SEND_ORDER);
+        } else if (restaurantOrder == null || restaurantOrder.status != AVAILABLE) {
+            response = responseFactory.createFailureResponse("Restaurant temporally unavailable");
+            session.setAttribute(SEND_ORDER, SEND_ORDER);
+        } else {
+            SendOrderContent content = new SendOrderContent(BANK_REST_SERVICE_URL,
+                    Double.toString(deliveryOrder.getPrice() + restaurantOrder.calculateTotalPrice()));
+            session.setAttribute(SEND_ORDER, SEND_ORDER);
+            response = responseFactory.createSuccessResponse(content);
+        }
+        return response;
     }
 }

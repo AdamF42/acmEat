@@ -1,22 +1,22 @@
 package it.unibo;
 
 import camundajar.com.google.gson.Gson;
+import it.unibo.factory.ResponseFactory;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.ResponseService;
 import org.camunda.bpm.engine.ProcessEngine;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+import static it.unibo.models.Status.ACCEPTED;
 import static it.unibo.utils.AcmeMessages.CONFIRM_ORDER;
 import static it.unibo.utils.AcmeVariables.*;
 
@@ -25,7 +25,7 @@ public class ConfirmOrder extends ApiHttpServlet {
 
     @Inject
     private ProcessEngine processEngine;
-    private final ResponseService responseService = new ResponseService();
+    private final ResponseFactory responseFactory = new ResponseFactory();
     private final Gson g = new Gson();
 
     @Override
@@ -44,7 +44,30 @@ public class ConfirmOrder extends ApiHttpServlet {
         RestaurantOrder restaurantOrder = (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
         DeliveryOrder deliveryOrder = (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
-        Response response = responseService.getResponse(session, process.isCorrelationSuccessful(), camundaProcessId, isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
+        Response response = getResponse(session, process.isCorrelationSuccessful(), isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
         sendResponse(resp, g.toJson(response));
+    }
+
+    private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {
+        Response response;
+        if (session == null || !isCorrelationSuccessful && session.getAttribute(CONFIRM_ORDER) == null) {
+            response = responseFactory.createFailureResponse("No active session found");
+        } else if (isUnreachableBankService != null && isUnreachableBankService) {
+            response = responseFactory.createFailureResponse("Unable to verify bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else if (isValidToken != null && !isValidToken) {
+            response = responseFactory.createFailureResponse("Invalid bank token");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else if (restaurantOrder != null && restaurantOrder.status != ACCEPTED) {
+            response = responseFactory.createFailureResponse("Impossible to confirm restaurant order");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else if (deliveryOrder != null && deliveryOrder.status != ACCEPTED) {
+            response = responseFactory.createFailureResponse("Impossible to confirm delivery order");
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        } else {
+            response = responseFactory.createSuccessResponse();
+            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        }
+        return response;
     }
 }

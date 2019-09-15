@@ -2,11 +2,11 @@ package it.unibo;
 
 import camundajar.com.google.gson.Gson;
 import camundajar.com.google.gson.GsonBuilder;
+import it.unibo.factory.ResponseFactory;
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.ResponseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.camunda.bpm.engine.ProcessEngine;
@@ -32,7 +32,7 @@ public class GetRestaurants extends ApiHttpServlet {
     ProcessEngine processEngine;
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
-    private final ResponseService responseService = new ResponseService();
+    private final ResponseFactory responseFactory = new ResponseFactory();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -59,9 +59,21 @@ public class GetRestaurants extends ApiHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS),RestaurantList.class);
+        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
 
-        Response response = responseService.getResponse(outOfTimeVar, restaurants);
+        Response response = getResponse(outOfTimeVar, restaurants);
         sendResponse(resp, g.toJson(response));
+    }
+
+    private Response getResponse(String inTimeVar, RestaurantList restaurants) {
+        Response response;
+        if (inTimeVar == null) {
+            response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
+        } else if (restaurants == null || restaurants.isEmpty()) {
+            response = responseFactory.createFailureResponse("No restaurants available in selected city");
+        } else {
+            response = responseFactory.createSuccessResponse(restaurants);
+        }
+        return response;
     }
 }
