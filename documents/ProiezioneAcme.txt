@@ -64,7 +64,7 @@
 						)*
 					);
 
-					failureOrder@user 			//nel caso ci sia una o due failure
+					failureOrder@user 			//one or two failure
 
 					+
 

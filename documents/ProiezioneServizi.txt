@@ -19,18 +19,13 @@
 	(
 		verifyToken#acme;
 		receiveVerifyResponse@acme;
-							
-		refoundPayment#acme //NON MI PIACE
+
+		1		//user do nor abort the order and receive the food or the abort time limit expires
 
 		+
 
-		(
-			1		//user do nor abort the order and receive the food or the abort time limit expires
-
-			+
-
-			refoundPayment#acme			
-		)
+		refoundPayment#acme				//the user abort or a confirmation to delivery or restaurant fails		
+		
 	)								
 )
 
@@ -38,44 +33,29 @@
 
 (	
 	
-	(			
-		1					//the delivery company is far
-
-		+
-
-		(
-			askDeliveryAvailability#acme;	
-
-			1			//the deliveryA do not reply in 15sec
-
-			+	
-
-			replyAvailability@acme				//reply with positive or negative avalability
-		)
-	)*;
+			
 		
-	(	
-		sendOrderConfirm#acme
-		replyOrderConfirm@acme			//C'è QUALCOSA CHE NON MI TORNA	
-	);
-
-	(	
-		1									
-
-		+
-
-		deleteDelivery#acme			//if the deliveryA has replied succesfully to the orderConfirm
-	)
+	askDeliveryAvailability#acme;	
+	replyAvailability@acme;			//reply with positive or negative avalability
+	
+	1  					//price proposal not accepted or replied after 15sec
 
 	+
 
 	(
-		1		//user do nor abort the order and receive the food or the abort time limit expires
+				
+		sendOrderConfirm#acme;
+		replyOrderConfirm@acme;		
 
-		+
-	
-		deleteDelivery#acme						
-	)		
+		(
+			1		//user do nor abort the order and receive the food or the abort time limit expires
+
+			+
+		
+			deleteDelivery#acme				//the user abort or a confirmation restaurant fails				
+		)	
+
+	)	
 											
 )
 
@@ -86,59 +66,40 @@
 
 (
 	(
-		(
-			changeAvalability@acme 		
-		)
+		changeAvalability@acme 		
 
 		+
 
-		(	
-			changeMenu@acme 		
-		)
+		changeMenu@acme 		
+		
 	)
 
 	+
 
 	(					
-		1															//the user do not order or there are not available restaurants
+		askRestaurantAvailability#acme;
+		replyAvailabiliy@acme;
 
-		+
+		(
+			1										//the user do not send the token to acme
 
-		(	
-			askRestaurantAvailability#acme;
-			replyAvailabiliy@acme;
+			+
 
 			(
-				1										//the user do not send the token to acme
+				
+				sendOrderConfirm#acme;
+				replyOrderConfirm@acme;	
 
-				+
-
-				(
-					
-					(		
-						sendOrderConfirm#acme
-						replyOrderConfirm@acme	
-					);
-
-					(	
-						1
-
-						+
-
-						deleteOrder#acme			//if the deliveryA has replied succesfully to the orderConfirm	
-					)
+				(	
+					1			//user do nor abort the order and receive the food or the abort time limit expires
 
 					+
 
-					(
-						1		//user do nor abort the order and receive the food or the abort time limit expires
+					deleteOrder#acme			//if the deliveryA has replied succesfully to the orderConfirm and the restaurant not
+				)
 
-						+
-
-						deleteOrder: acme → restaurant	
-					)
-				)								
-			)
-		)	
+			)								
+		)
+		
 	)
 )

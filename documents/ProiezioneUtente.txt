@@ -19,7 +19,7 @@
 			(
 				sendOrder@acme;						
 
-				failureOrder: acme → user                       //if there are one or two failure
+				failureOrder#acme                       //if there are one or two failure
 
 				+
 
@@ -43,7 +43,7 @@
 
 						(	
 							
-							sendOrderFailure#user			   //the deliveryA or-and the restaurant failure the confirm
+							sendOrderFailure#acme			   //the deliveryA or-and the restaurant failure the confirm
 
 							+
 
