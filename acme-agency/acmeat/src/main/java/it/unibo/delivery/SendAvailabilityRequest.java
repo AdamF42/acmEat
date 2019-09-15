@@ -1,23 +1,14 @@
 package it.unibo.delivery;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 import it.unibo.models.DeliveryOrder;
-import it.unibo.models.DeliveryOrderList;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.Status;
 import it.unibo.models.entities.DeliveryCompany;
+import it.unibo.utils.WebResourceBuilder;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static com.sun.jersey.api.client.ClientResponse.Status.OK;
@@ -38,16 +29,10 @@ public class SendAvailabilityRequest implements JavaDelegate {
             order.src_address = userOrder.from;
             order.dest_address = userOrder.to;
             order.company = company.name;
+            String queryURL = company.url + "availability";
 
-            LOGGER.info("DeliveryCompany: "+ company.name);
-            ClientConfig clientConfig = new DefaultClientConfig();
-            clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-            Client client = Client.create(clientConfig);
-            WebResource webResourceGet = client.resource(company.url + "availability");
-            ClientResponse response = webResourceGet
-                    .accept("application/json")
-                    .type("application/json")
-                    .put(ClientResponse.class, order);
+            LOGGER.info("DeliveryCompany: " + company.name);
+            ClientResponse response = WebResourceBuilder.getBuilder(queryURL).put(ClientResponse.class, order);
 
             if (response.getStatus() == OK.getStatusCode()) {
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);
@@ -56,7 +41,7 @@ public class SendAvailabilityRequest implements JavaDelegate {
                     LOGGER.info("DeliveryCompany Response| " + responseOrder.status);
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

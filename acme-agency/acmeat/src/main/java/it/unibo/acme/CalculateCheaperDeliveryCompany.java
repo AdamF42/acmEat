@@ -15,7 +15,7 @@ public class CalculateCheaperDeliveryCompany implements JavaDelegate {
     private final Logger LOGGER = Logger.getLogger(CalculateCheaperDeliveryCompany.class.getName());
 
     @Override
-    public void execute(DelegateExecution delegateExecution) throws Exception {
+    public void execute(DelegateExecution delegateExecution) {
 
         DeliveryOrderList deliveryCompanies =
                 (DeliveryOrderList) delegateExecution

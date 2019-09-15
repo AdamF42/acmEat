@@ -6,7 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.Result;
 import it.unibo.models.responses.SimpleResponse;
-import it.unibo.utils.RestClient;
+import it.unibo.utils.WebResourceBuilder;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,11 +31,7 @@ public class ChangeAvailability extends HttpServlet {
 
         String queryUrl = BASE_URL + "/change-availability";
 
-        WebResource webResource = new RestClient(queryUrl).getWebResource();
-        ClientResponse serviceResponse = webResource
-                .accept(MediaType.APPLICATION_JSON_TYPE)
-                .type(MediaType.APPLICATION_JSON_TYPE)
-                .put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
+        ClientResponse serviceResponse = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
 
         String response;
         if (serviceResponse.getStatus() == OK.getStatusCode()
