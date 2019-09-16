@@ -35,6 +35,8 @@ public class AbortOrder implements JavaDelegate {
 
             if (response.getStatus() == OK.getStatusCode()) {
                 execution.setVariable(RESTAURANT_ORDER, response.getEntity(RestaurantOrder.class));
+            } else {
+                throw new BpmnError(UNAVAILABLE_RESTAURANT);
             }
 
         } catch (Exception e) {

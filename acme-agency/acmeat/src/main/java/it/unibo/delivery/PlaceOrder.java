@@ -21,7 +21,7 @@ public class PlaceOrder implements JavaDelegate {
     private final Logger LOGGER = Logger.getLogger(PlaceOrder.class.getName());
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
 
         try {
 
@@ -29,17 +29,19 @@ public class PlaceOrder implements JavaDelegate {
             DeliveryCompany company = repo.getCompanyByName(deliveryOrder.company);
             String queryURL = UrlHelper.getUrlOrStringEmpty(company) + "order";
 
-            ClientResponse response = WebResourceBuilder.getBuilder(queryURL).post(ClientResponse.class, deliveryOrder);
+            ClientResponse response = WebResourceBuilder.getBuilder(queryURL)
+                    .post(ClientResponse.class, deliveryOrder);
 
             if (response.getStatus() == OK.getStatusCode()) {
-                execution.setVariable(DELIVERY_ORDER, response.getEntity(DeliveryOrder.class));
+                DeliveryOrder order = response.getEntity(DeliveryOrder.class);
+                execution.setVariable(DELIVERY_ORDER, order);
+                LOGGER.info("DeliveryOrder Status: " + order.getStatus().name());
+            }else {
+                LOGGER.info("Delivery returned error code: " + response.getStatus());
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             LOGGER.severe(e.getMessage());
         }
     }
-
-
 }

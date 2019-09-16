@@ -1,18 +1,12 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.DeliveryOrder;
 import it.unibo.models.RestaurantOrder;
 import it.unibo.models.SendOrderContent;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.AcmeMessages;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,56 +20,50 @@ import static it.unibo.utils.Services.BANK_REST_SERVICE_URL;
 
 
 @WebServlet("/send-order")
-public class SendOrder extends ApiHttpServlet {
+public class SendOrder extends AcmeatHttpServlet {
 
-    @Inject
-    private ProcessEngine processEngine;
-    private final ResponseFactory responseFactory = new ResponseFactory();
-    private Gson g = new Gson();
+    private HttpSession session;
+    private ProcessEngineAdapter process;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
-        HttpSession session = req.getSession(false);
+        process = new ProcessEngineAdapter(processEngine);
+        session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
-        if (process.isActive(camundaProcessId) && session!=null && session.getAttribute(SEND_ORDER)==null)
+        if (process.isActive(camundaProcessId) && session != null && session.getAttribute(SEND_ORDER) == null)
             process.setVariable(
                     camundaProcessId,
                     RESTAURANT_ORDER,
-                    g.fromJson(req.getReader(), RestaurantOrder.class));
-
+                    commonModules.getGson().fromJson(req.getReader(), RestaurantOrder.class));
         process.correlate(camundaProcessId, SEND_ORDER);
 
         DeliveryOrder deliveryOrder =
                 (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
-
         RestaurantOrder restaurantOrder =
                 (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
 
-        Response response = getResponse(session, process.isCorrelationSuccessful(), deliveryOrder, restaurantOrder);
-        sendResponse(resp, g.toJson(response));
+        Response response = getResponse(deliveryOrder, restaurantOrder);
+
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
-    private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {
-        Response response;
+    private Response getResponse(DeliveryOrder deliveryOrder, RestaurantOrder restaurantOrder) {
         if (session == null || session.getAttribute(PROCESS_ID) == null
-                || (!isCorrelationSuccessful
+                || (!process.isCorrelationSuccessful()
                 && session.getAttribute(SEND_ORDER) == null)) {
-            response = responseFactory.createFailureResponse("No active session found");
-        } else if (deliveryOrder == null || deliveryOrder.getPrice() == null) {
-            response = responseFactory.createFailureResponse("No delivery companies available");
-            session.setAttribute(SEND_ORDER, SEND_ORDER);
+            return responseFactory.createFailureResponse("No active session found");
+        }
+        session.setAttribute(SEND_ORDER, SEND_ORDER);
+        if (deliveryOrder == null || deliveryOrder.getPrice() == null) {
+            return responseFactory.createFailureResponse("No delivery companies available");
         } else if (restaurantOrder == null || restaurantOrder.status != AVAILABLE) {
-            response = responseFactory.createFailureResponse("Restaurant temporarily unavailable");
-            session.setAttribute(SEND_ORDER, SEND_ORDER);
+            return responseFactory.createFailureResponse("Restaurant temporarily unavailable");
         } else {
             SendOrderContent content = new SendOrderContent(BANK_REST_SERVICE_URL,
                     Double.toString(deliveryOrder.getPrice() + restaurantOrder.calculateTotalPrice()));
-            session.setAttribute(SEND_ORDER, SEND_ORDER);
-            response = responseFactory.createSuccessResponse(content);
+            return responseFactory.createSuccessResponse(content);
         }
-        return response;
     }
 }

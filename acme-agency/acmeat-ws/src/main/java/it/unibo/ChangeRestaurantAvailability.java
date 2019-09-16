@@ -1,16 +1,10 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.repo.RestaurantRepository;
-import it.unibo.utils.repo.impl.RestaurantRepositoryImpl;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,39 +14,30 @@ import static it.unibo.utils.AcmeMessages.CHANGE_RESTAURANT_AVAILABILITY;
 
 
 @WebServlet("/change-availability")
-public class ChangeRestaurantAvailability extends ApiHttpServlet {
-
-    @Inject
-    private ProcessEngine processEngine;
-    private final ResponseFactory responseFactory = new ResponseFactory();
-    private final Gson g = new Gson();
+public class ChangeRestaurantAvailability extends AcmeatHttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        RestaurantRepository repo = new RestaurantRepositoryImpl();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
 
-        RestaurantAvailability availability = g.fromJson(req.getReader(), RestaurantAvailability.class);
+        RestaurantAvailability availability = commonModules.getGson().fromJson(req.getReader(), RestaurantAvailability.class);
         process.correlate(CHANGE_RESTAURANT_AVAILABILITY);
+        Response response = getResponse(process.isCorrelationSuccessful(), availability);
 
-        Response response = getResponse(repo, process.isCorrelationSuccessful(), availability);
-        sendResponse(resp, g.toJson(response));
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
-    private Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantAvailability availability) {
-        Response response;
+    private Response getResponse(Boolean isCorrelationSuccessful, RestaurantAvailability availability) {
         if (!isCorrelationSuccessful) {
-            response = responseFactory.createFailureResponse("Out of time");
-        } else {
-            try {
-                repo.addOrUpdateOpeningTime(availability);
-                response = responseFactory.createSuccessResponse();
-            } catch (IOException e) {
-                response = responseFactory.createFailureResponse("Unable to update db");
-                e.printStackTrace();
-            }
+            return responseFactory.createFailureResponse("Out of time");
         }
-        return response;
+        try {
+            commonModules.getRestaurantRepository().addOrUpdateOpeningTime(availability);
+            return responseFactory.createSuccessResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return responseFactory.createFailureResponse("Unable to update db");
+        }
     }
 }

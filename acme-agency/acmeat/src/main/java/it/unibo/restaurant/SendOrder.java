@@ -31,9 +31,12 @@ public class SendOrder implements JavaDelegate {
             ClientResponse response = WebResourceBuilder.getBuilder(queryUrl).post(ClientResponse.class, order);
 
             if (response.getStatus() == OK.getStatusCode()) {
-                execution.setVariable(RESTAURANT_ORDER, response.getEntity(RestaurantOrder.class));
+                RestaurantOrder restaurantOrder = response.getEntity(RestaurantOrder.class);
+                execution.setVariable(RESTAURANT_ORDER, restaurantOrder);
+                LOGGER.info("RestaurantOrder Status: " + order.getStatus().name());
+            } else {
+                LOGGER.info("Restaurant returned error code: " + response.getStatus());
             }
-
         } catch (Exception e) {
             LOGGER.severe(e.getMessage());
         }

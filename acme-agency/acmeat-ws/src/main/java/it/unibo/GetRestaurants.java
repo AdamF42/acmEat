@@ -1,18 +1,12 @@
 package it.unibo;
 
-import camundajar.com.google.gson.Gson;
-import camundajar.com.google.gson.GsonBuilder;
-import it.unibo.factory.ResponseFactory;
 import it.unibo.models.RestaurantList;
 import it.unibo.models.responses.Response;
-import it.unibo.utils.ApiHttpServlet;
+import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.camunda.bpm.engine.ProcessEngine;
 
-import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,19 +20,14 @@ import static it.unibo.utils.AcmeVariables.*;
 
 
 @WebServlet("/get-restaurants")
-public class GetRestaurants extends ApiHttpServlet {
-
-    @Inject
-    ProcessEngine processEngine;
+public class GetRestaurants extends AcmeatHttpServlet {
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
-    private final ResponseFactory responseFactory = new ResponseFactory();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         HttpSession session = req.getSession(true);
-        Gson g = new GsonBuilder().serializeNulls().create();
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         Map<String, Object> cityVariable = new HashMap<>();
 
@@ -59,21 +48,20 @@ public class GetRestaurants extends ApiHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = g.fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
-
+        RestaurantList restaurants = commonModules.getGson()
+                .fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
         Response response = getResponse(outOfTimeVar, restaurants);
-        sendResponse(resp, g.toJson(response));
+
+        sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(String inTimeVar, RestaurantList restaurants) {
-        Response response;
         if (inTimeVar == null) {
-            response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
+            return responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
         } else if (restaurants == null || restaurants.isEmpty()) {
-            response = responseFactory.createFailureResponse("No restaurants available in selected city");
+            return responseFactory.createFailureResponse("No restaurants available in selected city");
         } else {
-            response = responseFactory.createSuccessResponse(restaurants);
+            return  responseFactory.createSuccessResponse(restaurants);
         }
-        return response;
     }
 }
