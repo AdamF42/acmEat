@@ -48,21 +48,20 @@ public class GetRestaurants extends AcmeatHttpServlet {
         session.setAttribute(PROCESS_ID, processInstanceId);
         LOGGER.info("Started process instance with id: {}", processInstanceId);
 
-        RestaurantList restaurants = commonModules.getGson().fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
-
+        RestaurantList restaurants = commonModules.getGson()
+                .fromJson((String) process.getVariable(processInstanceId, RESTAURANTS), RestaurantList.class);
         Response response = getResponse(outOfTimeVar, restaurants);
+
         sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(String inTimeVar, RestaurantList restaurants) {
-        Response response;
         if (inTimeVar == null) {
-            response = responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
+            return responseFactory.createFailureResponse("No restaurant available. Retry between 10 a.m. and 20 p.m.");
         } else if (restaurants == null || restaurants.isEmpty()) {
-            response = responseFactory.createFailureResponse("No restaurants available in selected city");
+            return responseFactory.createFailureResponse("No restaurants available in selected city");
         } else {
-            response = responseFactory.createSuccessResponse(restaurants);
+            return  responseFactory.createSuccessResponse(restaurants);
         }
-        return response;
     }
 }

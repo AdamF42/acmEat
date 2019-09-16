@@ -23,20 +23,20 @@ public class AbortOrder extends AcmeatHttpServlet {
         ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
         HttpSession session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
+
         process.correlate(camundaProcessId, ABORT_ORDER);
         Response response = getResponse(session, process.isCorrelationSuccessful());
+
         sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
     private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful) {
-        Response response;
         if (session == null || session.getAttribute(PROCESS_ID) == null ||
                 (!isCorrelationSuccessful && session.getAttribute(ABORT_ORDER) == null)) {
-            response = responseFactory.createFailureResponse("No active session found");
+            return responseFactory.createFailureResponse("No active session found");
         } else {
             session.setAttribute(ABORT_ORDER, ABORT_ORDER);
-            response = responseFactory.createSuccessResponse();
+            return responseFactory.createSuccessResponse();
         }
-        return response;
     }
 }

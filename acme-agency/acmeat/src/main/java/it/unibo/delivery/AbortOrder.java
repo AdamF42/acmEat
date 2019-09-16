@@ -24,7 +24,7 @@ public class AbortOrder implements JavaDelegate {
     private final Logger LOGGER = Logger.getLogger(AbortOrder.class.getName());
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception {
+    public void execute(DelegateExecution execution) {
 
         try {
             DeliveryOrder deliveryOrder = (DeliveryOrder) execution.getVariable(DELIVERY_ORDER);
@@ -37,6 +37,8 @@ public class AbortOrder implements JavaDelegate {
 
             if (response.getStatus() == OK.getStatusCode()) {
                 execution.setVariable(DELIVERY_ORDER, response.getEntity(DeliveryOrder.class));
+            } else {
+                throw new BpmnError(UNAVAILABLE_DELIVERY_COMPANY);
             }
 
         } catch (Exception e) {
@@ -44,6 +46,4 @@ public class AbortOrder implements JavaDelegate {
             throw new BpmnError(UNAVAILABLE_DELIVERY_COMPANY);
         }
     }
-
-
 }

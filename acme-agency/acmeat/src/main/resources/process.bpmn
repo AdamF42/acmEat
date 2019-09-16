@@ -220,7 +220,7 @@
         <bpmn:outgoing>SequenceFlow_10rmz95</bpmn:outgoing>
       </bpmn:parallelGateway>
       <bpmn:sequenceFlow id="SequenceFlow_03nji48" sourceRef="StartEvent_1ke2ifw" targetRef="ParallelGateway_10dq8l2" />
-      <bpmn:subProcess id="SubProcess_1v34jrj">
+      <bpmn:subProcess id="SubProcess_1v34jrj" camunda:asyncAfter="true">
         <bpmn:incoming>SequenceFlow_10rmz95</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_04pw503</bpmn:outgoing>
         <bpmn:sequenceFlow id="SequenceFlow_1cydmhu" sourceRef="StartEvent_16k9kwa" targetRef="ServiceTask_1lfisfx" />
@@ -332,7 +332,7 @@
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="SequenceFlow_0yrycj8" sourceRef="ParallelGateway_1me632f" targetRef="EndEvent_16fp6aa" />
       <bpmn:sequenceFlow id="SequenceFlow_1d4fr0p" sourceRef="SendTask_0d826nb" targetRef="ExclusiveGateway_0vmpxwu" />
-      <bpmn:sendTask id="SendTask_0d826nb" name="Request food availability" camunda:class="it.unibo.restaurant.GetFoodAvailability">
+      <bpmn:sendTask id="SendTask_0d826nb" name="Request food availability" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.GetFoodAvailability">
         <bpmn:incoming>SequenceFlow_1eb1kgp</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_1d4fr0p</bpmn:outgoing>
       </bpmn:sendTask>
@@ -466,7 +466,7 @@
         <bpmn:incoming>SequenceFlow_0oe1xjz</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_0lzz90l</bpmn:outgoing>
       </bpmn:sendTask>
-      <bpmn:sendTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.delivery.AbortOrder">
+      <bpmn:sendTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.bank.AbortPayment">
         <bpmn:incoming>SequenceFlow_15b3td1</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_0854jmi</bpmn:outgoing>
       </bpmn:sendTask>
@@ -514,11 +514,11 @@
       <bpmn:outgoing>SequenceFlow_0elns3b</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1kha73p</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sendTask id="Task_1puuh5g" name="Send confirmation to restaurant" camunda:class="it.unibo.restaurant.SendOrder">
+    <bpmn:sendTask id="Task_1puuh5g" name="Send confirmation to restaurant" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.SendOrder">
       <bpmn:incoming>SequenceFlow_0elns3b</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0dke1ub</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sendTask id="Task_0uo3cv3" name="Send confirmation to delivery company" camunda:class="it.unibo.delivery.PlaceOrder">
+    <bpmn:sendTask id="Task_0uo3cv3" name="Send confirmation to delivery company" camunda:asyncAfter="true" camunda:class="it.unibo.delivery.PlaceOrder">
       <bpmn:incoming>SequenceFlow_1kha73p</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_04lpe3v</bpmn:outgoing>
     </bpmn:sendTask>

@@ -19,11 +19,14 @@ import static it.unibo.utils.AcmeVariables.*;
 @WebServlet("/confirm")
 public class ConfirmOrder extends AcmeatHttpServlet {
 
+    private HttpSession session;
+    private ProcessEngineAdapter process;
+
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-        ProcessEngineAdapter process = new ProcessEngineAdapter(processEngine);
-        HttpSession session = req.getSession(false);
+        process = new ProcessEngineAdapter(processEngine);
+        session = req.getSession(false);
         String camundaProcessId = session != null ? (String) session.getAttribute(PROCESS_ID) : "";
 
         if (process.isActive(camundaProcessId) && session != null && session.getAttribute(CONFIRM_ORDER) == null)
@@ -35,30 +38,25 @@ public class ConfirmOrder extends AcmeatHttpServlet {
         RestaurantOrder restaurantOrder = (RestaurantOrder) process.getVariable(camundaProcessId, RESTAURANT_ORDER);
         DeliveryOrder deliveryOrder = (DeliveryOrder) process.getVariable(camundaProcessId, DELIVERY_ORDER);
 
-        Response response = getResponse(session, process.isCorrelationSuccessful(), isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
+        Response response = getResponse(isValidToken, isReachableBankService, restaurantOrder, deliveryOrder);
         sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
-    private Response getResponse(HttpSession session, Boolean isCorrelationSuccessful, Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {
-        Response response;
-        if (session == null || !isCorrelationSuccessful && session.getAttribute(CONFIRM_ORDER) == null) {
-            response = responseFactory.createFailureResponse("No active session found");
-        } else if (isUnreachableBankService != null && isUnreachableBankService) {
-            response = responseFactory.createFailureResponse("Unable to verify bank token");
-            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
-        } else if (isValidToken != null && !isValidToken) {
-            response = responseFactory.createFailureResponse("Invalid bank token");
-            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
-        } else if (restaurantOrder != null && restaurantOrder.status != ACCEPTED) {
-            response = responseFactory.createFailureResponse("Impossible to confirm restaurant order");
-            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
-        } else if (deliveryOrder != null && deliveryOrder.status != ACCEPTED) {
-            response = responseFactory.createFailureResponse("Impossible to confirm delivery order");
-            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
-        } else {
-            response = responseFactory.createSuccessResponse();
-            session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+    private Response getResponse(Boolean isValidToken, Boolean isUnreachableBankService, RestaurantOrder restaurantOrder, DeliveryOrder deliveryOrder) {
+        if (session == null || !process.isCorrelationSuccessful() && session.getAttribute(CONFIRM_ORDER) == null) {
+            return responseFactory.createFailureResponse("No active session found");
         }
-        return response;
+        session.setAttribute(CONFIRM_ORDER, CONFIRM_ORDER);
+        if (isUnreachableBankService != null && isUnreachableBankService) {
+            return responseFactory.createFailureResponse("Unable to verify bank token");
+        } else if (isValidToken != null && !isValidToken) {
+            return responseFactory.createFailureResponse("Invalid bank token");
+        } else if (restaurantOrder != null && restaurantOrder.status != ACCEPTED) {
+            return responseFactory.createFailureResponse("Impossible to confirm restaurant order");
+        } else if (deliveryOrder != null && deliveryOrder.status != ACCEPTED) {
+            return responseFactory.createFailureResponse("Impossible to confirm delivery order");
+        } else {
+            return responseFactory.createSuccessResponse();
+        }
     }
 }

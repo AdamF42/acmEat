@@ -4,7 +4,6 @@ import it.unibo.models.RestaurantMenu;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.repo.RestaurantRepository;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,25 +22,22 @@ public class ChangeRestaurantMenu extends AcmeatHttpServlet {
 
         RestaurantMenu menuChange = commonModules.getGson().fromJson(req.getReader(), RestaurantMenu.class);
         process.correlate(CHANGE_RESTAURANT_MENU);
-        Response response = getResponse(commonModules.getRestaurantRepository(),
-                process.isCorrelationSuccessful(), menuChange);
+        Response response = getResponse(process.isCorrelationSuccessful(), menuChange);
+
         sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
-    private Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantMenu menuChange) {
-        Response response;
+    private Response getResponse(Boolean isCorrelationSuccessful, RestaurantMenu menuChange) {
         if (!isCorrelationSuccessful) {
-            response = responseFactory.createFailureResponse("Out of time");
-        } else {
-            try {
-                repo.addOrUpdateMenu(menuChange);
-                response = responseFactory.createSuccessResponse();
-            } catch (IOException e) {
-                response = responseFactory.createFailureResponse("Unable to update db");
-                e.printStackTrace();
-            }
+            return responseFactory.createFailureResponse("Out of time");
         }
-        return response;
+        try {
+            commonModules.getRestaurantRepository().addOrUpdateMenu(menuChange);
+            return responseFactory.createSuccessResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return responseFactory.createFailureResponse("Unable to update db");
+        }
     }
 }
 

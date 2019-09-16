@@ -16,5 +16,4 @@ public class AcmeatHttpServlet extends ApiHttpServlet{
     @Inject
     public CommonModules commonModules;
 
-
 }

@@ -4,7 +4,6 @@ import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.responses.Response;
 import it.unibo.utils.AcmeatHttpServlet;
 import it.unibo.utils.ProcessEngineAdapter;
-import it.unibo.utils.repo.RestaurantRepository;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,25 +23,21 @@ public class ChangeRestaurantAvailability extends AcmeatHttpServlet {
 
         RestaurantAvailability availability = commonModules.getGson().fromJson(req.getReader(), RestaurantAvailability.class);
         process.correlate(CHANGE_RESTAURANT_AVAILABILITY);
+        Response response = getResponse(process.isCorrelationSuccessful(), availability);
 
-        Response response = getResponse(commonModules.getRestaurantRepository(),
-                process.isCorrelationSuccessful(), availability);
         sendResponse(resp, commonModules.getGson().toJson(response));
     }
 
-    private Response getResponse(RestaurantRepository repo, Boolean isCorrelationSuccessful, RestaurantAvailability availability) {
-        Response response;
+    private Response getResponse(Boolean isCorrelationSuccessful, RestaurantAvailability availability) {
         if (!isCorrelationSuccessful) {
-            response = responseFactory.createFailureResponse("Out of time");
-        } else {
-            try {
-                repo.addOrUpdateOpeningTime(availability);
-                response = responseFactory.createSuccessResponse();
-            } catch (IOException e) {
-                response = responseFactory.createFailureResponse("Unable to update db");
-                e.printStackTrace();
-            }
+            return responseFactory.createFailureResponse("Out of time");
         }
-        return response;
+        try {
+            commonModules.getRestaurantRepository().addOrUpdateOpeningTime(availability);
+            return responseFactory.createSuccessResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return responseFactory.createFailureResponse("Unable to update db");
+        }
     }
 }
