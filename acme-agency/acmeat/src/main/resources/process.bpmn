@@ -276,10 +276,10 @@
             <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.getVariable("currentDeliveryOrder")!=null}</bpmn:conditionExpression>
           </bpmn:sequenceFlow>
           <bpmn:sequenceFlow id="SequenceFlow_0cnirg7" sourceRef="ServiceTask_1requan" targetRef="ExclusiveGateway_0clyll6" />
-          <bpmn:sendTask id="ServiceTask_1requan" name="Send availability request to delivery services" camunda:class="it.unibo.delivery.SendAvailabilityRequest">
+          <bpmn:serviceTask id="ServiceTask_1requan" name="Send availability request to delivery services" camunda:class="it.unibo.delivery.SendAvailabilityRequest">
             <bpmn:incoming>SequenceFlow_0k6db59</bpmn:incoming>
             <bpmn:outgoing>SequenceFlow_0cnirg7</bpmn:outgoing>
-          </bpmn:sendTask>
+          </bpmn:serviceTask>
         </bpmn:subProcess>
         <bpmn:endEvent id="EndEvent_1b2bkhl">
           <bpmn:incoming>SequenceFlow_16gh8dy</bpmn:incoming>
@@ -335,10 +335,6 @@
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="SequenceFlow_0yrycj8" sourceRef="ParallelGateway_1me632f" targetRef="EndEvent_16fp6aa" />
       <bpmn:sequenceFlow id="SequenceFlow_1d4fr0p" sourceRef="SendTask_0d826nb" targetRef="ExclusiveGateway_0vmpxwu" />
-      <bpmn:sendTask id="SendTask_0d826nb" name="Request food availability" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.GetFoodAvailability">
-        <bpmn:incoming>SequenceFlow_1eb1kgp</bpmn:incoming>
-        <bpmn:outgoing>SequenceFlow_1d4fr0p</bpmn:outgoing>
-      </bpmn:sendTask>
       <bpmn:sequenceFlow id="SequenceFlow_0czwixx" sourceRef="ExclusiveGateway_0vmpxwu" targetRef="ParallelGateway_1me632f">
         <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${restaurantOrder.getStatus().name()=="AVAILABLE"}</bpmn:conditionExpression>
       </bpmn:sequenceFlow>
@@ -346,6 +342,10 @@
         <bpmn:incoming>SequenceFlow_0yrycj8</bpmn:incoming>
         <bpmn:messageEventDefinition />
       </bpmn:endEvent>
+      <bpmn:serviceTask id="SendTask_0d826nb" name="Request food availability" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.GetFoodAvailability">
+        <bpmn:incoming>SequenceFlow_1eb1kgp</bpmn:incoming>
+        <bpmn:outgoing>SequenceFlow_1d4fr0p</bpmn:outgoing>
+      </bpmn:serviceTask>
     </bpmn:subProcess>
     <bpmn:sequenceFlow id="SequenceFlow_0jmuac3" sourceRef="SubProcess_0009tv3" targetRef="EndEvent_17wsf9h" />
     <bpmn:endEvent id="EndEvent_17wsf9h">
@@ -461,18 +461,18 @@
       <bpmn:sequenceFlow id="SequenceFlow_1rlza3n" sourceRef="BoundaryEvent_196fy56" targetRef="UserTask_1ehev02" />
       <bpmn:sequenceFlow id="SequenceFlow_1bvw85e" sourceRef="UserTask_1ehev02" targetRef="ExclusiveGateway_1l6sqk7" />
       <bpmn:sequenceFlow id="SequenceFlow_1dj62no" sourceRef="ExclusiveGateway_1l6sqk7" targetRef="ParallelGateway_0nkyw4x" />
-      <bpmn:sendTask id="ServiceTask_1r05xum" name="Abort delivery order" camunda:class="it.unibo.delivery.AbortOrder">
+      <bpmn:serviceTask id="ServiceTask_1r05xum" name="Abort delivery order" camunda:class="it.unibo.delivery.AbortOrder">
         <bpmn:incoming>SequenceFlow_0fldqri</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_18upc97</bpmn:outgoing>
-      </bpmn:sendTask>
-      <bpmn:sendTask id="ServiceTask_1g6qbwj" name="Abort restaurant order" camunda:class="it.unibo.restaurant.AbortOrder">
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="ServiceTask_1g6qbwj" name="Abort restaurant order" camunda:class="it.unibo.restaurant.AbortOrder">
         <bpmn:incoming>SequenceFlow_0oe1xjz</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_0lzz90l</bpmn:outgoing>
-      </bpmn:sendTask>
-      <bpmn:sendTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.bank.AbortPayment">
+      </bpmn:serviceTask>
+      <bpmn:serviceTask id="ServiceTask_0xr8nkc" name="Abort bank payment" camunda:class="it.unibo.bank.AbortPayment">
         <bpmn:incoming>SequenceFlow_15b3td1</bpmn:incoming>
         <bpmn:outgoing>SequenceFlow_0854jmi</bpmn:outgoing>
-      </bpmn:sendTask>
+      </bpmn:serviceTask>
     </bpmn:subProcess>
     <bpmn:parallelGateway id="ParallelGateway_0sv8c9j">
       <bpmn:incoming>SequenceFlow_04lpe3v</bpmn:incoming>
@@ -517,14 +517,6 @@
       <bpmn:outgoing>SequenceFlow_0elns3b</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_1kha73p</bpmn:outgoing>
     </bpmn:parallelGateway>
-    <bpmn:sendTask id="Task_1puuh5g" name="Send confirmation to restaurant" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.SendOrder">
-      <bpmn:incoming>SequenceFlow_0elns3b</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_0dke1ub</bpmn:outgoing>
-    </bpmn:sendTask>
-    <bpmn:sendTask id="Task_0uo3cv3" name="Send confirmation to delivery company" camunda:asyncAfter="true" camunda:class="it.unibo.delivery.PlaceOrder">
-      <bpmn:incoming>SequenceFlow_1kha73p</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_04lpe3v</bpmn:outgoing>
-    </bpmn:sendTask>
     <bpmn:intermediateCatchEvent id="IntermediateThrowEvent_15iyjsn" name="10 min">
       <bpmn:incoming>SequenceFlow_1fauc5c</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_18qe5tc</bpmn:outgoing>
@@ -553,6 +545,14 @@
       <bpmn:outgoing>SequenceFlow_1ubbptw</bpmn:outgoing>
       <bpmn:escalationEventDefinition escalationRef="Escalation_00xhks9" />
     </bpmn:boundaryEvent>
+    <bpmn:serviceTask id="Task_0uo3cv3" name="Send confirmation to delivery company" camunda:asyncAfter="true" camunda:class="it.unibo.delivery.PlaceOrder">
+      <bpmn:incoming>SequenceFlow_1kha73p</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_04lpe3v</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_1puuh5g" name="Send confirmation to restaurant" camunda:asyncAfter="true" camunda:class="it.unibo.restaurant.SendOrder">
+      <bpmn:incoming>SequenceFlow_0elns3b</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0dke1ub</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:process id="Process_1s5c0in" isExecutable="false">
     <bpmn:startEvent id="StartEvent_0lt7fhj" name="Receive distance request">
@@ -1105,7 +1105,7 @@
         <di:waypoint x="2498" y="482" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="MessageFlow_03jev6o_di" bpmnElement="MessageFlow_03jev6o">
-        <di:waypoint x="3380" y="1570" />
+        <di:waypoint x="3380" y="1568" />
         <di:waypoint x="3380" y="2268" />
         <di:waypoint x="4005" y="2268" />
         <di:waypoint x="4005" y="2486" />
@@ -2294,7 +2294,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_0854jmi_di" bpmnElement="SequenceFlow_0854jmi">
-        <di:waypoint x="4794" y="1759" />
+        <di:waypoint x="4794" y="1760" />
         <di:waypoint x="4794" y="1718" />
         <di:waypoint x="4968" y="1718" />
       </bpmndi:BPMNEdge>
@@ -2322,21 +2322,6 @@
         <di:waypoint x="4828" y="1634" />
         <di:waypoint x="4968" y="1634" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="SendTask_1ed4z9r_di" bpmnElement="ServiceTask_1requan">
-        <dc:Bounds x="1820" y="1285" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_1lfmv2v_di" bpmnElement="SendTask_0d826nb">
-        <dc:Bounds x="1656" y="1601" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_0fqiajx_di" bpmnElement="ServiceTask_1r05xum">
-        <dc:Bounds x="4586" y="1203" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_1apdysu_di" bpmnElement="ServiceTask_1g6qbwj">
-        <dc:Bounds x="4507" y="1575" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_0txdpah_di" bpmnElement="ServiceTask_0xr8nkc">
-        <dc:Bounds x="4744" y="1760" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="IntermediateCatchEvent_0kiymiv_di" bpmnElement="IntermediateCatchEvent">
         <dc:Bounds x="4072" y="1043" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -2368,12 +2353,6 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="EndEvent_02th7kz_di" bpmnElement="EndEvent_01fsnpe">
         <dc:Bounds x="2812" y="1582" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_1j1rhd1_di" bpmnElement="Task_1puuh5g">
-        <dc:Bounds x="3200" y="1270" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="SendTask_0lo8g2b_di" bpmnElement="Task_0uo3cv3">
-        <dc:Bounds x="3340" y="1488" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1907j0m_di" bpmnElement="SequenceFlow_1907j0m">
         <di:waypoint x="4180" y="2504" />
@@ -2555,6 +2534,27 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="UserTask_02tm0xm_di" bpmnElement="ManualTask_01k43zq">
         <dc:Bounds x="4560" y="2550" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_170xdw0_di" bpmnElement="ServiceTask_1requan">
+        <dc:Bounds x="1820" y="1285" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_11f80mu_di" bpmnElement="SendTask_0d826nb">
+        <dc:Bounds x="1656" y="1601" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1mr7874_di" bpmnElement="Task_0uo3cv3">
+        <dc:Bounds x="3340" y="1488" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_08wmtoc_di" bpmnElement="Task_1puuh5g">
+        <dc:Bounds x="3200" y="1270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0iqltx1_di" bpmnElement="ServiceTask_1r05xum">
+        <dc:Bounds x="4586" y="1203" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1kew7m2_di" bpmnElement="ServiceTask_1g6qbwj">
+        <dc:Bounds x="4507" y="1575" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1jkio0h_di" bpmnElement="ServiceTask_0xr8nkc">
+        <dc:Bounds x="4744" y="1760" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

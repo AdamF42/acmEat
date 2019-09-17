@@ -17,6 +17,5 @@ public class Home extends HttpServlet {
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/restaurant.jsp");
         dispatcher.forward(req, resp);
-
     }
 }
