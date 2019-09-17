@@ -64,6 +64,16 @@ Con l'`AbortOrder` viene modificato lo stato della risorsa con l'id specificato 
 
 ## Delivery [(sources)](https://github.com/AdamF42/acmEat/tree/master/deliveryService)
 
+Il servizio è stato implementato utilizzando Java8 con la libreria javax.rs e il server  Grizzly.
+
+Espone le seguenti operazioni:
+- `GetAvailability`
+- `SendOrder`
+- `AbortOrder`
+- `GetOrder` (usato solo per debug)
+
+Le logiche sono identiche a quelle esposte per il servizio [restaurant](#restaurant)
+
 ------
 <!-- ### [**➡️ Next**](acmeat-agency.md) -->
 

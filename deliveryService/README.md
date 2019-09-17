@@ -6,14 +6,13 @@ Simple restaurant service implementation.
 
 | HTTP Method           | Action              | Description                              |
 | --------------------- | ------------------- | ---------------------------------------- |
-| POST                  | [PlaceOrder](#place) | Post a new order resource. |
-| GET                  | [GetOrder](#get) | Retrieve a specific order. |
-| PUT                  | [UpdateOrder](#update) | Update a specific order |
-| PUT                  | [ConfirmOrder](#confirm) | Confirm a specific order |
+| POST                  | [GetAvailability](#getavailability) | Create a new order resource and check for delivery availability. |
+| GET                  | [GetOrder](#getorder) | Retrieve a specific order. |
+| PUT                  | [SendOrder](#sendorder) | Update a specific order |
 | PUT                  | [AbortOrder](#abort) | Abort a apecific order |
 
 
-## Place
+## GetAvailability
 
 `http://<host>:<port>/delivery/order`
 
@@ -21,9 +20,10 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-    "srcAddress": "A",
-    "destAddress": "B",
-    "deliveryTime": "11"
+	"company": "debug",
+	"delivery_time":"20:15",
+	"src_address":"Via delle tovaglie 13",
+	"dest_address": "Via della salute 54"
 }
 ```
 
@@ -31,69 +31,55 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-    "id": 1
-}
-```
-
-## Get
-
-`http://<host>:<port>/delivery/order/<id>`
-
-### Response
-```JSON
-{
-    "deliveryTime": "11",
-    "destAddress": "B",
     "id": 1,
-    "srcAddress": "A",
-    "status": "pending"
+    "price": 0.09115258233753853,
+    "company": "debug",
+    "delivery_time": "20:15",
+    "dest_address": "Via della salute 54",
+    "src_address": "Via delle tovaglie 13",
+    "status": "AVAILABLE"
 }
 ```
 
-## Update
+## GetOrder
 
 `http://<host>:<port>/delivery/order/<id>`
+
+### Response
+```JSON
+{
+    "id": 1,
+    "price": 0.09115258233753853,
+    "company": "debug",
+    "delivery_time": "20:15",
+    "dest_address": "Via della salute 54",
+    "src_address": "Via delle tovaglie 13",
+    "status": "ACCEPTED"
+}
+```
+
+## SendOrder
+
+ `http://<host>:<port>/delivery/order/<id>`
 
 ### Request
-
 ```JSON
 {
-    "deliveryTime": "11",
-    "destAddress": "B",
-    "id": 1,
-    "price": 5,
-    "srcAddress": "A",
-    "status": "available"
+	"id": 1
 }
-```
+ ```
 
 ### Response
 
 ```JSON
 {
-    "deliveryTime": "11",
-    "destAddress": "B",
     "id": 1,
-    "price": 5,
-    "srcAddress": "A",
-    "status": "available"
-}
-```
-
-## Confirm
-
- `http://<host>:<port>/delivery/order/<id>/status/confirmed`
-
-### Response
-
-```JSON
-{
-    "deliveryTime": "11",
-    "destAddress": "B",
-    "id": 1,
-    "price": 5,
-    "srcAddress": "A",
-    "status": "confirmed"
+    "price": 0.09115258233753853,
+    "company": "debug",
+    "delivery_time": "20:15",
+    "dest_address": "Via della salute 54",
+    "src_address": "Via delle tovaglie 13",
+    "status": "ACCEPTED"
 }
 ```
 
@@ -106,16 +92,17 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-    "deliveryTime": "11",
-    "destAddress": "B",
     "id": 1,
-    "price": 5,
-    "srcAddress": "A",
-    "status": "aborted"
+    "price": 0.09115258233753853,
+    "company": "debug",
+    "delivery_time": "20:15",
+    "dest_address": "Via della salute 54",
+    "src_address": "Via delle tovaglie 13",
+    "status": "ABORTED"
 }
 ```
 
-## How to setup
+## How to run
 
 Build a docker image:
 
@@ -128,6 +115,4 @@ Run the container:
 
 ## How to test
 
-Import *DeliveryService.postman_collection.json* in Postman.
-
-<!-- TODO: add descriptions-->
+Import postman collection and evironment in Postman.
