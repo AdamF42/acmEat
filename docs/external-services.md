@@ -47,7 +47,7 @@ Nel caso ci fossero dei problemi con gli indirizzi, viene resituito un HTTP stat
 
 Il servizio è stato implemetato utilizzato Python e il framework Flask.
 
-Espone le seguenti chiamate:
+Espone le seguenti operazioni:
 - `GetAvailability`
 - `SendOrder`
 - `AbortOrder`

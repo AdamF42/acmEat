@@ -5,7 +5,9 @@
 Service Oriented Software Engineering Project 18/19 University of Bologna
 
 ## Docs
-`https://github.com/AdamF42/acmEat`
+
+GitHub docs available at the following [link](https://adamf42.github.io/acmEat/)
+
 
 ## Requirements (Italian only)
 
