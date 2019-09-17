@@ -6,15 +6,7 @@
   - [GIS](external-services.md#gis)
   - [Restaurant](external-services.md#restaurant)
   - [Delivery](external-services.md#delivery)  
-<!--
- - [ACMEat agency](acmeat-agency.md)
-  - [Web services](acmeat-agency.md#web-services)
-  - [BPMS](acmeat-agency.md#bpms)
-  - [Frontend](acmeat-agency.md#frontend)
-- [Clients](clients.md)
-  - [User](clients.md#user)
-  - [Restaurant](clients.md#restaurant)
--->
+
 ## Development Setup
 
 - Camunda Platform (Tomcat): https://camunda.org/download/
