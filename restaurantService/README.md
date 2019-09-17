@@ -5,14 +5,14 @@ Simple restaurant service implementation.
 
 | HTTP Method           | Action                | Description                              |
 | --------------------- | --------------------- | ---------------------------------------- |
-| POST                  | [PlaceOrder](#place)  | `` |
-| GET                   | [GetOrder](#get)      | `` |
+| PUT                  | [SendOrder](#sendorder)  | `` |
+| GET                   | [GetOrder](#getorder)      | `` |
 | PUT                   | [AbortOrder](#abort)  | `` |
-| PUT                   | [GetAvailability](#availability)  | `` |
+| POST                   | [GetAvailability](#getavailability)  | `` |
 
 
 
-## Place
+## SendOrder
 
 ### Request
 
@@ -20,42 +20,48 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-  "content": [
-                "pizza",
-                "carbonara"
-             ],
-   "delivery_time": "13"
+	"id": 1
 }
 ```
 
 ### Response
 
 ```JSON
-{ 
-  "id" : "1",
-  "content": [
-                "pizza",
-                "carbonara"
-             ],
-   "delivery_time": "13",
-   "status": "accepted"
+{
+   "id": 1,
+   "delivery_time": "11",
+   "dishes": [
+      {
+      "name": "Lasagne",
+      "price": "5"
+      }
+   ],
+   "from": "Via delle tovaglie 11",
+   "restaurant": "Ciccio",
+   "status": "AVAILABLE",
+   "to": "Via della salute 54"
 }
 ```
 
-## Get
+## GetOrder
 
 ### Request
 `http://<host>:<port>/restaurant/order/<order_id>`
 ### Response
 ```JSON
 {
-  "id" : "1",
-  "content": [
-                "pizza",
-                "carbonara"
-             ],
-  "delivery_time": "13",
-  "status": "accepted" //It could be null
+  "delivery_time": "11",
+  "dishes": [
+    {
+      "name": "Lasagne",
+      "price": "5"
+    }
+  ],
+  "from": "Via delle tovaglie 11",
+  "id": 1,
+  "restaurant": "debug",
+  "status": "ACCEPTED",
+  "to": "Via della salute 54"
 }
 ```
 
@@ -69,27 +75,28 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-  "id" : "1",
-  "content": [
-                "pizza",
-                "carbonara"
-             ],
-   "delivery_time": "13",
-   "status": "accepted"
+  "id" : "1"
 }
 ```
 ### Response
 ```JSON
 {
-  "id" : "1",
-  "content": [
-                "pizza",
-                "carbonara"
-             ],
-  "delivery_time": "13",
-  "status": "aborted"
+  "delivery_time": "11",
+  "dishes": [
+    {
+      "name": "Lasagne",
+      "price": "5"
+    }
+  ],
+  "from": "Via delle tovaglie 11",
+  "id": 1,
+  "restaurant": "debug",
+  "status": "ABORTED",
+  "to": "Via della salute 54"
 }
 ```
+
+## GetAvailability
 
 ### Request
 
@@ -98,22 +105,32 @@ Simple restaurant service implementation.
 
 ```JSON
 {
-  "content": [
-                "pizza",
-                "carbonara"
-             ]
+	"restaurant": "Ciccio",
+	"delivery_time":"11",
+	"dishes": [{
+                    "name": "Lasagne",
+                    "price": "5"
+                }],
+	"from":"Via delle tovaglie 11",
+	"to": "Via della salute 54"
 }
 ```
+
 ### Response
 ```JSON
 {
-    "content": [
-        "pizza",
-        "carbonara"
-    ],
-    "delivery_time": null,
-    "id": null,
-    "status": "AVAILABLE" // NOT_AVAILABLE
+   "id": 1,
+   "delivery_time": "11",
+   "dishes": [
+   {
+   "name": "Lasagne",
+   "price": "5"
+   }
+   ],
+   "from": "Via delle tovaglie 13",
+   "restaurant": "Ciccio",
+   "status": "AVAILABLE",
+   "to": "Via della salute 54"
 }
 ```
 
