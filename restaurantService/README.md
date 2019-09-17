@@ -10,15 +10,13 @@ Simple restaurant service implementation.
 | PUT                   | [AbortOrder](#abort)  | `` |
 | POST                   | [GetAvailability](#getavailability)  | `` |
 
-
-
 ## SendOrder
 
 ### Request
 
-`http://<host>:<port>/restaurant/order`
+`http://<host>:<port>/restaurant/order` 
 
-```JSON
+``` JSON
 {
 	"id": 1
 }
@@ -26,7 +24,7 @@ Simple restaurant service implementation.
 
 ### Response
 
-```JSON
+``` JSON
 {
    "id": 1,
    "delivery_time": "11",
@@ -46,9 +44,11 @@ Simple restaurant service implementation.
 ## GetOrder
 
 ### Request
-`http://<host>:<port>/restaurant/order/<order_id>`
+`http://<host>:<port>/restaurant/order/<order_id>` 
+
 ### Response
-```JSON
+
+``` JSON
 {
   "delivery_time": "11",
   "dishes": [
@@ -65,21 +65,21 @@ Simple restaurant service implementation.
 }
 ```
 
-
 ## Abort
 
 ### Request
 
-`http://<host>:<port>/restaurant/order/abort`
+`http://<host>:<port>/restaurant/order/abort` 
 
-
-```JSON
+``` JSON
 {
   "id" : "1"
 }
 ```
+
 ### Response
-```JSON
+
+``` JSON
 {
   "delivery_time": "11",
   "dishes": [
@@ -100,10 +100,9 @@ Simple restaurant service implementation.
 
 ### Request
 
-`http://<host>:<port>/restaurant/availability`
+`http://<host>:<port>/restaurant/availability` 
 
-
-```JSON
+``` JSON
 {
 	"restaurant": "Ciccio",
 	"delivery_time":"11",
@@ -117,7 +116,8 @@ Simple restaurant service implementation.
 ```
 
 ### Response
-```JSON
+
+``` JSON
 {
    "id": 1,
    "delivery_time": "11",
@@ -141,4 +141,6 @@ docker build --tag=restaurant .
 docker run -d -p 5000:5000 --name restaurant restaurant
 
 ## How to test
+
 Run the postman collection in this folder
+

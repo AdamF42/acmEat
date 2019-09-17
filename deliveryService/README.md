@@ -6,19 +6,18 @@ Simple restaurant service implementation.
 
 | HTTP Method           | Action              | Description                              |
 | --------------------- | ------------------- | ---------------------------------------- |
-| POST                  | [GetAvailability](#getavailability) | Create a new order resource and check for delivery availability. |
-| GET                  | [GetOrder](#getorder) | Retrieve a specific order. |
+| POST                  | [GetAvailability](#getavailability) | Create a new order resource and check for delivery availability.|
+| GET                  | [GetOrder](#getorder) | Retrieve a specific order.|
 | PUT                  | [SendOrder](#sendorder) | Update a specific order |
 | PUT                  | [AbortOrder](#abort) | Abort a apecific order |
 
-
 ## GetAvailability
 
-`http://<host>:<port>/delivery/order`
+`http://<host>:<port>/delivery/order` 
 
 ### Request
 
-```JSON
+``` JSON
 {
 	"company": "debug",
 	"delivery_time":"20:15",
@@ -29,7 +28,7 @@ Simple restaurant service implementation.
 
 ### Response
 
-```JSON
+``` JSON
 {
     "id": 1,
     "price": 0.09115258233753853,
@@ -43,10 +42,11 @@ Simple restaurant service implementation.
 
 ## GetOrder
 
-`http://<host>:<port>/delivery/order/<id>`
+`http://<host>:<port>/delivery/order/<id>` 
 
 ### Response
-```JSON
+
+``` JSON
 {
     "id": 1,
     "price": 0.09115258233753853,
@@ -60,10 +60,11 @@ Simple restaurant service implementation.
 
 ## SendOrder
 
- `http://<host>:<port>/delivery/order/<id>`
+`http://<host>:<port>/delivery/order/<id>` 
 
 ### Request
-```JSON
+
+``` JSON
 {
 	"id": 1
 }
@@ -71,7 +72,7 @@ Simple restaurant service implementation.
 
 ### Response
 
-```JSON
+``` JSON
 {
     "id": 1,
     "price": 0.09115258233753853,
@@ -85,12 +86,11 @@ Simple restaurant service implementation.
 
 ## Abort
 
- `http://<host>:<port>/delivery/order/<id>/status/aborted`
-
+`http://<host>:<port>/delivery/order/<id>/status/aborted` 
 
 ### Response
 
-```JSON
+``` JSON
 {
     "id": 1,
     "price": 0.09115258233753853,
@@ -106,13 +106,13 @@ Simple restaurant service implementation.
 
 Build a docker image:
 
-`docker build --tag=delivery . `
+`docker build --tag=delivery . ` 
 
 Run the container:
 
-`docker run -d -p <system_port>:<container_port> --name delivery delivery`
-
+`docker run -d -p <system_port>:<container_port> --name delivery delivery` 
 
 ## How to test
 
 Import postman collection and evironment in Postman.
+
