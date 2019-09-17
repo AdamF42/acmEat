@@ -161,7 +161,14 @@
 					],
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "{{cookie}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
 						"url": {
 							"raw": "{{acmeat-ws-url}}/get-restaurants?city=Bologna",
 							"host": [

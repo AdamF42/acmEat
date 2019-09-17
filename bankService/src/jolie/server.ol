@@ -32,19 +32,19 @@ main {
     response.sid = csets.sid = new;
     random@Math( )( res );
     if (res<0.5 ||  request.name=="debug"){
-          response.status="success"
-          global.users.( response.sid ).result = true
+          response.status="success";
+          global.users.(response.sid).result = true;
           global.users.(request.sid).isRefounded = false
     }else{
-          response.status="failure"
-          global.users.( response.sid ).result = false
+          response.status="failure";
+          global.users.( response.sid ).result = false;
           global.users.(request.sid).isRefounded = true
-    } 
-    println@Console("GetToken processed")()   
+    };
+    println@Console("GetToken processed")()
   }]
 
   [ verifyToken( request )( response ) {
-      response.success=global.users.(request.sid).result
+      response.success=global.users.(request.sid).result;
       println@Console("VerifyToken processed")()
   }]
 

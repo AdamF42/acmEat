@@ -6,6 +6,7 @@ import com.sun.jersey.api.client.WebResource;
 import it.unibo.models.RestaurantAvailability;
 import it.unibo.models.Result;
 import it.unibo.models.responses.SimpleResponse;
+import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.WebResourceBuilder;
 
 import javax.servlet.annotation.WebServlet;
@@ -22,31 +23,28 @@ import static javax.ws.rs.core.Response.Status.OK;
 
 
 @WebServlet("/change-availability")
-public class ChangeAvailability extends HttpServlet {
+public class ChangeAvailability extends ApiHttpServlet {
 
     private Gson g = new Gson();
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String response = "Impossibile aggiornare la disponibilità";
+        try {
+            String queryUrl = BASE_URL + "/change-availability";
+            ClientResponse serviceResponse = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
 
-        String queryUrl = BASE_URL + "/change-availability";
-
-        ClientResponse serviceResponse = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, g.fromJson(req.getReader(), RestaurantAvailability.class));
-
-        String response;
-        if (serviceResponse.getStatus() == OK.getStatusCode()
-                && serviceResponse
-                .getEntity(SimpleResponse.class)
-                .result.getStatus().equals(Result.SUCCESS)) {
-            response = "Disponibilita comunicata con successo";
-        } else {
-            response = "Impossibile aggiornare la disponibilità";
+            if (serviceResponse.getStatus() == OK.getStatusCode()) {
+                SimpleResponse serviceResponseEntity = serviceResponse.getEntity(SimpleResponse.class);
+                if (serviceResponseEntity.result.getStatus().equals(Result.SUCCESS)){
+                    response = "Disponibilita comunicata con successo";
+                } else {
+                    response = serviceResponseEntity.result.getMessage();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        PrintWriter out = resp.getWriter();
-        resp.setContentType(MediaType.APPLICATION_JSON);
-        resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        out.print(response);
-        out.flush();
+        sendResponse(resp,response);
     }
 }

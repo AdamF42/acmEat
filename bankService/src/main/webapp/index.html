@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Bank</title>
+
+    <script type='text/JavaScript'>
+
+        function pay() {
+            document.getElementById('info').innerHTML="";
+            var price=document.getElementById('price').innerHTML;
+            var nameField=document.getElementById('name');
+            if (!nameField.value){
+                document.getElementById('info').innerHTML="Inserisci il tuo nome";
+            }else {
+                var name = nameField.value;
+                var bank_url = "http://localhost:10001/bank/name/" + name + "/price/" + price;
+                var xhr = new XMLHttpRequest();
+                xhr.open("GET", bank_url, true);
+                xhr.setRequestHeader("Content-type", "application/json");
+                xhr.send();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            console.log("xhr done successfully");
+                            var resp = xhr.responseText;
+                            var respParsed=JSON.parse(resp);
+                            console.log(respParsed.status + " "+respParsed.token + " " + document.getElementById('callback').innerHTML);
+                            window.location=document.getElementById('callback').innerHTML.toString().concat("?status="+respParsed.status+"&token="+respParsed.token);
+                        } else {
+                            console.log("xhr failed with " + xhr.status);
+                        }
+                    } else {
+                        console.log("xhr processing going on");
+                    }
+                }
+                console.log("request sent ");
+            }
+        }
+    </script>
+
+</head>
+<body>
+<div>
+
+	Benvenuto in AcmeBank!
+    <br> <br>
+    Inserisci il tuo nome:
+    <input type="text"  id="name"  required>
+    <div id="info" style="color:red"></div>
+    <br> <br>
+    <div><input type="submit" value="Conferma pagamento" onclick="pay()"></div>
+
+</div>
+</body>
+</html>
