@@ -1,25 +1,22 @@
 package it.unibo;
 
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Response;
-
 import it.unibo.models.Order;
 import it.unibo.models.Status;
-
 import it.unibo.utils.Utils;
 import mockit.Mock;
 import mockit.MockUp;
 import org.glassfish.grizzly.http.server.HttpServer;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import repo.Orders;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.*;
 
@@ -44,11 +41,12 @@ public class DeliveryServiceTest {
     @Test
     public void CallingAvailability_WithCorrectOrder_ShouldReturnIdAndStatusAvailable() {
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.id=0;
-        order.status=Status.AVAILABLE;
+        order.id = 0;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Utils>() {
             @Mock
@@ -57,7 +55,7 @@ public class DeliveryServiceTest {
             }
         };
 
-        Response responseMsg = target.path("delivery/availability").request().put(Entity.json(order));
+        Response responseMsg = target.path("delivery/availability").request().post(Entity.json(order));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
@@ -65,16 +63,17 @@ public class DeliveryServiceTest {
         assertNotNull(responseOrder);
         assertNotNull(responseOrder.id);
         assertNotNull(responseOrder.status);
-        assertEquals(Status.AVAILABLE,responseOrder.status);
+        assertEquals(Status.AVAILABLE, responseOrder.status);
     }
 
     @Test
     public void CallingAvailability_WithCorrectOrder_ShouldReturnIdAndStatusNotAvailable() {
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.status=Status.AVAILABLE;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Utils>() {
             @Mock
@@ -83,7 +82,7 @@ public class DeliveryServiceTest {
             }
         };
 
-        Response responseMsg = target.path("delivery/availability").request().put(Entity.json(order));
+        Response responseMsg = target.path("delivery/availability").request().post(Entity.json(order));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
@@ -91,17 +90,18 @@ public class DeliveryServiceTest {
         assertNotNull(responseOrder);
         assertNull(responseOrder.id);
         assertNotNull(responseOrder.status);
-        assertEquals(Status.NOT_AVAILABLE,responseOrder.status);
+        assertEquals(Status.NOT_AVAILABLE, responseOrder.status);
     }
 
     @Test
     public void CallingPlaceOrder_WithAvailableOrder_ShouldReturnStatusAccepted() {
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.id=0;
-        order.status=Status.AVAILABLE;
+        order.id = 0;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Orders>() {
             @Mock
@@ -112,7 +112,7 @@ public class DeliveryServiceTest {
 
         order.id = 0;
         order.status = Status.AVAILABLE;
-        Response responseMsg = target.path("delivery/order").request().post(Entity.json(order));
+        Response responseMsg = target.path("delivery/order").request().put(Entity.json(order));
         assertNotNull(responseMsg);
         assertEquals(Response.Status.OK.getStatusCode(), responseMsg.getStatus());
         assertTrue(responseMsg.hasEntity());
@@ -125,11 +125,12 @@ public class DeliveryServiceTest {
     @Test
     public void testGetOrder() {
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.id=0;
-        order.status=Status.AVAILABLE;
+        order.id = 0;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Orders>() {
             @Mock
@@ -155,11 +156,12 @@ public class DeliveryServiceTest {
     public void testConfirmOrder() {
 
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.id=0;
-        order.status=Status.AVAILABLE;
+        order.id = 0;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Orders>() {
             @Mock
@@ -177,16 +179,16 @@ public class DeliveryServiceTest {
         assertEquals(Status.ACCEPTED, updatedOrderResponse.status);
     }
 
-
     @Test
     public void testAbortOrder() {
 
         Order order = new Order();
+        order.company = "test";
         order.delivery_time = "11";
         order.src_address = "A";
         order.dest_address = "B";
-        order.id=0;
-        order.status=Status.AVAILABLE;
+        order.id = 0;
+        order.status = Status.AVAILABLE;
 
         new MockUp<Orders>() {
             @Mock

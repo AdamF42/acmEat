@@ -18,16 +18,14 @@
 							"   pm.environment.set(\"id\", -1);",
 							"}else{",
 							"    pm.environment.set(\"id\", jsonData.id);",
-							"}",
-							"",
-							""
+							"}"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -38,7 +36,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\"\n}"
+					"raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
 				},
 				"url": {
 					"raw": "{{delivery_base_url}}/availability",
@@ -52,9 +50,9 @@
 			},
 			"response": [
 				{
-					"name": "1. GetAvailability",
+					"name": "1. GetAvailability ",
 					"originalRequest": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -65,7 +63,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\"\n}"
+							"raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
 						},
 						"url": {
 							"raw": "{{delivery_base_url}}/availability",
@@ -87,60 +85,18 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "84"
+							"value": "171"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\",\n    \"status\": \"NOT_AVAILABLE\"\n}"
-				},
-				{
-					"name": "1. GetAvailability",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\"\n}"
-						},
-						"url": {
-							"raw": "{{delivery_base_url}}/availability",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"availability"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "88"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"id\": 35,\n    \"src_address\": \"A\",\n    \"status\": \"AVAILABLE\"\n}"
+					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.46673012695003,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"AVAILABLE\"\n}"
 				}
 			]
 		},
 		{
-			"name": "2. PlaceOrder",
+			"name": "2. SendOrder",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -151,7 +107,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": {{id}},\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\"\n}"
+					"raw": "{\n\t\"id\": {{id}}\n}"
 				},
 				"url": {
 					"raw": "{{delivery_base_url}}/order",
@@ -165,9 +121,9 @@
 			},
 			"response": [
 				{
-					"name": "2. PlaceOrder",
+					"name": "2. SendOrder",
 					"originalRequest": {
-						"method": "POST",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -178,15 +134,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"id\": {{id}},\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"src_address\": \"A\"\n}"
+							"raw": "{\n\t\"id\": {{id}}\n}"
 						},
 						"url": {
-							"raw": "{{delivery_base_url}}/order",
+							"raw": "{{delivery_base_url}}/send-order",
 							"host": [
 								"{{delivery_base_url}}"
 							],
 							"path": [
-								"order"
+								"send-order"
 							]
 						}
 					},
@@ -200,11 +156,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "87"
+							"value": "173"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"id\": 35,\n    \"src_address\": \"A\",\n    \"status\": \"ACCEPTED\"\n}"
+					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.03622207150761303,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
 				}
 			]
 		},
@@ -251,74 +207,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "87"
+							"value": "173"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"id\": 35,\n    \"src_address\": \"A\",\n    \"status\": \"ACCEPTED\"\n}"
-				}
-			]
-		},
-		{
-			"name": "4. ConfirmOrder",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{delivery_base_url}}/order/{{id}}/status/ACCEPTED",
-					"host": [
-						"{{delivery_base_url}}"
-					],
-					"path": [
-						"order",
-						"{{id}}",
-						"status",
-						"ACCEPTED"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "4. ConfirmOrder",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{delivery_base_url}}/order/{{id}}/status/ACCEPTED",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"order",
-								"{{id}}",
-								"status",
-								"ACCEPTED"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "87"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"id\": 35,\n    \"src_address\": \"A\",\n    \"status\": \"ACCEPTED\"\n}"
+					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
 				}
 			]
 		},
@@ -346,7 +239,7 @@
 			},
 			"response": [
 				{
-					"name": "AbortOrder",
+					"name": "5. AbortOrder",
 					"originalRequest": {
 						"method": "PUT",
 						"header": [],
@@ -377,11 +270,11 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "86"
+							"value": "172"
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"delivery_time\": \"11\",\n    \"dest_address\": \"B\",\n    \"id\": 35,\n    \"src_address\": \"A\",\n    \"status\": \"ABORTED\"\n}"
+					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ABORTED\"\n}"
 				}
 			]
 		}

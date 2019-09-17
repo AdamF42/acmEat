@@ -32,7 +32,7 @@ public class SendAvailabilityRequest implements JavaDelegate {
             String queryURL = company.url + "availability";
 
             LOGGER.info("DeliveryCompany: " + company.name);
-            ClientResponse response = WebResourceBuilder.getBuilder(queryURL).put(ClientResponse.class, order);
+            ClientResponse response = WebResourceBuilder.getBuilder(queryURL).post(ClientResponse.class, order);
 
             if (response.getStatus() == OK.getStatusCode()) {
                 DeliveryOrder responseOrder = response.getEntity(DeliveryOrder.class);

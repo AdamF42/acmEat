@@ -28,7 +28,7 @@ public class SendOrder implements JavaDelegate {
             Restaurant restaurant = repo.getRestaurantByName(order.restaurant);
             String queryUrl = UrlHelper.getUrlOrStringEmpty(restaurant) + "order";
 
-            ClientResponse response = WebResourceBuilder.getBuilder(queryUrl).post(ClientResponse.class, order);
+            ClientResponse response = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, order);
 
             if (response.getStatus() == OK.getStatusCode()) {
                 RestaurantOrder restaurantOrder = response.getEntity(RestaurantOrder.class);

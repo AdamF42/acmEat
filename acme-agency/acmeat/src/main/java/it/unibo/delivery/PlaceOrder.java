@@ -30,7 +30,7 @@ public class PlaceOrder implements JavaDelegate {
             String queryURL = UrlHelper.getUrlOrStringEmpty(company) + "order";
 
             ClientResponse response = WebResourceBuilder.getBuilder(queryURL)
-                    .post(ClientResponse.class, deliveryOrder);
+                    .put(ClientResponse.class, deliveryOrder);
 
             if (response.getStatus() == OK.getStatusCode()) {
                 DeliveryOrder order = response.getEntity(DeliveryOrder.class);

@@ -21,7 +21,7 @@
 				}
 			],
 			"request": {
-				"method": "PUT",
+				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -32,7 +32,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"restaurant\": \"debug\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
+					"raw": "{\n\t\"restaurant\": \"Ciccio\",\n\t\"delivery_time\":\"11\",\n\t\"dishes\": [{\n                    \"name\": \"Lasagne\",\n                    \"price\": \"5\"\n                }],\n\t\"from\":\"Via delle tovaglie 11\",\n\t\"to\": \"Via della salute 54\"\n}"
 				},
 				"url": {
 					"raw": "{{base_url}}/availability",
@@ -100,7 +100,7 @@
 		{
 			"name": "2. SendOrder",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",

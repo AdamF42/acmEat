@@ -13,8 +13,8 @@ public class Orders {
         return orders.size() + 1;
     }
 
-    public void addOrder(Order order){
-        orders.put(order.id, order);
+    public Order addOrder(Order order){
+        return  orders.put(order.id, order);
     }
 
     public Order getOrderById(int id){

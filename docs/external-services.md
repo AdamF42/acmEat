@@ -4,7 +4,14 @@
 -----
 # External Services (Italian only)
 
-E' possibile trovare ulteriori dettagli sui servizi seguendo i link  a github specificati in `sources`.
+Tutti i servizi esterni sono disponibili tramite container docker. I docker file si trovano all'interno delle rispettive cartelle. Le informazioni su come buildare le singole immagini sono specificate nei README-md dei singoli servizi.
+Ai fini del progetto sono stati istanziati due container per i restaurant e due per i delivery.
+
+Le porte utilizzate da ACMEat sono specificate nel file [Services.java](https://github.com/AdamF42/acmEat/blob/master/acme-agency/common/src/main/java/it/unibo/utils/Services.java). 
+Le informazioni su come buildare le immagini sono disponibili nel file [buld.sh](https://github.com/AdamF42/acmEat/blob/master/build.sh).
+
+
+E' possibile trovare ulteriori dettagli sui servizi seguendo i link ai sorgenti specificati nei relativi `sources`.
 
 ## Bank [(sources)](https://github.com/AdamF42/acmEat/tree/master/bankService)
 
@@ -63,6 +70,16 @@ Con l'`AbortOrder` viene modificato lo stato della risorsa con l'id specificato 
 
 
 ## Delivery [(sources)](https://github.com/AdamF42/acmEat/tree/master/deliveryService)
+
+Il servizio è stato implementato utilizzando Java8 con la libreria javax.rs e il server  Grizzly.
+
+Espone le seguenti operazioni:
+- `GetAvailability`
+- `SendOrder`
+- `AbortOrder`
+- `GetOrder` (usato solo per debug)
+
+Le logiche sono identiche a quelle esposte per il servizio [restaurant](#restaurant)
 
 ------
 <!-- ### [**➡️ Next**](acmeat-agency.md) -->

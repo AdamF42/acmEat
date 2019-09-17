@@ -28,7 +28,7 @@ public class GetFoodAvailability implements JavaDelegate {
 
             Restaurant restaurant = repo.getRestaurantByName(requestOrder.restaurant);
             String queryUrl = UrlHelper.getUrlOrStringEmpty(restaurant)  + "availability";
-            ClientResponse response = WebResourceBuilder.getBuilder(queryUrl).put(ClientResponse.class, requestOrder);
+            ClientResponse response = WebResourceBuilder.getBuilder(queryUrl).post(ClientResponse.class, requestOrder);
 
             if (response.getStatus() == OK.getStatusCode()) {
                 RestaurantOrder responseOrder = response.getEntity(RestaurantOrder.class);

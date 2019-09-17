@@ -5,9 +5,8 @@ import java.util.Random;
 
 public class Utils {
 
-    public static boolean isAvailable(){
+    public static boolean isAvailable() {
         Random random = new Random();
         return random.nextBoolean();
     }
-
 }
