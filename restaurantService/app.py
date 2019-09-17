@@ -14,7 +14,7 @@ my_menu = Menu(menu)
 
 # ======== Routing =========================================================== #
 # -------- PlaceOrder _------------------------------------------------------- #
-@app.route('/restaurant/order', methods=['POST'])
+@app.route('/restaurant/order', methods=['PUT'])
 def place_order():
     if 'id' not in request.json:
         abort(400)
@@ -32,7 +32,7 @@ def place_order():
 
 
 # -------- GetAvailability --------------------------------------------------- #
-@app.route('/restaurant/availability', methods=['PUT'])
+@app.route('/restaurant/availability', methods=['POST'])
 def get_availability():
     if 'dishes' not in request.json or 'delivery_time' not in request.json or 'restaurant' not in request.json:
         abort(400)
