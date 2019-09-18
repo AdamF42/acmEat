@@ -1,6 +1,6 @@
 
 # ACMEat
-[![BCH compliance](https://bettercodehub.com/edge/badge/AdamF42/acmEat?branch=master&token=bc829a4d4c6eb3d65cc8ab6dc721de1f05fc2fff)](https://bettercodehub.com/)
+[![BCH compliance](https://bettercodehub.com/edge/badge/AdamF42/acmEat?branch=master&token=bc829a4d4c6eb3d65cc8ab6dc721de1f05fc2fff)](https://bettercodehub.com/) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/04f9cc5e2dd1462db92a5b49ede40fad)](https://www.codacy.com/manual/AdamF42/acmEat?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AdamF42/acmEat&amp;utm_campaign=Badge_Grade)
  
 Service Oriented Software Engineering Project 18/19 University of Bologna
 
