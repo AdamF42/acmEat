@@ -49,12 +49,12 @@ main {
   }]
 
   [ refound( request )( response ) {
-    global.users.(request.sid).result = false
+    global.users.(request.sid).result = false;
     if (!global.users.(request.sid).isRefounded){
-      global.users.(request.sid).isRefounded = true
+      global.users.(request.sid).isRefounded = true;
       global.users.(request.sid).result = true
-    }
-    response.success=global.users.(request.sid).result
+    };
+    response.success=global.users.(request.sid).result;
     println@Console("Refound processed")()
   }]
 }
