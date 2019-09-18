@@ -40,7 +40,7 @@ public class BankServiceRest {
         return Response.ok(index,MediaType.TEXT_HTML).build();
     }
 
-    @GET
+    @POST
     @Path("/name/{name}/price/{price}")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })

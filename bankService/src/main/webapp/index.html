@@ -16,7 +16,7 @@
                 var name = nameField.value;
                 var bank_url = "http://localhost:10001/bank/name/" + name + "/price/" + price;
                 var xhr = new XMLHttpRequest();
-                xhr.open("GET", bank_url, true);
+                xhr.open("POST", bank_url, true);
                 xhr.setRequestHeader("Content-type", "application/json");
                 xhr.send();
                 xhr.onreadystatechange = function () {
