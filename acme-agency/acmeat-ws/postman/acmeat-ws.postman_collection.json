@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "45ae5a0a-3cee-4f06-bfbb-28f3a894ea34",
+		"_postman_id": "fd0847f6-7263-4105-bcdd-1df007d382c3",
 		"name": "acmeat-ws",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -140,7 +140,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "frontoffice",
@@ -340,7 +341,7 @@
 						}
 					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
 							"raw": "{{bank-url}}/name/debug/price/1",
@@ -474,7 +475,9 @@
 						}
 					]
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
