@@ -6,7 +6,10 @@ import it.unibo.models.responses.Response;
 
 public interface ResponseFactory {
     Response createSuccessResponse(RestaurantList list);
+
     Response createSuccessResponse(SendOrderContent content);
+
     Response createSuccessResponse();
+
     Response createFailureResponse(String msg);
 }

@@ -61,7 +61,7 @@ public class GetRestaurants extends AcmeatHttpServlet {
         } else if (restaurants == null || restaurants.isEmpty()) {
             return responseFactory.createFailureResponse("No restaurants available in selected city");
         } else {
-            return  responseFactory.createSuccessResponse(restaurants);
+            return responseFactory.createSuccessResponse(restaurants);
         }
     }
 }

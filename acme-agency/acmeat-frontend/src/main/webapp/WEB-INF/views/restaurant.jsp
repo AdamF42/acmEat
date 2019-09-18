@@ -139,41 +139,41 @@
 </head>
 <body>
 
-    <h2>Benvenuto in AcmEat ristoratore</h2>
+<h2>Benvenuto in AcmEat ristoratore</h2>
 
-    <div id="first">
-        Inserisci il nome del tuo ristorante:<br>
-        <input type="text" id="restName" name="restName" value="default"> <input type="submit" value="Fatto"
-                                                                                 onclick="showOption()">
-        <div id="info" style="color:red"></div>
-        <br>
-    </div>
-    <div id="second" hidden="true">
-        Comunica se oggi sarai aperto:
-        <select id="availability" name="availability">
-            <option value="true" selected>SI</option>
-            <option value="false">NO</option>
-        </select><input type="button" onclick="sendAvailability()" value="Comunica ad AcmEat">
-        <div id="info2" style="color:blue"></div>
-        <br>
-    </div>
-    <div id="third" hidden="true">
-        Comunica il tuo nuovo menu di oggi:
-        <table id="new-menu" border="1px black">
-            <tr>
-                <td>Piatto</td>
-                <td>Prezzo</td>
-            </tr>
-        </table>
-        <button type="button" onclick="rowsAdd();">Aggiungi un piatto</button>
-        <br>
-        <input type="submit" onclick="sendMenu()" value="Comunica ad AcmEat">
-        <div id="info3" style="color:red"></div>
-        <div id="info4" style="color:blue"></div>
-        <br>
-    </div>
-    <div id="fourth" style="color:blue">
-        Ricorda che tra le 10 e le 23.59 non puoi apportare modifiche alla tua disponibilta o al menu.
-    </div>
+<div id="first">
+    Inserisci il nome del tuo ristorante:<br>
+    <input type="text" id="restName" name="restName" value="default"> <input type="submit" value="Fatto"
+                                                                             onclick="showOption()">
+    <div id="info" style="color:red"></div>
+    <br>
+</div>
+<div id="second" hidden="true">
+    Comunica se oggi sarai aperto:
+    <select id="availability" name="availability">
+        <option value="true" selected>SI</option>
+        <option value="false">NO</option>
+    </select><input type="button" onclick="sendAvailability()" value="Comunica ad AcmEat">
+    <div id="info2" style="color:blue"></div>
+    <br>
+</div>
+<div id="third" hidden="true">
+    Comunica il tuo nuovo menu di oggi:
+    <table id="new-menu" border="1px black">
+        <tr>
+            <td>Piatto</td>
+            <td>Prezzo</td>
+        </tr>
+    </table>
+    <button type="button" onclick="rowsAdd();">Aggiungi un piatto</button>
+    <br>
+    <input type="submit" onclick="sendMenu()" value="Comunica ad AcmEat">
+    <div id="info3" style="color:red"></div>
+    <div id="info4" style="color:blue"></div>
+    <br>
+</div>
+<div id="fourth" style="color:blue">
+    Ricorda che tra le 10 e le 23.59 non puoi apportare modifiche alla tua disponibilta o al menu.
+</div>
 </body>
 </html>

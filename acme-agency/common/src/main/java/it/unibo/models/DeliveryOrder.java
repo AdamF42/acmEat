@@ -21,16 +21,14 @@ public class DeliveryOrder implements Serializable {
 
     @Expose
     public Integer id;
+    @Expose
+    public Status status;
+    @Expose
+    public Double price;
 
     public Status getStatus() {
         return status;
     }
-
-    @Expose
-    public Status status;
-
-    @Expose
-    public Double price;
 
     public Double getPrice() {
         return price;

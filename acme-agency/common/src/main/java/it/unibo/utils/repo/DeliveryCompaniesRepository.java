@@ -4,7 +4,7 @@ import it.unibo.models.entities.DeliveryCompany;
 
 import java.util.ArrayList;
 
-public interface DeliveryCompaniesRepository extends Repository{
+public interface DeliveryCompaniesRepository extends Repository {
 
     ArrayList<DeliveryCompany> getAllDeliveryCompanies();
 

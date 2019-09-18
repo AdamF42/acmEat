@@ -6,9 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 
 @WebServlet({"/restaurant-home"})

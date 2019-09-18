@@ -20,8 +20,8 @@ import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class AbortOrder implements JavaDelegate {
 
-    private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
     private final Logger LOGGER = Logger.getLogger(AbortOrder.class.getName());
+    private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
 
     @Override
     public void execute(DelegateExecution execution) {

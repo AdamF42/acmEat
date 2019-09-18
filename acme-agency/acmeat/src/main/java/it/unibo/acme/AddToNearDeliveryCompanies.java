@@ -5,7 +5,6 @@ import it.unibo.models.DeliveryOrderList;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
-
 import static it.unibo.utils.AcmeVariables.AVAILABLE_DELIVERY_COMPANIES;
 import static it.unibo.utils.AcmeVariables.CURRENT_DELIVERY_ORDER;
 

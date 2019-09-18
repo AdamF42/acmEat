@@ -3,7 +3,9 @@ package it.unibo.models;
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.NoSuchElementException;
 
 public class DeliveryOrderList implements Serializable {
 
@@ -23,11 +25,11 @@ public class DeliveryOrderList implements Serializable {
         return orders;
     }
 
-    public boolean isEmpty(){
-        return this.orders.size()==0;
+    public boolean isEmpty() {
+        return this.orders.size() == 0;
     }
 
-    public DeliveryOrder calculateMinPriceOrder(){
+    public DeliveryOrder calculateMinPriceOrder() {
         return this.orders.stream()
                 .min(Comparator.comparing(DeliveryOrder::getPrice))
                 .orElseThrow(NoSuchElementException::new);

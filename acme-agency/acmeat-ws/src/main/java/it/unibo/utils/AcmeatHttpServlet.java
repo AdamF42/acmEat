@@ -5,7 +5,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 
 import javax.inject.Inject;
 
-public class AcmeatHttpServlet extends ApiHttpServlet{
+public class AcmeatHttpServlet extends ApiHttpServlet {
 
     @Inject
     public ProcessEngine processEngine;
