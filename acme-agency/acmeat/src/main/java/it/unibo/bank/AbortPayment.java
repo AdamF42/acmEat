@@ -4,7 +4,6 @@ import it.unibo.bank.generated.Bank;
 import it.unibo.bank.generated.BankService;
 import it.unibo.bank.generated.Refound;
 import it.unibo.bank.generated.RefoundResponse;
-import it.unibo.models.DeliveryOrder;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
@@ -29,7 +28,7 @@ public class AbortPayment implements JavaDelegate {
             refound.setSid(token);
             RefoundResponse resp = bankService.refound(refound);
             LOGGER.info("AbortPayment returned: " + resp.isSuccess());
-            if (!resp.isSuccess()){
+            if (!resp.isSuccess()) {
                 throw new BpmnError(UNAVAILABLE_BANK);
             }
         } catch (Exception e) {

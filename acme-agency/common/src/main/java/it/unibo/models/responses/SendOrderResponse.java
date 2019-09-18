@@ -5,7 +5,7 @@ import it.unibo.models.Result;
 import it.unibo.models.SendOrderContent;
 
 
-public class SendOrderResponse  implements Response {
+public class SendOrderResponse implements Response {
 
     @Expose
     private String bank_url;

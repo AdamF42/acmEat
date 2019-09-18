@@ -10,15 +10,15 @@ public class RestaurantList {
     @Expose
     private List<Restaurant> restaurants;
 
-    public void setRestaurants(List<Restaurant> restaurants) {
-        this.restaurants = restaurants;
-    }
-
     public boolean isEmpty() {
         return this.restaurants.isEmpty();
     }
 
     public List<Restaurant> getRestaurants() {
         return this.restaurants;
+    }
+
+    public void setRestaurants(List<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }

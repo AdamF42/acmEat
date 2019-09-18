@@ -17,8 +17,8 @@ import static it.unibo.utils.AcmeVariables.DELIVERY_ORDER;
 
 public class PlaceOrder implements JavaDelegate {
 
-    private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
     private final Logger LOGGER = Logger.getLogger(PlaceOrder.class.getName());
+    private DeliveryCompaniesRepositoryImpl repo = new DeliveryCompaniesRepositoryImpl();
 
     @Override
     public void execute(DelegateExecution execution) {
@@ -36,7 +36,7 @@ public class PlaceOrder implements JavaDelegate {
                 DeliveryOrder order = response.getEntity(DeliveryOrder.class);
                 execution.setVariable(DELIVERY_ORDER, order);
                 LOGGER.info("DeliveryOrder Status: " + order.getStatus().name());
-            }else {
+            } else {
                 LOGGER.info("Delivery returned error code: " + response.getStatus());
             }
         } catch (Exception e) {

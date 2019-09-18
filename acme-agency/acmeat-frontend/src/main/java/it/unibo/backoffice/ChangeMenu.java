@@ -9,13 +9,9 @@ import it.unibo.utils.ApiHttpServlet;
 import it.unibo.utils.WebResourceBuilder;
 
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 
 import static it.unibo.utils.Services.BASE_URL;
 import static javax.ws.rs.core.Response.Status.OK;
@@ -46,6 +42,6 @@ public class ChangeMenu extends ApiHttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        sendResponse(resp,response);
+        sendResponse(resp, response);
     }
 }

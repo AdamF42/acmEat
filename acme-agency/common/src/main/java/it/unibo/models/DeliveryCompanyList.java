@@ -11,16 +11,16 @@ public class DeliveryCompanyList implements Serializable {
     @Expose
     private ArrayList<DeliveryCompany> companies;
 
+    public DeliveryCompanyList(ArrayList<DeliveryCompany> companies) {
+        this.companies = companies;
+    }
+
     public ArrayList<DeliveryCompany> getCompanies() {
         return this.companies;
     }
 
-    public int size(){
+    public int size() {
         return this.companies.size();
-    }
-
-    public DeliveryCompanyList(ArrayList<DeliveryCompany> companies) {
-        this.companies = companies;
     }
 
 }

@@ -136,8 +136,8 @@
                         }
 
                         var selected_time = orari.options[orari.selectedIndex].text.split("-")[0].split(":");
-                        var selcted_hour=parseInt(selected_time[0]);
-                        var selcted_minute=parseInt(selected_time[1]);
+                        var selcted_hour = parseInt(selected_time[0]);
+                        var selcted_minute = parseInt(selected_time[1]);
                         if (!(selcted_hour > hour || (selcted_hour === hour && selcted_minute > minute))) {
                             $('#inforari').html("orario selezionato errato")
                         }
@@ -145,8 +145,8 @@
                         $('#orari').on('change', function (e) {
                             $('#inforari').html(" ");
                             var selected_time = orari.options[orari.selectedIndex].text.split("-")[0].split(":");
-                            var selcted_hour=parseInt(selected_time[0]);
-                            var selcted_minute=parseInt(selected_time[1]);
+                            var selcted_hour = parseInt(selected_time[0]);
+                            var selcted_minute = parseInt(selected_time[1]);
                             if (!(selcted_hour > hour || (selcted_hour === hour && selcted_minute > minute))) {
                                 $('#inforari').html("orario selezionato errato")
                             }
@@ -246,11 +246,11 @@
 
 
         var selected_time = orari.options[orari.selectedIndex].text.split("-")[0].split(":");
-        var selcted_hour=parseInt(selected_time[0]);
-        var selcted_minute=parseInt(selected_time[1]);
+        var selcted_hour = parseInt(selected_time[0]);
+        var selcted_minute = parseInt(selected_time[1]);
         if (!(selcted_hour > hour || (selcted_hour === hour && selcted_minute > minute))) {
             $('#inforari').html("orario selezionato errato");
-             somethingempty = true;
+            somethingempty = true;
         } else {
             $('#inforari').html(" ")
         }

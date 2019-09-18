@@ -32,7 +32,7 @@ public class VerifyBankToken implements JavaDelegate {
             e.printStackTrace();
             delegateExecution.setVariable(IS_VALID_TOKEN, false);
             delegateExecution.setVariable(IS_UNREACHABLE_BANK_SERVICE, true);
-            LOGGER.info("IsValidToken: false" );
+            LOGGER.info("IsValidToken: false");
         }
     }
 }

@@ -20,20 +20,20 @@ import static it.unibo.utils.Services.DELIVERY_COMPANY_TWO_URL;
 
 public class DataBase {
 
-    private Gson g = new Gson();
     private static final String DATABASE_NAME = "restaurant.json";
     public List<Restaurant> restaurants;
     public ArrayList<DeliveryCompany> deliveryCompanies;
+    private Gson g = new Gson();
 
     public DataBase() {
 
         try (JsonReader reader = new JsonReader(new FileReader(DATABASE_NAME))) {
             this.restaurants = Arrays.asList(g.fromJson(reader, Restaurant[].class));
             this.deliveryCompanies = new ArrayList<>(Arrays.asList(
-                    new DeliveryCompany(DELIVERY_COMPANY_ONE, DELIVERY_COMPANY_ONE_URL,"Piazza Giuseppe Verdi, 40126 Bologna BO"),
+                    new DeliveryCompany(DELIVERY_COMPANY_ONE, DELIVERY_COMPANY_ONE_URL, "Piazza Giuseppe Verdi, 40126 Bologna BO"),
                     new DeliveryCompany(DELIVERY_COMPANY_TWO, DELIVERY_COMPANY_TWO_URL, "Via Teodosio, 60, 20131 Milano MI"),
                     //TODO: to be removed...
-                    new DeliveryCompany("debug", DELIVERY_COMPANY_TWO_URL,"Piazza Giuseppe Verdi, 40126 Bologna BO")
+                    new DeliveryCompany("debug", DELIVERY_COMPANY_TWO_URL, "Piazza Giuseppe Verdi, 40126 Bologna BO")
             ));
         } catch (Exception e) {
             e.printStackTrace();

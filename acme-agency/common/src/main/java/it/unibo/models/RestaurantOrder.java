@@ -31,7 +31,7 @@ public class RestaurantOrder {
         return status;
     }
 
-    public Double calculateTotalPrice(){
+    public Double calculateTotalPrice() {
 
         return dishes
                 .stream()
