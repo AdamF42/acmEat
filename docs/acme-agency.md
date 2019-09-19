@@ -37,7 +37,14 @@ Il progetto frontend definisce le interfaccie web per utenti e ristoratori. Ques
 
 #### Frontoffice 
 
+In questa sezione sono presenti due controller in java, ClientHome e ClientAfterPayment, responsabili di gestire le viste dedicate all'utente finale. 
+La prima vista, client.jsp, è una single-page che gestisce le seguenti richieste dell'utente: ottenere i ristoranti presenti in una città specifica e mandare un ordine. 
+La seconda vista, client-confirm.jsp, contiene l'esito del pagamento del cliente e gli permette di cancellare l'ordine.
+
 #### Backoffice 
+
+In questa sezione sono presenti tre controller in java: Home, ChangeMenu e ChangeAvailability. Il primo è responsabile di gestire la vista dedicata al ristorante: restaurant.jsp, mentre gli altri due si occupano di fare le chiamate alle API di acmeat-ws.
+La vista permette al ristorante di comunicare le modifiche e, in caso di accesso fuori orario informa dell'impossibilità dell'operazione.
 
 ## Common [(sources)](https://github.com/AdamF42/acmEat/tree/master/acme-agency/common)
 
