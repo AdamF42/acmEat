@@ -7,13 +7,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type='text/JavaScript'>
         function goHome() {
-            var url = "http://localhost:8080/acmeat-frontend/client-home";
-            window.location = url;
+            window.location = "http://localhost:8080/acmeat-frontend/client-home";
         }
 
         function cancelOrder() {
-
-            console.log("Cancellando ordine");
 
             var url = "http://localhost:8080/acmeat-ws/abort";
             var xhr = new XMLHttpRequest();
@@ -23,36 +20,26 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log("xhr done successfully");
                         var resp = xhr.responseText;
-                        console.log(resp);
                         $('#cancel-button').hide();
                         //TODO: mettere messaggio corretto nella cancellazione
                         var respParsed = JSON.parse(resp);
                         var message;
-                        if (respParsed.result.message == "") {
+                        if (respParsed.result.message === "") {
                             message = "Il tuo ordine e stato cancellato";
                         } else {
                             message = respParsed.result.message;
                         }
                         $('#canc').html(message);
-                    } else {
-                        console.log("xhr failed");
                     }
-                } else {
-                    console.log("xhr processing going on");
                 }
-            }
+            };
             console.log("request sent succesfully");
         }
 
         function sendToken() {
 
-            console.log("Cliente invia token ad acme");
-            var token = "<%=request.getParameter("token") %>";
-            console.log("token " + token);
-
-            var url = "http://localhost:8080/acmeat-ws/confirm?token=" + token;
+            var url = "http://localhost:8080/acmeat-ws/confirm?token=" + "<%=request.getParameter("token") %>";
             var xhr = new XMLHttpRequest();
             xhr.open("PUT", url, true);
             xhr.send();
@@ -60,25 +47,18 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log("xhr done successfully");
                         var resp = xhr.responseText;
-                        console.log(resp);
                         var respParsed = JSON.parse(resp);
-                        if (respParsed.result.status == "success") {
+                        if (respParsed.result.status === "success") {
                             $('#first').hide();
                             $('#token-success').show();
                         } else {
                             $('#first').hide();
                             $('#token-failure').show();
                         }
-                    } else {
-                        console.log("xhr failed");
                     }
-                } else {
-                    console.log("xhr processing going on");
                 }
-            }
-            console.log("request sent succesfully");
+            };
         }
     </script>
 </head>
