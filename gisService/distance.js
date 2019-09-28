@@ -22,7 +22,7 @@ const app = express();
 
 app.set("json spaces", 4);
 const log = (message) => {
-    Console.log(`${timestamp("[YYYY/MM/DD HH:mm:ss]")} - ${message}`);
+    console.log(`${timestamp("[YYYY/MM/DD HH:mm:ss]")} - ${message}`);
 };
 
 const response =  (err, distance = 0, message = "") => ({
@@ -33,21 +33,20 @@ const response =  (err, distance = 0, message = "") => ({
 app.get("/getDistance", (req, res) => {
     log("key " + API_KEY);
     const { from, to } = req.query;
-
     log(`[Request] From: ${from}, To: ${to}`);
     if (!from) {
-        log(`[Response] Missing [from] parameter`)
+        log("[Response] Missing [from] parameter");
         res.status(400).json(response("Missing [from] parameter"));
     }
     if (!to) {
-        log(`[Response] Missing [to] parameter`)
+        log("[Response] Missing [to] parameter");
         res.status(400).json(response("Missing [to] parameter"));
     }
 
     all([
         get(`https://graphhopper.com/api/1/geocode?q=${from}&key=${API_KEY}`),
         get(`https://graphhopper.com/api/1/geocode?q=${to}&key=${API_KEY}`)
-    ]).catch(err => {
+    ]).catch((err) => {
         log(`${err}`)
         res.status(400).json(response(`${err.response.data.message}`));
     }).then(spread((fromRes, toRes) => {
@@ -70,9 +69,9 @@ app.get("/getDistance", (req, res) => {
 app.get("*", (req, res) => {
     res.status(404).json({
         message: "Not found"
-    })
+    });
 });
 
 app.listen(PORT, () => {
-    Console.log(`\nDistance service listening on port ${PORT}`);
+    console.log(`\nDistance service listening on port ${PORT}`);
 });
