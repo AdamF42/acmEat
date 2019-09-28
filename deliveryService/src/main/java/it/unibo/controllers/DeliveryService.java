@@ -18,6 +18,13 @@ public class DeliveryService {
     private Orders orders = new Orders();
     private Random rand = new Random();
 
+    private static boolean isValidOrderRequest(Order order) {
+        return order != null
+                && order.company != null
+                && order.src_address != null
+                && order.dest_address != null
+                && order.delivery_time != null;
+    }
 
     @POST
     @Path("/availability")
@@ -95,13 +102,5 @@ public class DeliveryService {
         orders.addOrder(order);
 
         return Response.ok(order, MediaType.APPLICATION_JSON).build();
-    }
-
-    private static boolean isValidOrderRequest(Order order) {
-        return order != null
-                && order.company != null
-                && order.src_address != null
-                && order.dest_address != null
-                && order.delivery_time != null;
     }
 }

@@ -1,282 +1,282 @@
 {
-	"info": {
-		"_postman_id": "d672a39c-ea7a-4fc3-ab84-2e82bda84cc8",
-		"name": "DeliveryService",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "1. GetAvailability",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "0062480e-b0f2-4b14-a9b6-fbc18b7f9746",
-						"exec": [
-							"var jsonData = pm.response.json();",
-							"if(!jsonData.hasOwnProperty(\"id\")){",
-							"   pm.environment.set(\"id\", -1);",
-							"}else{",
-							"    pm.environment.set(\"id\", jsonData.id);",
-							"}"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
-				},
-				"url": {
-					"raw": "{{delivery_base_url}}/availability",
-					"host": [
-						"{{delivery_base_url}}"
-					],
-					"path": [
-						"availability"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "1. GetAvailability ",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
-						},
-						"url": {
-							"raw": "{{delivery_base_url}}/availability",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"availability"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "171"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.46673012695003,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"AVAILABLE\"\n}"
-				}
-			]
-		},
-		{
-			"name": "2. SendOrder",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"id\": {{id}}\n}"
-				},
-				"url": {
-					"raw": "{{delivery_base_url}}/order",
-					"host": [
-						"{{delivery_base_url}}"
-					],
-					"path": [
-						"order"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "2. SendOrder",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"id\": {{id}}\n}"
-						},
-						"url": {
-							"raw": "{{delivery_base_url}}/send-order",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"send-order"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "173"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.03622207150761303,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
-				}
-			]
-		},
-		{
-			"name": "3. GetOrder",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{delivery_base_url}}/order/{{id}}",
-					"host": [
-						"{{delivery_base_url}}"
-					],
-					"path": [
-						"order",
-						"{{id}}"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "3. GetOrder",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{delivery_base_url}}/order/{{id}}",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"order",
-								"{{id}}"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "173"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
-				}
-			]
-		},
-		{
-			"name": "5. AbortOrder",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{delivery_base_url}}/order/{{id}}/status/ABORTED",
-					"host": [
-						"{{delivery_base_url}}"
-					],
-					"path": [
-						"order",
-						"{{id}}",
-						"status",
-						"ABORTED"
-					]
-				}
-			},
-			"response": [
-				{
-					"name": "5. AbortOrder",
-					"originalRequest": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{delivery_base_url}}/order/{{id}}/status/ABORTED",
-							"host": [
-								"{{delivery_base_url}}"
-							],
-							"path": [
-								"order",
-								"{{id}}",
-								"status",
-								"ABORTED"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						},
-						{
-							"key": "Content-Length",
-							"value": "172"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ABORTED\"\n}"
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "d672a39c-ea7a-4fc3-ab84-2e82bda84cc8",
+    "name": "DeliveryService",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. GetAvailability",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "0062480e-b0f2-4b14-a9b6-fbc18b7f9746",
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if(!jsonData.hasOwnProperty(\"id\")){",
+              "   pm.environment.set(\"id\", -1);",
+              "}else{",
+              "    pm.environment.set(\"id\", jsonData.id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
+        },
+        "url": {
+          "raw": "{{delivery_base_url}}/availability",
+          "host": [
+            "{{delivery_base_url}}"
+          ],
+          "path": [
+            "availability"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "1. GetAvailability ",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"company\": \"debug\",\n\t\"delivery_time\":\"20:15\",\n\t\"src_address\":\"Via delle tovaglie 13\",\n\t\"dest_address\": \"Via della salute 54\"\n}"
+            },
+            "url": {
+              "raw": "{{delivery_base_url}}/availability",
+              "host": [
+                "{{delivery_base_url}}"
+              ],
+              "path": [
+                "availability"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "171"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.46673012695003,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"AVAILABLE\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "2. SendOrder",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"id\": {{id}}\n}"
+        },
+        "url": {
+          "raw": "{{delivery_base_url}}/order",
+          "host": [
+            "{{delivery_base_url}}"
+          ],
+          "path": [
+            "order"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "2. SendOrder",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"id\": {{id}}\n}"
+            },
+            "url": {
+              "raw": "{{delivery_base_url}}/send-order",
+              "host": [
+                "{{delivery_base_url}}"
+              ],
+              "path": [
+                "send-order"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "173"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.03622207150761303,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "3. GetOrder",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{delivery_base_url}}/order/{{id}}",
+          "host": [
+            "{{delivery_base_url}}"
+          ],
+          "path": [
+            "order",
+            "{{id}}"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "3. GetOrder",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{delivery_base_url}}/order/{{id}}",
+              "host": [
+                "{{delivery_base_url}}"
+              ],
+              "path": [
+                "order",
+                "{{id}}"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "173"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ACCEPTED\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "5. AbortOrder",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": ""
+        },
+        "url": {
+          "raw": "{{delivery_base_url}}/order/{{id}}/status/ABORTED",
+          "host": [
+            "{{delivery_base_url}}"
+          ],
+          "path": [
+            "order",
+            "{{id}}",
+            "status",
+            "ABORTED"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "5. AbortOrder",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{delivery_base_url}}/order/{{id}}/status/ABORTED",
+              "host": [
+                "{{delivery_base_url}}"
+              ],
+              "path": [
+                "order",
+                "{{id}}",
+                "status",
+                "ABORTED"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Content-Length",
+              "value": "172"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"company\": \"debug\",\n    \"delivery_time\": \"20:15\",\n    \"dest_address\": \"Via della salute 54\",\n    \"id\": 1,\n    \"price\": 0.09115258233753853,\n    \"src_address\": \"Via delle tovaglie 13\",\n    \"status\": \"ABORTED\"\n}"
+        }
+      ]
+    }
+  ]
 }

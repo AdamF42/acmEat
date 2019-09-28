@@ -18,7 +18,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.*;
+import static junit.framework.TestCase.assertNull;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 public class DeliveryServiceTest {
 
@@ -26,7 +30,7 @@ public class DeliveryServiceTest {
     private WebTarget target;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
 
         server = Main.startServer();
         Client c = ClientBuilder.newClient();
@@ -34,7 +38,7 @@ public class DeliveryServiceTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         server.stop();
     }
 
