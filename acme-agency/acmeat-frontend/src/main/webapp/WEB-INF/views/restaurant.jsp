@@ -12,10 +12,7 @@
 
     <script type='text/JavaScript'>
 
-        //var menu_size=1;
-
         function rowsAdd() {
-            //menu_size++;
             $("#new-menu").append(
                 " <tr ><td contenteditable='true' >Ravioli</td>" +
                 " <td contenteditable='true' >10</td></tr>"
@@ -29,19 +26,12 @@
                 document.getElementById('restName').readOnly = true;
                 var d = new Date();
                 var n = d.getHours();
-                /* if ((n >= 10) && (n <= 23)) {
-                     $('#fourth').show();
-                 } else {
-                */
                 $('#second').show();
                 $('#third').show();
-                //}
             }
         }
 
         function sendAvailability() {
-
-            console.log("Ristorante comunica disponibilita");
 
             var aval = document.getElementById("availability");
             var isAvailable = aval.options[aval.selectedIndex].value;
@@ -50,8 +40,6 @@
                     "name": document.getElementById("restName").value.toString(),
                     "is_available": isAvailable.toString()
                 };
-
-            console.log("Inviando disponibilita ad acme-ws " + JSON.stringify(availabilityBody));
 
             var avalability_url = "http://localhost:8080/acmeat-ws/change-availability";
 
@@ -63,18 +51,11 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        console.log("xhr done successfully");
                         var resp = xhr.responseText;
-                        console.log(resp);
                         $('#info2').html(resp);
-                    } else {
-                        console.log("xhr failed with " + xhr.status);
                     }
-                } else {
-                    console.log("xhr processing going on");
                 }
-            }
-            console.log("request sent ");
+            };
         }
 
         function sendMenu() {
@@ -89,7 +70,7 @@
                 var piattoC = piatto.replace("<br>", "");
                 var prezzo = cells[1].innerHTML;
                 var prezzoC = prezzo.replace("<br>", "");
-                if (!(piattoC == '' || piattoC == null || prezzoC == null || piattoC == "")) {
+                if (!(piattoC === '' || piattoC == null || prezzoC == null || piattoC === "")) {
                     allEmpty = false;
                     var singleDish = {};
                     singleDish.name = cells[0].innerHTML;
@@ -103,10 +84,8 @@
                         "name": document.getElementById("restName").value.toString(),
                         "menu": dishes
                     };
-                console.log(menuBody);
 
                 var menu_url = "http://localhost:8080/acmeat-ws/change-menu";
-
                 var xhr = new XMLHttpRequest();
                 xhr.open("PUT", menu_url, true);
                 xhr.setRequestHeader("Content-type", "application/json");
@@ -119,21 +98,14 @@
                             var resp = xhr.responseText;
                             console.log(resp);
                             $('#info4').html(resp);
-                        } else {
-                            console.log("xhr failed with " + xhr.status);
                         }
-                    } else {
-                        console.log("xhr processing going on");
                     }
-                }
-                console.log("request sent");
+                };
                 $('#info3').html("");
             } else {
-                console.log("empty table");
                 $('#info3').html("Inserisci almeno un nuovo piatto nel menu");
             }
         }
-
     </script>
 
 </head>

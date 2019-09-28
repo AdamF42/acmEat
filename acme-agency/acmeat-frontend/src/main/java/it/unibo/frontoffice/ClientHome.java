@@ -16,6 +16,5 @@ public class ClientHome extends HttpServlet {
 
         RequestDispatcher dispatcher = req.getServletContext().getRequestDispatcher("/WEB-INF/views/client.jsp");
         dispatcher.forward(req, resp);
-
     }
 }

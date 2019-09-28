@@ -108,7 +108,7 @@
                     console.log("xhr done successfully");
                     var resp = xhr.responseText;
                     console.log(JSON.parse(resp).result.status);
-                    if (JSON.parse(resp).result.status.toString() == "success") {
+                    if (JSON.parse(resp).result.status.toString() === "success") {
 
                         var orari_pranzo = ["12:00-12:15", "12:15-12:30", "12:30-12:45", "12:45-13:00",
                             "13:00-13:15", "13:15-13:30", "13:30-13:45", "13:45-14:00"];
@@ -244,7 +244,6 @@
         var orari = document.getElementById("orari");
         var deliveryTime;
 
-
         var selected_time = orari.options[orari.selectedIndex].text.split("-")[0].split(":");
         var selcted_hour = parseInt(selected_time[0]);
         var selcted_minute = parseInt(selected_time[1]);
@@ -257,13 +256,11 @@
 
         deliveryTime = orari.options[orari.selectedIndex].text.split("-")[0];
 
-
         //check and get selected delivery address
         if (!document.getElementById("indirizzo").value) {
             somethingEmpty = true;
             $('#info4').html("Inserisci l'indirizzo di consegna");
         }
-
 
         if (!somethingEmpty) {
 
@@ -299,7 +296,6 @@
                         } else {
                             $('#info5').html(JSON.parse(resp).result.message);
                         }
-
                     }
                 }
             }
