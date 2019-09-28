@@ -51,8 +51,8 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        var resp = xhr.responseText;
-                        $('#info2').html(resp);
+                        var resp = JSON.parse(xhr.responseText);
+                        $('#info2').html(resp.result.message);
                     }
                 }
             };
@@ -96,8 +96,11 @@
                         if (xhr.status === 200) {
                             console.log("xhr done successfully");
                             var resp = xhr.responseText;
+                            var respParsed = JSON.parse(resp);
                             console.log(resp);
                             $('#info4').html(resp);
+                        } else {
+                            console.log("xhr failed with " + xhr.status);
                         }
                     }
                 };
